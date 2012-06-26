@@ -50,3 +50,13 @@ var result = equations.solve(cons);
 
 console.log(result.toString());
 ```
+
+Did I mention that you can also use complex numbers? Give it a try!
+
+```
+var values = [[2,7],[2,-1], [4,-9],[8,-2]];
+var complex = new MAT(2,2,values);
+
+console.log(complex.det());
+```
+
