@@ -41,7 +41,7 @@ Equations:
 * -x + 0.5y - z =  0
 
 ```
-var coef = [3, 2, -1, 2, -2, 4,-1,0.5,-1], 
+var coef = [3, 2, -1, 2, -2, 4, -1, 0.5, -1], 
     cons = [1, -2, 0];
     
 var equations = new MAT(3,3,coef);
