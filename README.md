@@ -36,9 +36,9 @@ console.log(Y.toString());
 **Solving system of linear equations**
 
 Equations:
-3x + 2y -  z =  1
-2x - 2y + 4z = -2
--x +0.5y - z =  0
+* 3x + 2y -  z =  1
+* 2x - 2y + 4z = -2
+* -x +0.5y - z =  0
 
 ```
 var coef = [3, 2, -1, 2, -2, 4,-1,0.5,-1], 
