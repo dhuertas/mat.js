@@ -24,8 +24,8 @@ console.log(result.toString());
 
 **Convolution**
 ```
-var h = [1,0.5],
-    x = [1,2,1,-1],
+var h = [1, 0.5],
+    x = [1, 2, 1, -1],
     H = new MAT(h.length,1,h), X = new MAT(x.length,1,x);
 
 var Y = H.toeplitz(x.length).product(X);
@@ -38,11 +38,11 @@ console.log(Y.toString());
 Equations:
 * 3x + 2y -  z =  1
 * 2x - 2y + 4z = -2
-* -x +0.5y - z =  0
+* -x + 0.5y - z =  0
 
 ```
 var coef = [3, 2, -1, 2, -2, 4,-1,0.5,-1], 
-    cons = [1,-2,0];
+    cons = [1, -2, 0];
     
 var equations = new MAT(3,3,coef);
 
