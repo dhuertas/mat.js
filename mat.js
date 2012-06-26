@@ -13,7 +13,7 @@ function MAT(r, c, v) {
  */
 MAT.prototype.a = function(a, b) {
 		
-	if (a instanceof Array && b instanceof Array) {
+	if (a instanceof Array && b instanceof Array) {
 		
 		return [a[0]+b[0], a[1]+b[1]];
 	
@@ -38,7 +38,7 @@ MAT.prototype.a = function(a, b) {
  */
 MAT.prototype.s = function(a, b) {
 	
-	if (a instanceof Array && b instanceof Array) {
+	if (a instanceof Array && b instanceof Array) {
 		
 		return [a[0]-b[0], a[1]-b[1]];
 	
@@ -63,7 +63,7 @@ MAT.prototype.s = function(a, b) {
  */
 MAT.prototype.m = function(a, b) {
 	
-	if (a instanceof Array && b instanceof Array) {
+	if (a instanceof Array && b instanceof Array) {
 		
 		return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]];
 	
@@ -88,7 +88,7 @@ MAT.prototype.m = function(a, b) {
  */
 MAT.prototype.d = function(a, b) {
 	
-	if (a instanceof Array && b instanceof Array) {
+	if (a instanceof Array && b instanceof Array) {
 		
 		if (b[0] === 0 && b[1] === 0) {
 			
