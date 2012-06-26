@@ -610,7 +610,7 @@ MAT.prototype.gaussElimination = function() {
  * @param: Array
  * @return: matrix object
  */
-MAT.prototype.solveFor = function(a) {
+MAT.prototype.solve = function(a) {
 	
 	var m = this.rows,
 		n = this.cols,
