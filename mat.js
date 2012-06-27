@@ -335,7 +335,7 @@ MAT.prototype.setValue = function(a,b,c) {
 
 }
 
-/* ---------- Other methods ---------- */
+/* ---------- Other functions ---------- */
 
 MAT.prototype.isSquare = function() {
 	
@@ -430,6 +430,38 @@ MAT.prototype.product = function(a) {
 
 	return new MAT(this.rows, a.getColumns(), values);
 
+}
+
+/*
+ * @param {object} matrix
+ * @return {object} matrix
+ */
+MAT.prototype.hadamardProduct = function(a) {
+
+	var values = [],
+		rows = this.rows,
+		cols = this.cols;
+
+	if (a.getRows() !== this.rows || a.getColumns() !== this.cols) {
+
+		console.log("hadamardProduct: matrices must be the same size");
+
+	} else {
+
+		for (var i = 0; i < this.rows; i++) {
+
+			for (var j = 0; j < this.cols; j++) {
+
+				values.push(this.m(this.getValue(i,j), a.getValue(i,j)));
+
+			}
+
+		}
+
+	}
+	
+	return new MAT(rows, cols, values);
+	
 }
 
 /*
