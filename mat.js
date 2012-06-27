@@ -203,6 +203,12 @@ MAT.prototype.toArray = function () {
 
 }
 
+MAT.prototype.toString = function() {
+	
+	return this.values.toString();
+
+}
+
 /* ---------- Gets and sets ---------- */
 
 MAT.prototype.getColumn = function(j) {
