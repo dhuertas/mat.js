@@ -8,10 +8,23 @@ Here are some examples of how to use it. Enjoy!
 **Example**
 
 ```
-var values = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25];
+var values = [
+     1, 2, 3, 4, 5,
+     6, 7, 8, 9,10,
+    11,12,13,14,15,
+    16,17,18,19,20,
+    21,22,23,24,25];
 var square = new MAT(5, 5, values);
 
-var values = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35];
+var values = [
+     1, 2, 3, 4, 5,
+     6, 7, 8, 9,10,
+    11,12,13,14,15,
+    16,17,18,19,20,
+    21,22,23,24,25,
+    26,27,28,29,30,
+    31,32,33,34,35];
+
 var tall = new MAT(7, 5, values);
 ```
 
@@ -41,12 +54,16 @@ Equations:
 * -x + 0.5y - z =  0
 
 ```
-var coef = [3, 2, -1, 2, -2, 4, -1, 0.5, -1], 
-    cons = [1, -2, 0];
+var coef = [
+     3, 2, -1, 
+     2, -2, 4, 
+    -1, 0.5, -1]; 
+    
+var const = [1, -2, 0];
     
 var equations = new MAT(3,3,coef);
 
-var result = equations.solve(cons);
+var result = equations.solve(const);
 
 console.log(result.toString());
 ```
@@ -54,7 +71,10 @@ console.log(result.toString());
 Did I mention that you can also use complex numbers? Give it a try!
 
 ```
-var values = [[2,7],[2,-1], [4,-9],[8,-2]];
+var values = [
+    [2,7], [2,-1], 
+    [4,-9],[8,-2]];
+
 var complex = new MAT(2,2,values);
 
 console.log(complex.det());
