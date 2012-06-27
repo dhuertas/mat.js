@@ -37,7 +37,7 @@ var values = [
 var tall = new MAT(7, 5, values);
 ```
 
-**Product**
+**Matrix product**
 ```
 var result = tall.product(square);
 
@@ -51,7 +51,8 @@ Discrete convolution between two vectors:
 ```
 var h = [1, 0.5],
     x = [1, 2, 1, -1],
-    H = new MAT(h.length,1,h), X = new MAT(x.length,1,x);
+    H = new MAT(h.length, 1, h), 
+    X = new MAT(x.length, 1, x);
 
 var Y = H.toToeplitz(x.length).product(X);
 
