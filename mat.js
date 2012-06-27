@@ -1,3 +1,7 @@
+/*
+ * @author dhuertas
+ * @email huertas.dani@gmail.com
+ */
 function MAT(r, c, v) {
 	
 	this.rows = r;
