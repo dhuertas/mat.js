@@ -10,6 +10,9 @@ function MAT(r, c, v) {
 
 /* 
  * Addition: a + b
+ * @param {float} | {array} complex
+ * @param {float} | {array} complex
+ * @return {float} | {array} complex
  */
 MAT.prototype.a = function(a, b) {
 		
@@ -35,6 +38,9 @@ MAT.prototype.a = function(a, b) {
 	
 /* 
  * Subtraction: a - b
+ * @param {float} | {array} complex
+ * @param {float} | {array} complex
+ * @return {float} | {array} complex
  */
 MAT.prototype.s = function(a, b) {
 	
@@ -59,7 +65,10 @@ MAT.prototype.s = function(a, b) {
 }
 
 /* 
- * Multiplication: a * b 
+ * Multiplication: a * b
+ * @param {float} | {array} complex
+ * @param {float} | {array} complex
+ * @return {float} | {array} complex
  */
 MAT.prototype.m = function(a, b) {
 	
@@ -85,6 +94,9 @@ MAT.prototype.m = function(a, b) {
 
 /*	
  * Division: a / b
+ * @param {float} | {array} complex
+ * @param {float} | {array} complex
+ * @return {float} | {array} complex
  */
 MAT.prototype.d = function(a, b) {
 	
@@ -137,7 +149,9 @@ MAT.prototype.d = function(a, b) {
 }
 	
 /*
- * Conjugate: a -i*b 
+ * Conjugate a -i*b
+ * @param {float} | {array} complex
+ * @return {float} | {array} complex
  */
 MAT.prototype.c = function(a) {
 
@@ -155,6 +169,7 @@ MAT.prototype.c = function(a) {
 
 /*
  * Modulus
+ * @return {float}
  */
 MAT.prototype.mod = function(a) {
 	
@@ -172,7 +187,7 @@ MAT.prototype.mod = function(a) {
 
 /*
  * toArray
- * @return: array
+ * @return {array}
  */
 MAT.prototype.toArray = function () {
 	
@@ -321,8 +336,8 @@ MAT.prototype.isSquare = function() {
 /* ---------- Main functions ---------- */
 
 /*
- * @param: matrix object
- * @return: matrix object (X+A)
+ * @param {object} matrix
+ * @return {object} matrix (X+A)
  */
 MAT.prototype.add = function(a) {
 	
@@ -347,8 +362,8 @@ MAT.prototype.add = function(a) {
 }
 
 /*
- * @param: matrix object
- * @return: matrix object (X-A)
+ * @param {object} matrix
+ * @return {object} matrix (X-A)
  */
 MAT.prototype.sub = function(a) {
 	
@@ -373,8 +388,8 @@ MAT.prototype.sub = function(a) {
 }
 
 /*
- * @param: matrix object
- * @return: matrix object (X*A)
+ * @param {object} matrix
+ * @return {object} matrix (X*A)
  */
 MAT.prototype.product = function(a) {
 
@@ -408,8 +423,8 @@ MAT.prototype.product = function(a) {
 }
 
 /*
- * @param: float
- * @return: matrix object (a*X)
+ * @param {float}
+ * @return {object} matrix (a*X)
  */
 MAT.prototype.sProduct = function(a) {
 	
@@ -430,7 +445,7 @@ MAT.prototype.sProduct = function(a) {
 }
 
 /*
- * @return: matrix object
+ * @return {object} matrix
  */
 MAT.prototype.transpose = function() {
 	
@@ -451,7 +466,7 @@ MAT.prototype.transpose = function() {
 }
 
 /*
- * @return: matrix object
+ * @return {object} matrix
  */
 MAT.prototype.hermitian = function() {
 	
@@ -472,7 +487,7 @@ MAT.prototype.hermitian = function() {
 }
 
 /*
- * @return: float
+ * @return {float}
  */
 MAT.prototype.trace = function() {
 	
@@ -497,9 +512,9 @@ MAT.prototype.trace = function() {
 }
 
 /*
- * @param: integer (row)
- * @param: integer (column)
- * @return: matrix object (a minor (n-1)*(n-1) matrix)
+ * @param {integer} row
+ * @param {integer} column
+ * @return {object} matrix (a minor (n-1)*(n-1) matrix)
  */
 MAT.prototype.minor = function(r,c) {
 	
@@ -524,8 +539,8 @@ MAT.prototype.minor = function(r,c) {
 }
 
 /*
- * @return: float 
  * The determinant of the matrix using the Laplace Expansion
+ * @return {float}
  */
 MAT.prototype.det = function() {
 	
@@ -566,8 +581,8 @@ MAT.prototype.det = function() {
 }
 
 /*
- * @return: matrix object 
  * Naive Gauss Elimination method
+ * @return {object} matrix 
  */
 MAT.prototype.gaussElimination = function() {
 	
@@ -607,8 +622,8 @@ MAT.prototype.gaussElimination = function() {
 }
 
 /*
- * @param: Array
- * @return: matrix object
+ * @param {array}
+ * @return {object} matrix
  */
 MAT.prototype.solve = function(a) {
 	
@@ -681,7 +696,7 @@ MAT.prototype.solve = function(a) {
 }
 
 /*
- * @return: matrix object
+ * @return {object} matrix
  */
 MAT.prototype.gramSchmidt = function() {
 	
@@ -717,7 +732,7 @@ MAT.prototype.gramSchmidt = function() {
 
 /*
  * QR decomposition
- * @return: Array [Q,R]
+ * @return {array} [Q,R]
  */
 MAT.prototype.qr = function() {
 	
@@ -731,9 +746,7 @@ MAT.prototype.qr = function() {
 }
 
 /*
- * @return: matrix object
- * Notes:
- * - Acceleration shifts for the QR method are not implemented yet.
+ * @return {object} matrix
  */
 MAT.prototype.eigenValues = function() {
 	
@@ -793,7 +806,7 @@ MAT.prototype.eigenValues = function() {
 }
 
 /*
- * @return: matrix object
+ * @return {object} matrix
  */
 MAT.prototype.eigenVectors = function() {
 	
@@ -820,11 +833,12 @@ MAT.prototype.eigenVectors = function() {
 	}
 	
 	return QR[0];
+	
 }
 
 /*
- * @param: integer (size of the resulting matrix n*n)
- * @return: matrix object
+ * @param {integer} size of the resulting matrix n*n
+ * @return {object} matrix
  */
 MAT.prototype.identity = function(a) {
 	
@@ -849,11 +863,11 @@ MAT.prototype.identity = function(a) {
 }
 
 /*
- * @param: integer 
- * @param: float, Array
- * @return: matrix object
+ * @param: {integer} 
+ * @param: {float} | {Array} complex value [real,imag]
+ * @return: {object} matrix
  */
-MAT.prototype.diag = function(a,b) {
+MAT.prototype.diag = function(a, b) {
 	
 	var values = [];
 	
@@ -872,7 +886,7 @@ MAT.prototype.diag = function(a,b) {
 }
 
 /*
- * @return: float
+ * @return {float}
  */
 MAT.prototype.pNorm = function(a) {
 	
@@ -904,7 +918,7 @@ MAT.prototype.pNorm = function(a) {
 }
 
 /*
- * @return: float
+ * @return {float}
  * Euclidean norm (p = 2)
  */
 MAT.prototype.norm = function() {
@@ -914,10 +928,10 @@ MAT.prototype.norm = function() {
 }
 
 /*
- * @param: integer
- * @return: matrix object
+ * @param: {integer}
+ * @return {object} matrix
  */
-MAT.prototype.toeplitz = function(a) {
+MAT.prototype.toToeplitz = function(a) {
 	
 	var res = [], 
 		row = [],
@@ -965,3 +979,50 @@ MAT.prototype.toeplitz = function(a) {
 	return new MAT(l, a, res);
 
 }
+
+/*
+ * Matrix inverse
+ * @return {object} matrix
+ */
+MAT.prototype.inverse = function() {
+	
+	var values = [],
+		rows = this.rows,
+		cols = this.cols,
+		det = this.det(),
+		sign = 1;
+
+	if (det === 0 && !this.isSquare()) {
+		
+		console.log("inverse: unable to invert matrix");
+
+	} else {
+
+		for (var i = 0; i < rows; i++) {
+			
+			for (var j = 0; j < cols; j++) {
+
+				sign = (i+j)% 2 === 0 ? 1 : -1;
+				
+				values.push(this.m(sign, this.d(this.minor(i, j).det(), det)));
+				
+			}
+		
+		}
+				
+	}
+	
+	return new MAT(rows, cols, values).hermitian();
+
+}
+
+/*
+ * The Moore-Penrose Pseudoinverse
+ * @return {object} matrix
+ */
+MAT.prototype.pInverse = function() {
+	
+	return this.hermitian().product(this).inverse().product(this.hermitian());
+
+}
+
