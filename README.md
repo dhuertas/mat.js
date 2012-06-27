@@ -1,11 +1,19 @@
-mat-js
+matjs
 =====
 
-Yet another javascript matrix library.
+**Javascript Matrix Library**
 
-Here are some examples of how to use it. Enjoy!
+Yet another javascript matrix library. Here are some examples of how to use it. Enjoy!
 
-**Example**
+**Usage**
+
+Download the library and include it in your html.
+
+```
+<script src="js/mat.js"></script>
+```
+
+Then you are ready to go. The following code creates two matrices:
 
 ```
 var values = [
@@ -14,6 +22,7 @@ var values = [
     11,12,13,14,15,
     16,17,18,19,20,
     21,22,23,24,25];
+    
 var square = new MAT(5, 5, values);
 
 var values = [
@@ -36,12 +45,15 @@ console.log(result.toString());
 ```
 
 **Convolution**
+
+Discrete convolution between two vectors:
+
 ```
 var h = [1, 0.5],
     x = [1, 2, 1, -1],
     H = new MAT(h.length,1,h), X = new MAT(x.length,1,x);
 
-var Y = H.toeplitz(x.length).product(X);
+var Y = H.toToeplitz(x.length).product(X);
 
 console.log(Y.toString());
 ```
@@ -67,6 +79,7 @@ var result = equations.solve(const);
 
 console.log(result.toString());
 ```
+**Complex numbers**
 
 Did I mention that you can also use complex numbers? Give it a try!
 
