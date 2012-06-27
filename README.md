@@ -1,4 +1,4 @@
-matjs
+mat-js
 =====
 
 Yet another javascript matrix library.
