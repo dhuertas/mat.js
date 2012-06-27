@@ -74,7 +74,7 @@ var coef = [
     
 var const = [1, -2, 0];
     
-var equations = new MAT(3,3,coef);
+var equations = new MAT(3, 3, coef);
 
 var result = equations.solve(const);
 
@@ -87,10 +87,40 @@ Did I mention that you can also use complex numbers? Give it a try!
 ```
 var values = [
     [2,7], [2,-1], 
-    [4,-9],[8,-2]];
+    [4,-9], [8,-2]];
 
-var complex = new MAT(2,2,values);
+var complex = new MAT(2, 2, values);
 
 console.log(complex.det());
 ```
+
+**Available functions**
+
+* add
+* det
+* diag
+* eigenValues
+* eigenVectors
+* gaussElimination
+* gramSchmidt
+* hadamartProduct
+* hermitian
+* identity
+* inverse
+* minor
+* norm
+* pNorm
+* product
+* pInverse (Moore-Penrose pseudoinverse)
+* qr (QR decomposition)
+* scalarProduct
+* solve
+* sub
+* toToeplitz
+* trace
+* transpose
+
+
+
+
 

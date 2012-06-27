@@ -468,7 +468,7 @@ MAT.prototype.hadamardProduct = function(a) {
  * @param {float}
  * @return {object} matrix (a*X)
  */
-MAT.prototype.sProduct = function(a) {
+MAT.prototype.scalarProduct = function(a) {
 	
 	var values = [];
 
@@ -756,13 +756,13 @@ MAT.prototype.gramSchmidt = function() {
 			
 			v = this.d(e[j].hermitian().product(this.getColumn(i)).getValue(0,0), e[j].norm());
 			
-			p = e[j].sProduct(v); // j-th projection
+			p = e[j].scalarProduct(v); // j-th projection
 			
 			u = u.sub(p);
 		
 		}
 		
-		e.push(u.sProduct(this.d(1,u.norm())));
+		e.push(u.scalarProduct(this.d(1,u.norm())));
 		
 		q = q.concat(e[i].toArray());
 	
