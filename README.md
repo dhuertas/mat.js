@@ -1,4 +1,4 @@
-matjs
+mat.js
 =====
 
 **Javascript Matrix Library**
