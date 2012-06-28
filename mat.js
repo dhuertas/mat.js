@@ -343,6 +343,24 @@ MAT.prototype.isSquare = function() {
 
 }
 
+MAT.prototype.isVector = function() {
+	
+	return ((this.cols === 1 && this.rows > 1) || (this.cols > 1 && this.rows === 1));
+	
+}
+
+MAT.prototype.isColumnVector = function() {
+	
+	return (this.cols === 1 && this.rows > 1);
+	
+}
+
+MAT.prototype.isSameSize = function(a) {
+	
+	return (a.getColumns() === this.cols && a.getRows() === this.rows);
+
+}
+
 /* ---------- Main functions ---------- */
 
 /*
@@ -353,7 +371,7 @@ MAT.prototype.add = function(a) {
 	
 	var values = [];
 	
-	if (a.getColumns() === this.cols && a.getRows() === this.rows) {
+	if (this.isSameSize(a)) {
 		
 		for (var i = 0; i < this.rows; i++) {
 			
@@ -365,6 +383,10 @@ MAT.prototype.add = function(a) {
 		
 		}
 	
+	} else {
+		
+		console.log("add: matrices must be same size");
+		
 	}
 	
 	return new MAT(this.rows, this.cols, values);
@@ -379,7 +401,7 @@ MAT.prototype.sub = function(a) {
 	
 	var values = [];
 	
-	if (a.getColumns() === this.cols && a.getRows() === this.rows) {
+	if (this.isSameSize(a)) {
 		
 		for (var i = 0; i < this.rows; i++) {
 			
@@ -391,6 +413,10 @@ MAT.prototype.sub = function(a) {
 		
 		}
 	
+	} else {
+		
+		console.log("sub: matrices must be same size");
+		
 	}
 	
 	return new MAT(this.rows, this.cols, values);
@@ -528,7 +554,7 @@ MAT.prototype.hermitian = function() {
 
 }
 
-/*
+/* 
  * @return {float}
  */
 MAT.prototype.trace = function() {
@@ -551,6 +577,58 @@ MAT.prototype.trace = function() {
 	
 	return result;
 
+}
+
+MAT.prototype.upperTrace = function(a) {
+	
+	var result = 0;
+	
+	if ( ! this.isSquare()) {
+		
+		console.log("trace: matrix must be square");
+		
+	} else if (a > this.cols - 1) {
+		
+		console.log("trace: diagonal out of range");
+		
+	} else {
+		
+		for (var i = 0; i < this.cols - a; i++) {
+			
+			result = this.a(result, this.getValue(i,i+a));
+			
+		}
+		
+	}
+	
+	return result;
+	
+}
+
+MAT.prototype.lowerTrace = function(a) {
+	
+	var result = 0;
+	
+	if ( ! this.isSquare()) {
+		
+		console.log("trace: matrix must be square");
+		
+	} else if (a > this.cols - 1) {
+		
+		console.log("trace: diagonal out of range");
+		
+	} else {
+		
+		for (var i = 0; i < this.cols - a; i++) {
+			
+			result = this.a(result, this.getValue(i+a,i));
+			
+		}
+		
+	}
+	
+	return result;
+	
 }
 
 /*
@@ -738,6 +816,7 @@ MAT.prototype.solve = function(a) {
 }
 
 /*
+ * The Gram-Schmidt process
  * @return {object} matrix
  */
 MAT.prototype.gramSchmidt = function() {
@@ -776,7 +855,7 @@ MAT.prototype.gramSchmidt = function() {
  * QR decomposition
  * @return {array} [Q,R]
  */
-MAT.prototype.qr = function() {
+MAT.prototype.qrDecomposition = function() {
 	
 	var Q, R;
 	
@@ -787,7 +866,8 @@ MAT.prototype.qr = function() {
 	return [Q, R];
 }
 
-/*
+/* 
+ * Eigenvalues using the QR iteration process
  * @return {object} matrix
  */
 MAT.prototype.eigenValues = function() {
@@ -795,55 +875,46 @@ MAT.prototype.eigenValues = function() {
 	var tmp = new MAT(this.rows, this.cols, this.getValues()),
 		l = Math.min(this.rows, this.cols),
 		QR,
-		r = [],
-		tr = 0,
-		oldtr = 0,
-		max = 1000,
-		k = 5;
+		values = [],
+		MAX_ROUNDS = 1000,
+		err = 0.000001;
 	
 	if ( ! this.isSquare()) {
 		
 		for (var j = 0; j < l; j++) {
 			
-			r.push(0);
+			values.push(0);
 		
 		}
+		
+		console.log("eigenValues: matrix must be square");
 	
 	} else {
 		
-		for (var i = 0; i < max && k > 0; i++) {
+		for (var i = 0; i < MAX_ROUNDS; i++) {
 			
-			QR = tmp.qr();
+			QR = tmp.qrDecomposition();
 			
 			tmp = QR[1].product(QR[0]);
 			
-			/* 
-			 * If the trace has not changed for the last 
-			 * k times, we may consider stability has 
-			 * been reached.
-			 */
-			
-			tr = tmp.trace();
-			
-			if (tr === oldtr){
+			/* we stop the process when the values
+			 * below the main diagonal are sufficiently small */
+			if (tmp.lowerTrace(1) < err) {
 				
-				k--;
+				break;			
 			
 			}
-			
-			oldtr = tr;
-		
 		}
 		
 		for (var j = 0; j < l; j++) {
 			
-			r.push(tmp.getValue(j, j));
+			values.push(tmp.getValue(j, j));
 		
 		}
 	
 	}
 	
-	return new MAT(l, 1, r);
+	return new MAT(l, 1, values);
 
 }
 
@@ -862,7 +933,7 @@ MAT.prototype.eigenVectors = function() {
 	
 	for (var i = 0; i < max && k > 0; i++) {
 		
-		QR = tmp.qr();
+		QR = tmp.qrDecomposition();
 		
 		tmp = QR[1].product(QR[0]);
 		
@@ -993,7 +1064,7 @@ MAT.prototype.toToeplitz = function(a) {
 		
 		if (i < m) {
 			
-			if (this.cols === 1 && this.rows > 1) {
+			if (this.isColumnVector()) {
 				
 				/* column vector */
 				row.unshift(this.c(this.values[i]));
