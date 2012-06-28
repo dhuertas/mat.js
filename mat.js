@@ -869,6 +869,40 @@ MAT.prototype.qrDecomposition = function() {
 	return [Q, R];
 }
 
+MAT.prototype.luDecomposition = function() {
+
+	var l = [],
+		L = this.identity(this.cols), 
+		U = new MAT(this.rows, this.cols, this.getValues());
+
+	for (var j = 0; j < this.cols-1; j++) {
+
+		for (var i = j+1; i < this.cols; i++) {
+
+			l[i] = this.d(U.getValue(i, j), U.getValue(j, j));
+
+			L.setValue(i, j, l[i]);
+
+		}
+
+		for (i = j+1; i < this.cols; i++) {
+
+			U.setValue(i, j, 0);
+
+			for (var k = j+1; k < this.cols; k++) {
+
+				U.setValue(i, k, this.s(U.getValue(i, k), this.m(l[i], U.getValue(j, k))));
+
+			}
+
+		}
+
+	}
+
+	return [L,U];
+
+}
+
 /* 
  * Eigenvalues using the QR iteration process
  * @return {object} matrix
