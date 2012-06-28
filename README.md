@@ -106,7 +106,7 @@ console.log(M.transpose().product(M).add(M));
 
 * add
 * det
-* diag
+* diagonal
 * eigenValues
 * eigenVectors
 * gaussElimination

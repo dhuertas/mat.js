@@ -869,6 +869,10 @@ MAT.prototype.qrDecomposition = function() {
 	return [Q, R];
 }
 
+/*
+ * LU decomposition
+ * @return {array} [L,U]
+ */
 MAT.prototype.luDecomposition = function() {
 
 	var l = [],
@@ -1017,7 +1021,7 @@ MAT.prototype.identity = function(a) {
  * @param: {float} | {Array} complex value [real,imag]
  * @return: {object} matrix
  */
-MAT.prototype.diag = function(a, b) {
+MAT.prototype.diagonal = function(a, b) {
 	
 	var values = [];
 	
