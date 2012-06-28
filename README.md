@@ -94,6 +94,22 @@ var complex = new MAT(2, 2, values);
 console.log(complex.det());
 ```
 
+**Method chaining**
+
+Example for the Moore-Penrose pseudoinverse:
+
+```
+var values = [
+	 1, -1,  1,
+	-1,  1, -1];
+
+var	A = new MAT(2, 3, values);
+
+var M = A.hermitian().product(A).inverse().product(A.hermitian());
+
+console.log(M.toString());
+```
+
 **Available functions**
 
 * add
@@ -107,20 +123,17 @@ console.log(complex.det());
 * hermitian
 * identity
 * inverse
+* lowerTrace
 * minor
 * norm
 * pNorm
 * product
 * pInverse (Moore-Penrose pseudoinverse)
-* qr (QR decomposition)
+* qrDecomposition
 * scalarProduct
 * solve
 * sub
 * toToeplitz
 * trace
 * transpose
-
-
-
-
-
+* upperTrace

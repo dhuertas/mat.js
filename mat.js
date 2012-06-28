@@ -430,13 +430,14 @@ MAT.prototype.sub = function(a) {
 MAT.prototype.product = function(a) {
 
 	var temp = 0,
+		cols = a.getColumns(),
 		values = [];
 	
 	if (a.getRows() === this.cols) {
 		
 		for (var i = 0; i < this.rows; i++) {
 			
-			for (var j = 0; j < this.cols; j++) {
+			for (var j = 0; j < cols; j++) {
 				
 				temp = 0;
 				
@@ -1105,10 +1106,15 @@ MAT.prototype.inverse = function() {
 		det = this.det(),
 		sign = 1;
 
-	if (det === 0 && !this.isSquare()) {
+	if (det === 0) {
 		
-		console.log("inverse: unable to invert matrix");
-
+		console.log("inverse: unable to invert matrix, determinant is 0");
+		
+	
+	} else if ( ! this.isSquare()) {
+		
+		console.log("inverse: matrix must be square");
+		
 	} else {
 
 		for (var i = 0; i < rows; i++) {
