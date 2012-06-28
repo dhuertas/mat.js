@@ -788,11 +788,13 @@ MAT.prototype.solve = function(a) {
 				for (var k = j+1; k < n; k++) {
 					
 					R.setValue(i, k, this.s(R.getValue(i, k), this.m(l[i], R.getValue(j, k))));
+				
 				}
 
 				a[i] = this.s(a[i], this.m(l[i], a[j]));
 			
 			}
+			
 		}
 		
 		/* Backward solving */
@@ -1139,9 +1141,33 @@ MAT.prototype.inverse = function() {
  * The Moore-Penrose Pseudoinverse
  * @return {object} matrix
  */
-MAT.prototype.pInverse = function() {
+MAT.prototype.pseudoInverse = function() {
 	
-	return this.hermitian().product(this).inverse().product(this.hermitian());
+	var M = this.hermitian().product(this);
+	
+	if (M.det() === 0) {
+		
+		/* right inverse */
+		M = this.product(this.hermitian());
+		
+		if (M.det() === 0) {
+
+			console.log("pseudoInverse: unable to invert matrix");
+			
+		} else {
+			
+			M = this.hermitian().product(M.inverse());
+			
+		}
+		
+	} else {
+		
+		/* left inverse */
+		M = M.inverse().product(this.hermitian());
+		
+	}
+	
+	return M;
 
 }
 
