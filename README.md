@@ -116,6 +116,7 @@ console.log(M.transpose().product(M).add(M));
 * identity
 * inverse
 * lowerTrace
+* luDecomposition
 * minor
 * norm
 * pNorm
