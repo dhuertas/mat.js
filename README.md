@@ -120,7 +120,7 @@ console.log(M.transpose().product(M).add(M));
 * norm
 * pNorm
 * product
-* pInverse (Moore-Penrose pseudoinverse)
+* pseudoInverse (Moore-Penrose pseudoinverse)
 * qrDecomposition
 * scalarProduct
 * solve
