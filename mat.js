@@ -1212,6 +1212,43 @@ MAT.prototype.pseudoInverse = function() {
 }
 
 /*
+ * @param {array}
+ * @return {object} matrix
+ */
+MAT.prototype.toVandermonde = function(n) {
+	
+	var values = [],
+		k = 0,
+		a = this.getValues(),
+		len = a.length;
+	
+	for (var i = 0; i < len; i++) {
+		
+		for (var j = 0; j < n; j++) {
+			
+			if (j === 0) {
+				
+				values.push(1);
+				
+			} else if (j === 1) {
+				
+				values.push(a[i]);
+				
+			} else {
+				
+				values.push(this.m(a[i], values[k-1]));
+				
+			}
+			k++;
+		}
+		
+	}
+	
+	return new MAT(len, n, values);
+	
+}
+
+/*
  * @return {object} a matrix filled with zeros 
  */
 MAT.prototype.zero = function() {
