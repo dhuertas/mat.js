@@ -94,6 +94,14 @@ var complex = new MAT(2, 2, values);
 console.log(complex.det());
 ```
 
+**Method chaining**
+
+```
+var M = new MAT(3,3,[1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+console.log(M.transpose().product(M).add(M));
+```
+
 **Available functions**
 
 * add
@@ -121,3 +129,4 @@ console.log(complex.det());
 * trace
 * transpose
 * upperTrace
+* zero
