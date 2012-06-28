@@ -1154,6 +1154,8 @@ MAT.prototype.pseudoInverse = function() {
 
 			console.log("pseudoInverse: unable to invert matrix");
 			
+			M = this.zero();
+			
 		} else {
 			
 			M = this.hermitian().product(M.inverse());
@@ -1171,3 +1173,19 @@ MAT.prototype.pseudoInverse = function() {
 
 }
 
+/*
+ * @return {object} a matrix filled with zeros 
+ */
+MAT.prototype.zero = function() {
+	
+	var values = [];
+	
+	for (var i = 0, len = this.cols*this.rows; i < len; i++) {
+		
+		values.push(0);
+	
+	}
+	
+	return new MAT(this.rows, this.cols, values);
+	
+}
