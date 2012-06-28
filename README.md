@@ -127,6 +127,7 @@ console.log(M.transpose().product(M).add(M));
 * solve
 * sub
 * toToeplitz
+* toVandermonde
 * trace
 * transpose
 * upperTrace
