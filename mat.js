@@ -190,6 +190,44 @@ MAT.prototype.mod = function(a) {
 }
 
 /*
+ * fromArray
+ * @param {array} [[a,b,c],[d,e,f],[g,h,i]]
+ * @return {object} matrix
+ */
+MAT.prototype.from2DArray = function (a) {
+	
+	var values = [];
+	
+	if ( ! a instanceof Array) {
+		
+		console.log("fromArray: argument must be an array");
+		
+	} else {
+		
+		this.setRows(a.length);
+		
+		this.setColumns(a[0].length);
+		
+		this.values = Array(this.rows*this.cols);
+		
+		
+		for (var i = 0; i < this.rows; i++) {
+			
+			for (var j = 0, len = a[i].length; j < len; j++) {
+				
+				this.setValue(i, j, a[i][j]);
+				
+			}
+			
+		}
+		
+	}
+	
+	return this;
+	
+}
+	
+/*
  * toArray
  * @return {array}
  */
@@ -1017,25 +1055,38 @@ MAT.prototype.identity = function(a) {
 }
 
 /*
- * @param: {integer} 
+ * @param: {integer} size
  * @param: {float} | {Array} complex value [real,imag]
  * @return: {object} matrix
  */
 MAT.prototype.diagonal = function(a, b) {
 	
-	var values = [];
+	var values = [],
+		res;
 	
-	for (var i = 0; i < a; i++) {
+	if (typeof a === "undefined" or a <= 0) {
 		
-		for (var j = 0; j < a; j++) {
-			
-			values.push(i === j ? b : 0);
+		console.log("diagonal: first argument must be an integer greater than 0");
 		
+		res = this.zero();
+		
+	} else {
+		
+		for (var i = 0; i < a; i++) {
+
+			for (var j = 0; j < a; j++) {
+
+				values.push(i === j ? b : 0);
+
+			}
+
 		}
-	
+		
+		res = new MAT(a, a, values);
+		
 	}
-	
-	return new MAT(a, a, values);
+
+	return res;
 
 }
 
