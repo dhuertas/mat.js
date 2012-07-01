@@ -200,7 +200,7 @@ MAT.prototype.from2DArray = function (a) {
 	
 	if ( ! a instanceof Array) {
 		
-		console.log("fromArray: argument must be an array");
+		console.log("from2DArray: argument must be an array");
 		
 	} else {
 		
