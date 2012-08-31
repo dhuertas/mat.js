@@ -2,1316 +2,1427 @@
  * @author dhuertas
  * @email huertas.dani@gmail.com
  */
-function MAT(r, c, v) {
-	
-	this.rows = r;
-	
-	this.cols = c;
-	
-	this.values = v;
-	
-}
+var MAT = (function() {
 
-/* 
- * Addition: a + b
- * @param {float} | {array} complex
- * @param {float} | {array} complex
- * @return {float} | {array} complex
- */
-MAT.prototype.a = function(a, b) {
-		
-	if (a instanceof Array && b instanceof Array) {
-		
-		return [a[0]+b[0], a[1]+b[1]];
-	
-	} else if (a instanceof Array && ! b instanceof Array) {
-		
-		return [a[0]+b, a[1]];
-	
-	} else if ( ! a instanceof Array && b instanceof Array) {
-		
-		return [a+b[0], b[1]];
-	
-	} else {
-		
-		return a+b;
-	
-	}
-	
-}
-	
-/* 
- * Subtraction: a - b
- * @param {float} | {array} complex
- * @param {float} | {array} complex
- * @return {float} | {array} complex
- */
-MAT.prototype.s = function(a, b) {
-	
-	if (a instanceof Array && b instanceof Array) {
-		
-		return [a[0]-b[0], a[1]-b[1]];
-	
-	} else if (a instanceof Array && ! b instanceof Array) {
-		
-		return [a[0]-b, a[1]];
-	
-	} else if ( ! a instanceof Array && b instanceof Array) {
-		
-		return [a-b[0], b[1]];
-	
-	} else {
-		
-		return a-b;
-	
-	}
-	
-}
+	/*
+	 * Arithmetical operations
+	 */
+	var OP = {
 
-/* 
- * Multiplication: a * b
- * @param {float} | {array} complex
- * @param {float} | {array} complex
- * @return {float} | {array} complex
- */
-MAT.prototype.m = function(a, b) {
-	
-	if (a instanceof Array && b instanceof Array) {
-		
-		return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]];
-	
-	} else if (a instanceof Array && ! b instanceof Array) {
-		
-		return [a[0]*b, a[1]*b];
-	
-	} else if ( ! a instanceof Array && b instanceof Array) {
-		
-		return [a*b[0], a*b[1]];
-	
-	} else {
-		
-		return a*b;
-	
-	}
-	
-}
+		sum : function(a, b) {
 
-/*	
- * Division: a / b
- * @param {float} | {array} complex
- * @param {float} | {array} complex
- * @return {float} | {array} complex
- */
-MAT.prototype.d = function(a, b) {
-	
-	if (a instanceof Array && b instanceof Array) {
-		
-		if (b[0] === 0 && b[1] === 0) {
-			
-			console.log("division by 0");
-		
-		}
-		
-		return [
-			( a[0]*b[0]+a[1]*b[1] ) / ( b[0]*b[0]+b[1]*b[1] ),
-			( a[1]*b[0]-a[0]*b[1] ) / ( b[0]*b[0]+b[1]*b[1] )];
-	
-	} else if (a instanceof Array && ! b instanceof Array) {
-		
-		if (b === 0) {
-			
-			console.log("division by 0");
-		
-		}
-		
-		return [a[0]/b, a[1]/b];
-	
-	} else if ( ! a instanceof Array && b instanceof Array) {
-		
-		if (b[0] === 0 && b[1] === 0) {
-		
-			console.log("division by 0");
-	
-		}
-		
-		return [
-			a*b[0] / ( b[0]*b[0]+b[1]*b[1] ),
-			-a*b[1] / ( b[0]*b[0]+b[1]*b[1] )];
-	
-	} else {
-		
-		if (b === 0) {
-			
-			console.log("division by 0");
-		
-		}
-		
-		return a/b;
-	
-	}
-	
-}
-	
-/*
- * Conjugate a -i*b
- * @param {float} | {array} complex
- * @return {float} | {array} complex
- */
-MAT.prototype.c = function(a) {
+			if (a instanceof Array && b instanceof Array) {
 
-	if (a instanceof Array) {
-		
-		return [a[0],-a[1]];
-	
-	} else {
-		
-		return a;
-	
-	}
-	
-}
+				return [a[0] + b[0], a[1] + b[1]];
 
-/*
- * Modulus
- * @return {float}
- */
-MAT.prototype.mod = function(a) {
-	
-	if (a instanceof Array) {
-		
-		return Math.sqrt(a[0]*a[0]+a[1]*a[1]);
-	
-	} else {
-		
-		return Math.abs(a);
-	
-	}
-	
-}
+			} else if (a instanceof Array && ! b instanceof Array) {
 
-/*
- * fromArray
- * @param {array} [[a,b,c],[d,e,f],[g,h,i]]
- * @return {object} matrix
- */
-MAT.prototype.from2DArray = function (a) {
-	
-	var values = [];
-	
-	if ( ! a instanceof Array) {
-		
-		console.log("from2DArray: argument must be an array");
-		
-	} else {
-		
-		this.setRows(a.length);
-		
-		this.setColumns(a[0].length);
-		
-		this.values = Array(this.rows*this.cols);
-		
-		
-		for (var i = 0; i < this.rows; i++) {
-			
-			for (var j = 0, len = a[i].length; j < len; j++) {
-				
-				this.setValue(i, j, a[i][j]);
-				
-			}
-			
-		}
-		
-	}
-	
-	return this;
-	
-}
-	
-/*
- * toArray
- * @return {array}
- */
-MAT.prototype.toArray = function () {
-	
-	var res = [], n = this.values.length;
-	
-	for (var i = 0; i < n; i++) {
-		
-		res.push(this.values[i]);
-	
-	}
-	
-	return res;
+				return [a[0] + b, a[1]];
 
-}
+			} else if ( ! a instanceof Array && b instanceof Array) {
 
-MAT.prototype.toString = function() {
-	
-	return this.values.toString();
+				return [a + b[0], b[1]];
 
-}
+			} else {
 
-/* ---------- Gets and sets ---------- */
-
-MAT.prototype.getColumn = function(j) {
-	
-	var res = [];
-	
-	if (this.cols > j && j >= 0) {
-		
-		for (var i = 0; i < this.rows; i++) {
-			
-			res.push(this.values[this.cols*i+j]);
-		
-		}
-	
-	} else {
-		
-		for (var i = 0; i < this.rows; i++) {
-			
-			res.push(0);
-		
-		}
-	
-	}
-	
-	return (new MAT(this.rows, 1, res));
-
-}
-
-MAT.prototype.getColumns = function() {
-	
-	return this.cols;
-
-}
-
-MAT.prototype.getLength = function() {
-	
-	return this.values.length;
-
-}
-
-MAT.prototype.getRow = function(i) {
-	
-	var res = [];
-	
-	if (this.rows > i && i >= 0) {
-		
-		for (var j = 0; j < this.cols; j++) {
-			
-			res.push(this.values[this.cols*i+j]);
-		
-		}
-	
-	} else {
-		
-		for (var j = 0; j < this.cols; j++) {
-			
-			res.push(0);
-		
-		}
-		
-	}
-	
-	return (new MAT(1, this.cols, res));
-
-}
-
-MAT.prototype.getRows = function() {
-	
-	return this.rows;
-
-}
-
-MAT.prototype.getShape = function() {
-	
-	return [this.rows, this.cols];
-
-}
-
-MAT.prototype.getValue = function(a,b) {
-	
-	return this.values[a*this.cols+b];
-
-}
-
-MAT.prototype.getValues = function() {
-	
-	var n = this.values.length, res = [];
-	
-	for (var i = 0; i < n; i++) {
-		
-		res.push(this.values[i]);
-	
-	}
-	
-	return res;
-	
-}
-
-MAT.prototype.setRows = function(a) {
-	
-	this.rows = a;
-	
-	return this;
-
-}
-
-MAT.prototype.setColumns = function(a) {
-	
-	this.cols = a;
-	
-	return this;
-
-}
-
-MAT.prototype.setValue = function(a,b,c) {
-	
-	this.values[a*this.cols+b] = c;
-	
-	return this;
-
-}
-
-/* ---------- Other functions ---------- */
-
-MAT.prototype.isSquare = function() {
-	
-	return (this.cols === this.rows);
-
-}
-
-MAT.prototype.isVector = function() {
-	
-	return ((this.cols === 1 && this.rows > 1) || (this.cols > 1 && this.rows === 1));
-	
-}
-
-MAT.prototype.isColumnVector = function() {
-	
-	return (this.cols === 1 && this.rows > 1);
-	
-}
-
-MAT.prototype.isSameSize = function(a) {
-	
-	return (a.getColumns() === this.cols && a.getRows() === this.rows);
-
-}
-
-/* ---------- Main functions ---------- */
-
-/*
- * @param {object} matrix
- * @return {object} matrix (X+A)
- */
-MAT.prototype.add = function(a) {
-	
-	var values = [];
-	
-	if (this.isSameSize(a)) {
-		
-		for (var i = 0; i < this.rows; i++) {
-			
-			for (var j = 0; j < this.cols; j++) {
-				
-				values.push(this.a(this.getValue(i, j), a.getValue(i, j)));
-			
-			}
-		
-		}
-	
-	} else {
-		
-		console.log("add: matrices must be same size");
-		
-	}
-	
-	return new MAT(this.rows, this.cols, values);
-
-}
-
-/*
- * @param {object} matrix
- * @return {object} matrix (X-A)
- */
-MAT.prototype.sub = function(a) {
-	
-	var values = [];
-	
-	if (this.isSameSize(a)) {
-		
-		for (var i = 0; i < this.rows; i++) {
-			
-			for (var j = 0; j < this.cols; j++) {
-				
-				values.push(this.s(this.getValue(i, j),a.getValue(i, j)));
-			
-			}
-		
-		}
-	
-	} else {
-		
-		console.log("sub: matrices must be same size");
-		
-	}
-	
-	return new MAT(this.rows, this.cols, values);
-
-}
-
-/*
- * @param {object} matrix
- * @return {object} matrix (X*A)
- */
-MAT.prototype.product = function(a) {
-
-	var temp = 0,
-		cols = a.getColumns(),
-		values = [];
-	
-	if (a.getRows() === this.cols) {
-		
-		for (var i = 0; i < this.rows; i++) {
-			
-			for (var j = 0; j < cols; j++) {
-				
-				temp = 0;
-				
-				for (var k = 0; k < this.cols; k++) {
-					
-					temp = this.a(temp, this.m(this.values[this.cols*i+k], a.getValue(k, j)));
-				
-				}
-				
-				values.push(temp);
-			
-			}
-		
-		}
-	
-	}
-
-	return new MAT(this.rows, a.getColumns(), values);
-
-}
-
-/*
- * @param {object} matrix
- * @return {object} matrix
- */
-MAT.prototype.hadamardProduct = function(a) {
-
-	var values = [],
-		rows = this.rows,
-		cols = this.cols;
-
-	if (a.getRows() !== this.rows || a.getColumns() !== this.cols) {
-
-		console.log("hadamardProduct: matrices must be the same size");
-
-	} else {
-
-		for (var i = 0; i < this.rows; i++) {
-
-			for (var j = 0; j < this.cols; j++) {
-
-				values.push(this.m(this.getValue(i,j), a.getValue(i,j)));
+				return a + b;
 
 			}
 
-		}
+		}, 
 
-	}
-	
-	return new MAT(rows, cols, values);
-	
-}
+		subtract : function(a, b) {
 
-/*
- * @param {float}
- * @return {object} matrix (a*X)
- */
-MAT.prototype.scalarProduct = function(a) {
-	
-	var values = [];
+			if (a instanceof Array && b instanceof Array) {
 
-	for (var i = 0; i < this.rows; i++) {
-		
-		for (var j = 0; j < this.cols; j++) {
-			
-			values.push(this.m(a, this.getValue(i, j)));
-		
-		}
-	
-	}
-	
-	return new MAT(this.rows, this.cols, values);
+				return [a[0] - b[0], a[1] - b[1]];
 
-}
+			} else if (a instanceof Array && ! b instanceof Array) {
 
-/*
- * @return {object} matrix
- */
-MAT.prototype.transpose = function() {
-	
-	var values = [];
-	
-	for (var i = 0; i < this.cols; i++) {
-		
-		for (var j = 0; j < this.rows; j++) {
-			
-			values.push(this.values[this.cols*j+i]);
-		
-		}
-	
-	}
-	
-	return new MAT(this.rows, this.cols, values);
+				return [a[0] - b, a[1]];
 
-}
+			} else if ( ! a instanceof Array && b instanceof Array) {
 
-/*
- * @return {object} matrix
- */
-MAT.prototype.hermitian = function() {
-	
-	var values = [];
-	
-	for (var i = 0; i < this.cols; i++) {
-		
-		for (var j = 0; j < this.rows; j++) {
-			
-			values.push(this.c(this.values[this.cols*j+i]));
-		
-		}
-	
-	}
-	
-	return new MAT(this.cols, this.rows, values);
+				return [a - b[0], b[1]];
 
-}
+			} else {
 
-/* 
- * @return {float}
- */
-MAT.prototype.trace = function() {
-	
-	var result = 0;
-	
-	if (this.isSquare()) {
-		
-		for (var i = 0; i < this.cols; i++) {
-			
-			result = this.a(result, this.getValue(i, i));
-		
-		}
-	
-	} else {
-		
-		console.log("trace: matrix must be square");
-	
-	}
-	
-	return result;
+				return a - b;
 
-}
-
-MAT.prototype.upperTrace = function(a) {
-	
-	var result = 0;
-	
-	if ( ! this.isSquare()) {
-		
-		console.log("trace: matrix must be square");
-		
-	} else if (a > this.cols - 1) {
-		
-		console.log("trace: diagonal out of range");
-		
-	} else {
-		
-		for (var i = 0; i < this.cols - a; i++) {
-			
-			result = this.a(result, this.getValue(i,i+a));
-			
-		}
-		
-	}
-	
-	return result;
-	
-}
-
-MAT.prototype.lowerTrace = function(a) {
-	
-	var result = 0;
-	
-	if ( ! this.isSquare()) {
-		
-		console.log("trace: matrix must be square");
-		
-	} else if (a > this.cols - 1) {
-		
-		console.log("trace: diagonal out of range");
-		
-	} else {
-		
-		for (var i = 0; i < this.cols - a; i++) {
-			
-			result = this.a(result, this.getValue(i+a,i));
-			
-		}
-		
-	}
-	
-	return result;
-	
-}
-
-/*
- * @param {integer} row
- * @param {integer} column
- * @return {object} matrix (a minor (n-1)*(n-1) matrix)
- */
-MAT.prototype.minor = function(r,c) {
-	
-	var values = [];
-	
-	for (var i = 0; i < this.rows; i++) {
-		
-		for (var j = 0; j < this.cols; j++) {
-			
-			if (i !== r && j !== c) {
-				
-				values.push(this.getValue(i, j));
-			
 			}
-		
-		}
-	
-	}
-	
-	return new MAT(this.rows-1, this.cols-1, values);
 
-}
+		},
 
-/*
- * The determinant of the matrix using the Laplace Expansion
- * @return {float}
- */
-MAT.prototype.det = function() {
-	
-	var res = 0, 
-		t = 0, 
-		u = 0;
-	
-	if ( ! this.isSquare()) {
-		
-		res = 0;
-		
-		console.log("det: matrix must be square");
-	
-	} else if (this.cols === 1) {
-		
-		res = this.values[0];
-	
-	} else if (this.cols === 2) {
-		
-		res = this.s(this.m(this.values[0], this.values[3]), this.m(this.values[1], this.values[2]));
-	
-	} else {
-		
-		for (var j = 0; j < this.cols; j++) {
-			
-			t = this.m((j%2 === 0 ? 1: -1), this.getValue(0, j));
-			
-			u = this.minor(0, j).det();
-			
-			res = this.a(res, this.m(t, u));
-		
-		}
-	
-	}
-	
-	return res;
+		product : function(a, b) {
 
-}
+			if (a instanceof Array && b instanceof Array) {
 
-/*
- * Naive Gauss Elimination method
- * @return {object} matrix 
- */
-MAT.prototype.gaussElimination = function() {
-	
-	var n = this.cols,
-		l = new Array(n),
-		R = new MAT(n, n, this.getValues()),
-		v = 0;
-	
-	l[0] = 1;
-	
-	for (var j = 0; j < n-1; j++) {
-		
-		for (var i = j+1; i < n; i++) {
-			
-			l[i] = this.d(R.getValue(i, j), R.getValue(j, j));
-		
-		}
-		
-		for (i = j+1; i < n; i++) {
-			
-			R.setValue(i, j, 0);
-			
-			for (var k = j+1; k < n; k++) {
-				
-				v = this.s(R.getValue(i, k), this.m(l[i], R.getValue(j, k)));
-				
-				R.setValue(i, k, v);
-			
+				return [a[0]*b[0] - a[1]*b[1], a[0]*b[1] + a[1]*b[0]];
+
+			} else if (a instanceof Array && ! b instanceof Array) {
+
+				return [a[0]*b, a[1]*b];
+
+			} else if ( ! a instanceof Array && b instanceof Array) {
+
+				return [a*b[0], a*b[1]];
+
+			} else {
+
+				return a*b;
+
 			}
-		
-		}
-	
-	}
-	
-	return R;
 
-}
+		},
 
-/*
- * @param {array}
- * @return {object} matrix
- */
-MAT.prototype.solve = function(a) {
-	
-	var m = this.rows,
-		n = this.cols,
-		l = new Array(n),
-		r = new Array(n),
-		R = new MAT(n, n, this.getValues());
+		division : function(a, b) {
 
-	if (a.length !== this.rows) {
-		
-		for (var i = 0; i < m; i++) {
-			
-			r.push(0);
-		
-		}
-	
-	} else if ( ! this.isSquare()) {
-		
-		for (var i = 0; i < m; i++) {
-			
-			r.push(0);
-		
-		}
-	
-	} else {
-		
-		/* Forward Elimination */
-		for (var j = 0; j < n-1; j++) {
-			
-			for (var i = j+1; i < n; i++) {
-				
-				l[i] = this.d(R.getValue(i, j), R.getValue(j, j));
-			
-			}
-			
-			for (i = j+1; i < n; i++) {
-				
-				R.setValue(i, j, 0);
+			if (a instanceof Array && b instanceof Array) {
 
-				for (var k = j+1; k < n; k++) {
-					
-					R.setValue(i, k, this.s(R.getValue(i, k), this.m(l[i], R.getValue(j, k))));
-				
+				if (b[0] === 0 && b[1] === 0) {
+
+					throw ("division by 0");
+
 				}
 
-				a[i] = this.s(a[i], this.m(l[i], a[j]));
-			
-			}
-			
-		}
-		
-		/* Backward solving */
-		for (i = n-1; i >= 0; i--) {
-			
-			r[i] = a[i];
-			
-			for (j = n-1; j > i; j--) {
-				
-				r[i] = this.s(r[i], this.m(R.getValue(i, j), r[j]));
-			
-			}
-			
-			r[i] = this.d(r[i], R.getValue(i, i));
-		
-		}
-	
-	}
-	
-	return new MAT(m, 1, r);
+				return [
+					( a[0]*b[0] + a[1]*b[1] ) / ( b[0]*b[0] + b[1]*b[1] ),
+					( a[1]*b[0] - a[0]*b[1] ) / ( b[0]*b[0] + b[1]*b[1] )];
 
-}
+			} else if (a instanceof Array && ! b instanceof Array) {
 
-/*
- * The Gram-Schmidt process
- * @return {object} matrix
- */
-MAT.prototype.gramSchmidt = function() {
-	
-	var m = this.rows,
-		n = this.cols,
-		e = [],
-		p, q = [], u, v;
-	
-	/* Gram-Schmidt */
-	for (var i = 0; i < n; i++) {
-		
-		u = this.getColumn(i);
-		
-		for (var j = 0; j < i; j++) {
-			
-			v = this.d(e[j].hermitian().product(this.getColumn(i)).getValue(0,0), e[j].norm());
-			
-			p = e[j].scalarProduct(v); // j-th projection
-			
-			u = u.sub(p);
-		
-		}
-		
-		e.push(u.scalarProduct(this.d(1,u.norm())));
-		
-		q = q.concat(e[i].toArray());
-	
-	}
-	
-	return (new MAT(n, m, q)).transpose();
+				if (b === 0) {
 
-}
+					throw ("division by 0");
 
-/*
- * QR decomposition
- * @return {array} [Q,R]
- */
-MAT.prototype.qrDecomposition = function() {
-	
-	var Q, R;
-	
-	Q = this.gramSchmidt();
-	
-	R = Q.transpose().product(this);
-	
-	return [Q, R];
-}
+				}
 
-/*
- * LU decomposition
- * @return {array} [L,U]
- */
-MAT.prototype.luDecomposition = function() {
+				return [a[0]/b, a[1]/b];
 
-	var l = [],
-		L = this.identity(this.cols), 
-		U = new MAT(this.rows, this.cols, this.getValues());
+			} else if ( ! a instanceof Array && b instanceof Array) {
 
-	for (var j = 0; j < this.cols-1; j++) {
+				if (b[0] === 0 && b[1] === 0) {
 
-		for (var i = j+1; i < this.cols; i++) {
+					throw ("division by 0");
 
-			l[i] = this.d(U.getValue(i, j), U.getValue(j, j));
+				}
 
-			L.setValue(i, j, l[i]);
+				return [
+					a*b[0] / ( b[0]*b[0]+b[1]*b[1] ),
+					-a*b[1] / ( b[0]*b[0]+b[1]*b[1] )];
 
-		}
-
-		for (i = j+1; i < this.cols; i++) {
-
-			U.setValue(i, j, 0);
-
-			for (var k = j+1; k < this.cols; k++) {
-
-				U.setValue(i, k, this.s(U.getValue(i, k), this.m(l[i], U.getValue(j, k))));
-
-			}
-
-		}
-
-	}
-
-	return [L,U];
-
-}
-
-/* 
- * Eigenvalues using the QR iteration process
- * @return {object} matrix
- */
-MAT.prototype.eigenValues = function() {
-	
-	var tmp = new MAT(this.rows, this.cols, this.getValues()),
-		l = Math.min(this.rows, this.cols),
-		QR,
-		values = [],
-		MAX_ROUNDS = 1000,
-		err = 0.000001;
-	
-	if ( ! this.isSquare()) {
-		
-		for (var j = 0; j < l; j++) {
-			
-			values.push(0);
-		
-		}
-		
-		console.log("eigenValues: matrix must be square");
-	
-	} else {
-		
-		for (var i = 0; i < MAX_ROUNDS; i++) {
-			
-			QR = tmp.qrDecomposition();
-			
-			tmp = QR[1].product(QR[0]);
-			
-			/* we stop the process when the values
-			 * below the main diagonal are sufficiently small */
-			if (tmp.lowerTrace(1) < err) {
-				
-				break;			
-			
-			}
-		}
-		
-		for (var j = 0; j < l; j++) {
-			
-			values.push(tmp.getValue(j, j));
-		
-		}
-	
-	}
-	
-	return new MAT(l, 1, values);
-
-}
-
-/*
- * @return {object} matrix
- */
-MAT.prototype.eigenVectors = function() {
-	
-	var tmp = new MAT(this.rows, this.cols, this.getValues()),
-		l = Math.min(this.rows, this.cols),
-		QR,
-		tr = 0,
-		oldtr = 0,
-		max = 1000,
-		k = 5;
-	
-	for (var i = 0; i < max && k > 0; i++) {
-		
-		QR = tmp.qrDecomposition();
-		
-		tmp = QR[1].product(QR[0]);
-		
-		tr = tmp.trace ();
-		
-		if (tr === oldtr) k--;
-		
-		oldtr = tr;
-	
-	}
-	
-	return QR[0];
-	
-}
-
-/*
- * @param {integer} size of the resulting matrix n*n
- * @return {object} matrix
- */
-MAT.prototype.identity = function(a) {
-	
-	var values = [];
-	
-	if (typeof a !== undefined && a > 0) {
-		
-		for (var i = 0; i < a; i++) {
-			
-			for (var j = 0; j < a; j++) {
-				
-				values.push(i === j ? 1 : 0);
-			
-			}
-		
-		}
-	
-	}
-	
-	return new MAT(a, a, values);
-
-}
-
-/*
- * @param: {integer} size
- * @param: {float} | {Array} complex value [real,imag]
- * @return: {object} matrix
- */
-MAT.prototype.diagonal = function(a, b) {
-	
-	var values = [],
-		res;
-	
-	if (typeof a === "undefined" or a <= 0) {
-		
-		console.log("diagonal: first argument must be an integer greater than 0");
-		
-		res = this.zero();
-		
-	} else {
-		
-		for (var i = 0; i < a; i++) {
-
-			for (var j = 0; j < a; j++) {
-
-				values.push(i === j ? b : 0);
-
-			}
-
-		}
-		
-		res = new MAT(a, a, values);
-		
-	}
-
-	return res;
-
-}
-
-/*
- * @return {float}
- */
-MAT.prototype.pNorm = function(a) {
-	
-	var res = 0, 
-		tmp = 1;
-	
-	for (var i = 0; i < this.rows; i++) {
-	
-		for (var j = 0; j < this.cols; j++) {
-			
-			tmp = 1;
-			
-			for (var k = 0; k < a; k++) {
-				
-				tmp = this.m(tmp, this.mod(this.values[this.cols*i+j]));
-			
-			}
-			
-			res = this.a(res, tmp);
-		
-		}
-	
-	}
-	
-	res = Math.pow(Math.E,this.d(Math.log(res), a));
-	
-	return res;
-
-}
-
-/*
- * @return {float}
- * Euclidean norm (p = 2)
- */
-MAT.prototype.norm = function() {
-	
-	return this.pNorm(2);
-
-}
-
-/*
- * @param: {integer}
- * @return {object} matrix
- */
-MAT.prototype.toToeplitz = function(a) {
-	
-	var res = [], 
-		row = [],
-		l = 0,
-		m = this.values.length;
-		
-	for (var i = 0; i < a; i++) {
-		
-		row.push(0);
-	
-	}
-	
-	l = m+a-1;
-	
-	/* column vector */
-	for (var i = 0; i < l; i++) {
-		
-		if (i < m) {
-			
-			if (this.isColumnVector()) {
-				
-				/* column vector */
-				row.unshift(this.c(this.values[i]));
-			
-			} else if (this.cols > 1 && this.rows === 1) {
-				
-				row.unshift(this.values[i]);
-			
 			} else {
-				/* do some stuff here */
+
+				if (b === 0) {
+
+					throw ("division by 0");
+
+				}
+
+				return a/b;
+
 			}
-		
-		} else {
-			
-			row.unshift(0);
-		
-		}
-		
-		row.pop();
-		
-		res = res.concat(row);
-	
-	}
-	
-	return new MAT(l, a, res);
 
-}
+		},
 
-/*
- * Matrix inverse
- * @return {object} matrix
- */
-MAT.prototype.inverse = function() {
-	
-	var values = [],
-		rows = this.rows,
-		cols = this.cols,
-		det = this.det(),
-		sign = 1;
+		conjugate : function(a) {
 
-	if (det === 0) {
-		
-		console.log("inverse: unable to invert matrix, determinant is 0");
-		
-	
-	} else if ( ! this.isSquare()) {
-		
-		console.log("inverse: matrix must be square");
-		
-	} else {
+			if (a instanceof Array) {
 
-		for (var i = 0; i < rows; i++) {
-			
-			for (var j = 0; j < cols; j++) {
+				return [a[0], -a[1]];
 
-				sign = (i+j)% 2 === 0 ? 1 : -1;
-				
-				values.push(this.m(sign, this.d(this.minor(i, j).det(), det)));
-				
 			}
-		
+
+			return a;
+
+		},
+
+		modulus : function(a) {
+
+			if (a instanceof Array) {
+
+				return Math.sqrt(a[0]*a[0]+a[1]*a[1]);
+
+			}
+
+			return Math.abs(a);
+
 		}
-				
+
+	};
+
+	var MAXROUNDS 	= 1000,
+		ERROR 		= 0.000001;
+
+	/*
+	 * MAT object constructor
+	 * @param {integer} r (rows)
+	 * @param {integer} c (columns)
+	 * @param {array} v (values)
+	 */
+	function construct(r, c, v) {
+
+		this.rows = r;
+
+		this.cols = c;
+
+		this.values = v;
+
 	}
-	
-	return new MAT(rows, cols, values).hermitian();
 
-}
+	construct.prototype = {
+	
+		/*
+		 * fromArray
+		 * @param {array} a (e.g. [[0,1,2],[3,4,5],[6,7,8]])
+		 * @return {object} matrix
+		 */
+		fromArray : function(a) {
 
-/*
- * The Moore-Penrose Pseudoinverse
- * @return {object} matrix
- */
-MAT.prototype.pseudoInverse = function() {
-	
-	var M = this.hermitian().product(this);
-	
-	if (M.det() === 0) {
-		
-		/* right inverse */
-		M = this.product(this.hermitian());
-		
-		if (M.det() === 0) {
+			var values = [];
 
-			console.log("pseudoInverse: unable to invert matrix");
-			
-			M = this.zero();
-			
-		} else {
-			
-			M = this.hermitian().product(M.inverse());
-			
-		}
-		
-	} else {
-		
-		/* left inverse */
-		M = M.inverse().product(this.hermitian());
-		
-	}
-	
-	return M;
+			if ( ! a instanceof Array) {
 
-}
+				throw ("fromArray: argument must be an array");
 
-/*
- * @param {array}
- * @return {object} matrix
- */
-MAT.prototype.toVandermonde = function(n) {
-	
-	var values = [],
-		k = 0,
-		a = this.getValues(),
-		len = a.length;
-	
-	for (var i = 0; i < len; i++) {
-		
-		for (var j = 0; j < n; j++) {
-			
-			if (j === 0) {
-				
-				values.push(1);
-				
-			} else if (j === 1) {
-				
-				values.push(a[i]);
-				
 			} else {
-				
-				values.push(this.m(a[i], values[k-1]));
-				
-			}
-			k++;
-		}
-		
-	}
-	
-	return new MAT(len, n, values);
-	
-}
 
-/*
- * @return {object} a matrix filled with zeros 
- */
-MAT.prototype.zero = function() {
+				this.setRows(a.length);
+
+				this.setColumns(a[0].length);
+
+				this.values = Array(this.rows*this.cols);
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0, len = a[i].length; j < len; j++) {
+
+						this.setValue(i, j, a[i][j]);
+
+					}
+
+				}
+
+			}
+
+			return this;
+
+		},
 	
-	var values = [];
+		/*
+		 * toArray
+		 * @return {array}
+		 */
+		toArray : function () {
+
+			var res = [], n = this.values.length;
+
+			for (var i = 0; i < n; i++) {
+
+				res.push(this.values[i]);
+
+			}
+
+			return res;
+
+		},
+
+		/*
+		 * toString
+		 * @return {string}
+		 */
+		toString : function() {
+
+			return this.values.toString();
+
+		},
+
+		/*
+		 * getColumn
+		 * @param {integer} j (e.g. j-th column)
+		 * @return {object} matrix (column vector)
+		 */
+		getColumn : function(j) {
+
+			var res = [];
+
+			if (this.cols > j && j >= 0) {
+
+				for (var i = 0; i < this.rows; i++) {
+
+					res.push(this.values[this.cols*i+j]);
+
+				}
+
+			} else {
+
+				for (var i = 0; i < this.rows; i++) {
+
+					res.push(0);
+
+				}
+
+			}
+
+			return (new MAT(this.rows, 1, res));
+
+		},
+
+		/*
+		 * getColumns
+		 * @return {integer} (the number of columns)
+		 */
+		getColumns : function() {
+
+			return this.cols;
+
+		},
+
+		/*
+		 * getLength
+		 * @return {integer} (the number of elements)
+		 */
+		getLength : function() {
+
+			return this.values.length;
+
+		},
+
+		/*
+		 * getRow
+		 * @param {integer} i (the i-th column)
+		 * @return {object} (row vector)
+		 */
+		getRow : function(i) {
+
+			var res = [];
+
+			if (this.rows > i && i >= 0) {
+
+				for (var j = 0; j < this.cols; j++) {
+
+					res.push(this.values[this.cols*i+j]);
+
+				}
+
+			} else {
+
+				for (var j = 0; j < this.cols; j++) {
+
+					res.push(0);
+
+				}
+
+			}
+
+			return (new MAT(1, this.cols, res));
+
+		},
+
+		/*
+		 * getRows
+		 * @return {integer} (the number of rows)
+		 */
+		getRows : function() {
+
+			return this.rows;
+
+		},
+
+		/*
+		 * getShape
+		 * @return {array}
+		 */
+		getShape : function() {
+
+			return [this.rows, this.cols];
+
+		},
+
+		/*
+		 * getValue
+		 * @param {integer} a (i-th row)
+		 * @param {integer} b (j-th column)
+		 * @return {float|array}
+		 */
+		getValue : function(i, j) {
+
+			return this.values[i*this.cols + j];
+
+		},
+
+		/*
+		 * getValues
+		 * @return {array} (a copy of|the matrix values)
+		 */
+		getValues : function() {
+
+			return this.values.slice(0);
+
+		},
+
+		/*
+		 * setRows
+		 * @param {integer} a
+		 * @return {object}
+		 */
+		setRows : function(a) {
+
+			this.rows = a;
+
+			return this;
+
+		},
+
+		/*
+		 * setColumns
+		 * @param {integer} a
+		 * @return {object} 
+		 */
+		setColumns : function(a) {
+
+			this.cols = a;
+
+			return this;
+
+		},
+
+		/*
+		 * setValue
+		 * @param {integer} a
+		 * @param {integer} b
+		 * @param {float|array} c
+		 * @return {object}
+		 */
+		setValue : function(a, b, c) {
+
+			this.values[a*this.cols + b] = c;
+
+			return this;
+
+		},
+
+		/*
+		 * isSquare
+		 * @return {boolean}
+		 */
+		isSquare : function() {
+
+			return (this.cols === this.rows);
+
+		},
+
+		/*
+		 * isVector
+		 * @return {boolean}
+		 */
+		isVector : function() {
+
+			return ((this.cols === 1 && this.rows > 1) || (this.cols > 1 && this.rows === 1));
+
+		},
+
+		/*
+		 * isColumnVector
+		 * @return {boolean}
+		 */
+		isColumnVector : function() {
+
+			return (this.cols === 1 && this.rows > 1);
+
+		},
+
+		/*
+		 * isRowVector
+		 * @return {boolean}
+		 */
+		isRowVector : function() {
 	
-	for (var i = 0, len = this.cols*this.rows; i < len; i++) {
+			return (this.cols > 1 && this.rows === 1);
+
+		},
+
+		/*
+		 * isSameSize
+		 * @param {object} a {matrix}
+		 * @return boolean
+		 */
+		isSameSize : function(a) {
+
+			return (a.getColumns() === this.cols && a.getRows() === this.rows);
+
+		},
+
+		/*
+		 * add
+		 * @param {object} matrix
+		 * @return {object} matrix (X+A)
+		 */
+		add : function(a) {
+
+			var values = [];
+
+			if (this.isSameSize(a)) {
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0; j < this.cols; j++) {
+
+						values.push(OP.sum(this.getValue(i, j), a.getValue(i, j)));
+
+					}
+
+				}
+
+			} else {
+
+				throw ("add: matrices must be same size");
+
+			}
+
+			return new MAT(this.rows, this.cols, values);
+
+		},
+
+		/*
+		 * subtract
+		 * @param {object} matrix
+		 * @return {object} matrix (X-A)
+		 */
+		subtract : function(a) {
+
+			var values = [];
+
+			if (this.isSameSize(a)) {
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0; j < this.cols; j++) {
+
+						values.push(OP.subtract(this.getValue(i, j), a.getValue(i, j)));
+
+					}
+
+				}
+
+			} else {
+
+				throw ("sub: matrices must be same size");
+
+			}
+
+			return new MAT(this.rows, this.cols, values);
+
+		},
+
+		/*
+		 * product
+		 * @param {object} matrix
+		 * @return {object} matrix (X*A)
+		 */
+		product : function(a) {
+
+			var temp = 0,
+				cols = a.getColumns(),
+				values = [];
+
+			if (a.getRows() === this.cols) {
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0; j < cols; j++) {
+
+						temp = 0;
+
+						for (var k = 0; k < this.cols; k++) {
+
+							temp = OP.sum(temp, OP.product(
+									this.values[this.cols*i + k], 
+									a.getValue(k, j)));
+
+						}
+
+						values.push(temp);
+
+					}
+
+				}
+
+			}
+
+			return new MAT(this.rows, a.getColumns(), values);
+
+		},
+
+		/*
+		 * hadamardProduct
+		 * @param {object} matrix
+		 * @return {object} matrix
+		 */
+		hadamardProduct : function(a) {
+
+			var values = [],
+				rows = this.rows,
+				cols = this.cols;
+
+			if (this.isSameSize(a)) {
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0; j < this.cols; j++) {
+
+						values.push(OP.product(this.getValue(i, j), a.getValue(i, j)));
+
+					}
+
+				}
+
+			} else {
+
+				throw ("hadamardProduct: matrices must be the same size");
+
+			}
+
+			return new MAT(rows, cols, values);
+
+		},
+
+		/*
+		 * scalarProduct
+		 * @param {float}
+		 * @return {object} matrix (a*X)
+		 */
+		scalarProduct : function(a) {
+
+			var values = [];
+
+			for (var i = 0; i < this.rows; i++) {
+
+				for (var j = 0; j < this.cols; j++) {
+
+					values.push(OP.product(a, this.getValue(i, j)));
+
+				}
+
+			}
+
+			return new MAT(this.rows, this.cols, values);
+
+		},
+
+		/*
+		 * transpose
+		 * @return {object} matrix
+		 */
+		transpose : function() {
+
+			var values = [];
+
+			for (var i = 0; i < this.cols; i++) {
+
+				for (var j = 0; j < this.rows; j++) {
+
+					values.push(this.values[this.cols*j + i]);
+
+				}
+
+			}
+	
+			return new MAT(this.rows, this.cols, values);
+
+		},
+
+		/*
+		 * hermitian
+		 * @return {object} matrix
+		 */
+		hermitian : function() {
+
+			var values = [];
+
+			for (var i = 0; i < this.cols; i++) {
+
+				for (var j = 0; j < this.rows; j++) {
+
+					values.push(OP.conjugate(this.values[this.cols*j + i]));
+
+				}
+
+			}
+
+			return new MAT(this.cols, this.rows, values);
+
+		},
+
+		/*
+		 * trace
+		 * @return {float}
+		 */
+		trace : function() {
+
+			var result = 0;
+
+			if (this.isSquare()) {
+
+				for (var i = 0; i < this.cols; i++) {
+
+					result = OP.sum(result, this.getValue(i, i));
+
+				}
+
+			} else {
+
+				throw ("trace: matrix must be square");
+
+			}
+
+			return result;
+
+		},
+
+		/*
+		 * upperTrace
+		 * @param {integer} a (a-th upper diagonal)
+		 * @return {float|array} result
+		 */
+		upperTrace : function(a) {
+
+			var result = 0;
+
+			if ( ! this.isSquare()) {
+
+				throw ("upperTrace: matrix must be square");
+
+			} else if (a > this.cols - 1) {
+
+				throw ("upperTrace: diagonal out of range");
+
+			} else {
+
+				for (var i = 0; i < this.cols - a; i++) {
+
+					result = OP.sum(result, this.getValue(i, i + a));
+
+				}
+
+			}
+
+			return result;
+
+		},
+
+		/*
+		 * lowerTrace
+		 * @param {integer} a (a-th lower trace)
+		 * @return {float|array} result
+		 */
+		lowerTrace : function(a) {
+
+			var result = 0;
+
+			if ( ! this.isSquare()) {
+
+				throw ("lowerTrace: matrix must be square");
+
+			} else if (a > this.cols - 1) {
+
+				throw ("lowerTrace: diagonal out of range");
+
+			} else {
+
+				for (var i = 0; i < this.cols - a; i++) {
+
+					result = OP.sum(result, this.getValue(i + a, i));
+
+				}
+
+			}
+
+			return result;
+
+		},
+
+		/*
+		 * minor
+		 * @param {integer} row
+		 * @param {integer} column
+		 * @return {object} matrix (a minor (n-1)*(n-1) matrix)
+		 */
+		minor : function(r, c) {
+
+			var values = [];
+
+			for (var i = 0; i < this.rows; i++) {
+
+				for (var j = 0; j < this.cols; j++) {
+
+					if (i !== r && j !== c) {
+
+						values.push(this.getValue(i, j));
+
+					}
+
+				}
+
+			}
+
+			return new MAT(this.rows-1, this.cols-1, values);
+
+		},
+
+		/*
+		 * determinant
+		 * @return {float|array}
+		 */
+		determinant : function() {
+
+			var res = 0, 
+				t = 0, 
+				u = 0;
+
+			if ( ! this.isSquare()) {
+
+				throw ("determinant: matrix must be square");
+
+			} else if (this.cols === 1) {
+
+				res = this.values[0];
+
+			} else if (this.cols === 2) {
+
+				res = OP.subtract(
+					OP.product(this.values[0], this.values[3]), 
+					OP.product(this.values[1], this.values[2]));
+
+			} else {
+
+				for (var j = 0; j < this.cols; j++) {
+
+					t = OP.product((j%2 === 0 ? 1: -1), this.getValue(0, j));
+
+					u = this.minor(0, j).determinant();
+
+					res = OP.sum(res, OP.product(t, u));
+
+				}
+
+			}
+
+			return res;
+
+		},
+
+		/*
+		 * Alias for determinant
+		 * @return {float|array}
+		 */
+		det : function() { return this.determinant(); },
+
+		/*
+		 * gaussElimination
+		 * Naive Gauss Elimination method
+		 * @return {object} matrix 
+		 */
+		gaussElimination : function() {
+
+			var n = this.cols,
+				l = new Array(n),
+				R = new MAT(n, n, this.getValues()),
+				v = 0;
+
+			l[0] = 1;
+
+			for (var j = 0; j < n-1; j++) {
+
+				for (var i = j+1; i < n; i++) {
+
+					l[i] = OP.division(R.getValue(i, j), R.getValue(j, j));
+
+				}
+
+				for (i = j+1; i < n; i++) {
+
+					R.setValue(i, j, 0);
+
+					for (var k = j + 1; k < n; k++) {
+
+						v = OP.subtract(R.getValue(i, k), OP.product(l[i], R.getValue(j, k)));
+
+						R.setValue(i, k, v);
+
+					}
+
+				}
+
+			}
+
+			return R;
+
+		},
+
+		/*
+		 * solve
+		 * @param {array} a (constants)
+		 * @return {object} matrix
+		 */
+		solve : function(a) {
+
+			var m = this.rows,
+				n = this.cols,
+				l = new Array(n),
+				r = new Array(n),
+				R = new MAT(n, n, this.getValues());
+
+			if (a.length !== this.rows || ! this.isSquare()) {
+
+				for (var i = 0; i < m; i++) {
+
+					r.push(0);
+
+				}
+
+			} else {
+
+				/* Forward Elimination */
+				for (var j = 0; j < n-1; j++) {
+
+					for (var i = j+1; i < n; i++) {
+
+						l[i] = OP.division(R.getValue(i, j), R.getValue(j, j));
+
+					}
+
+					for (i = j+1; i < n; i++) {
+
+						R.setValue(i, j, 0);
+
+						for (var k = j+1; k < n; k++) {
+
+							R.setValue(i, k, OP.subtract(
+								R.getValue(i, k), 
+								OP.product(l[i], R.getValue(j, k))));
+
+						}
+
+						a[i] = OP.subtract(a[i], OP.product(l[i], a[j]));
+
+					}
+
+				}
+
+				/* Backward solving */
+				for (i = n-1; i >= 0; i--) {
+
+					r[i] = a[i];
+
+					for (j = n-1; j > i; j--) {
+
+						r[i] = OP.subtract(r[i], OP.product(R.getValue(i, j), r[j]));
+
+					}
+
+					r[i] = this.d(r[i], R.getValue(i, i));
+
+				}
+
+			}
+
+			return new MAT(m, 1, r);
+
+		},
+
+		/*
+		 * gramSchmidt
+		 * The Gram-Schmidt process
+		 * @return {object} matrix
+		 */
+		gramSchmidt : function() {
+
+			var m = this.rows,
+				n = this.cols,
+				e = [],
+				p, q = [], u, v;
+
+			/* Gram-Schmidt */
+			for (var i = 0; i < n; i++) {
+
+				u = this.getColumn(i);
+
+				for (var j = 0; j < i; j++) {
+
+					v = OP.division(
+						e[j].hermitian().product(this.getColumn(i)).getValue(0,0), 
+						e[j].norm());
+
+					p = e[j].scalarProduct(v); // j-th projection
+
+					u = u.subtract(p);
+
+				}
+
+				e.push(u.scalarProduct(OP.division(1, u.norm())));
+
+				q = q.concat(e[i].toArray());
+
+			}
+
+			return (new MAT(n, m, q)).transpose();
+
+		},
+
+		/*
+		 * qrDecomposition
+		 * QR decomposition
+		 * @return {array} [Q,R]
+		 */
+		qrDecomposition : function() {
+
+			var Q, R;
+
+			Q = this.gramSchmidt();
+
+			R = Q.transpose().product(this);
+
+			return [Q, R];
+
+		}, 
+
+		/*
+		 * Alias for the qrDecomposition function
+		 */
+		qr : function() {
+
+			 return this.qrDecomposition();
+
+		},
+
+		/*
+		 * luDecomposition
+		 * LU decomposition
+		 * @return {array} [L,U]
+		 */
+		luDecomposition : function() {
+
+			var l = [],
+				L = this.identity(this.cols), 
+				U = new MAT(this.rows, this.cols, this.getValues());
+
+			for (var j = 0; j < this.cols - 1; j++) {
+
+				for (var i = j+1; i < this.cols; i++) {
+
+					l[i] = OP.division(U.getValue(i, j), U.getValue(j, j));
+
+					L.setValue(i, j, l[i]);
+
+				}
+
+				for (i = j+1; i < this.cols; i++) {
+
+					U.setValue(i, j, 0);
+
+					for (var k = j+1; k < this.cols; k++) {
+
+						U.setValue(i, k, OP.subtract(
+							U.getValue(i, k), 
+							OP.product(l[i], U.getValue(j, k))));
+
+					}
+
+				}
+
+			}
+
+			return [L, U];
+
+		},
+
+		/*
+		 * Alias for the luDecomposition
+		 */
+		lu : function() {
 		
-		values.push(0);
-	
+			return this.luDecomposition();
+
+		},
+
+		/* 
+		 * eigenValues
+		 * Eigenvalues using the QR iteration process
+		 * @return {object} matrix
+		 */
+		eigenValues : function() {
+
+			var tmp = new MAT(this.rows, this.cols, this.getValues()),
+				l = Math.min(this.rows, this.cols),
+				QR,
+				values = [];
+
+			if ( ! this.isSquare()) {
+
+				throw ("eigenValues: matrix must be square");
+
+			} else {
+
+				for (var i = 0; i < MAXROUNDS; i++) {
+
+					QR = tmp.qrDecomposition();
+
+					tmp = QR[1].product(QR[0]);
+
+					/* 
+					 * Stop the process when the values
+					 * below the main diagonal are sufficiently small 
+					 */
+					if (tmp.lowerTrace(1) < ERROR) {
+
+						break;			
+
+					}
+
+				}
+
+				for (var j = 0; j < l; j++) {
+
+					values.push(tmp.getValue(j, j));
+
+				}
+
+			}
+
+			return new MAT(l, 1, values);
+
+		},
+
+		/*
+		 * eigenVectors
+		 * @return {object} matrix
+		 */
+		eigenVectors : function() {
+
+			var tmp = new MAT(this.rows, this.cols, this.getValues()),
+				l = Math.min(this.rows, this.cols),
+				QR;
+
+			for (var i = 0; i < MAXROUNDS; i++) {
+
+				QR = tmp.qrDecomposition();
+
+				tmp = QR[1].product(QR[0]);
+
+				/* 
+				 * Stop the process when the values
+				 * below the main diagonal are sufficiently small 
+				 */
+				if (tmp.lowerTrace(1) < ERROR) {
+
+					break;			
+
+				}
+
+			}
+
+			return QR[0];
+
+		},
+
+		/*
+		 * identity
+		 * @param {integer} size of the resulting matrix n*n
+		 * @return {object} matrix
+		 */
+		identity : function(a) {
+
+			var values = [];
+
+			if (typeof a !== undefined && a > 0) {
+
+				for (var i = 0; i < a; i++) {
+
+					for (var j = 0; j < a; j++) {
+
+						values.push(i === j ? 1 : 0);
+
+					}
+
+				}
+
+			}
+
+			return new MAT(a, a, values);
+
+		},
+
+		/*
+		 * diagonal
+		 * @param {integer} a size
+		 * @param {float|array} b (e.g. complex value [real,imag])
+		 * @return {object} matrix
+		 */
+		diagonal : function(a, b) {
+
+			var values = [],
+				res;
+
+			if (typeof a === "undefined" || a <= 0) {
+
+				throw ("diagonal: first argument must be an integer greater than 0");
+
+			} else {
+
+				for (var i = 0; i < a; i++) {
+
+					for (var j = 0; j < a; j++) {
+
+						values.push(i === j ? b : 0);
+
+					}
+
+				}
+
+				res = new MAT(a, a, values);
+
+			}
+
+			return res;
+
+		},
+
+		/*
+		 * pNorm
+		 * @param {integer} a
+		 * @return {float}
+		 */
+		pNorm : function(a) {
+
+			var res = 0, 
+				tmp = 1;
+
+			for (var i = 0; i < this.rows; i++) {
+
+				for (var j = 0; j < this.cols; j++) {
+
+					tmp = 1;
+
+					for (var k = 0; k < a; k++) {
+
+						tmp = OP.product(tmp, OP.modulus(this.values[this.cols*i + j]));
+
+					}
+
+					res = OP.sum(res, tmp);
+
+				}
+
+			}
+
+			res = Math.pow(Math.E, OP.division(Math.log(res), a));
+
+			return res;
+
+		},
+
+		/*
+		 * norm
+		 * Euclidean norm (p = 2)
+		 * @return {float}
+		 */
+		norm : function() {
+
+			return this.pNorm(2);
+
+		},
+
+		/*
+		 * toToeplitz
+		 * @param {integer} a
+		 * @return {object} matrix
+		 */
+		toToeplitz : function(a) {
+
+			var res = [], 
+				row = [],
+				l = 0,
+				m = this.values.length;
+
+			for (var i = 0; i < a; i++) {
+
+				row.push(0);
+
+			}
+
+			l = m+a-1;
+
+			/* column vector */
+			for (var i = 0; i < l; i++) {
+
+				if (i < m) {
+
+					if (this.isColumnVector()) {
+
+						/* column vector */
+						row.unshift(OP.conjugate(this.values[i]));
+
+					} else if (this.isRowVector()) {
+
+					row.unshift(this.values[i]);
+
+					} else {
+						/* do some stuff here */
+					}
+
+				} else {
+
+					row.unshift(0);
+
+				}
+
+				row.pop();
+
+				res = res.concat(row);
+
+			}
+
+			return new MAT(l, a, res);
+
+		},
+
+		/*
+		 * inverse
+		 * Matrix inverse
+		 * @return {object} matrix
+		 */
+		inverse : function() {
+
+			var values = [],
+				rows = this.rows,
+				cols = this.cols,
+				det = this.det(),
+				sign = 1;
+
+			if (det === 0) {
+
+				throw ("inverse: unable to invert matrix, determinant is 0");
+
+			} else if ( ! this.isSquare()) {
+
+				throw ("inverse: matrix must be square");
+
+			} else {
+
+				for (var i = 0; i < rows; i++) {
+
+					for (var j = 0; j < cols; j++) {
+
+						sign = (i+j)% 2 === 0 ? 1 : -1;
+
+						values.push(OP.product(sign, 
+							OP.division(this.minor(i, j).det(), det)));
+
+					}
+
+				}
+
+			}
+
+			return new MAT(rows, cols, values).hermitian();
+
+		},
+
+		/*
+		 * pseudoInverse
+		 * The Moore-Penrose Pseudoinverse
+		 * @return {object} matrix
+		 */
+		pseudoInverse : function() {
+
+			var M = this.hermitian().product(this);
+
+			if (M.det() === 0) {
+
+				/* right inverse */
+				M = this.product(this.hermitian());
+
+				if (M.det() === 0) {
+
+					throw ("pseudoInverse: unable to invert matrix");
+
+				} else {
+
+					M = this.hermitian().product(M.inverse());
+
+				}
+
+			} else {
+
+				/* left inverse */
+				M = M.inverse().product(this.hermitian());
+
+			}
+
+			return M;
+
+		},
+
+		/*
+		 * toVandermonde
+		 * @param {array} n
+		 * @return {object} matrix
+		 */
+		toVandermonde : function(n) {
+
+			var values = [],
+				k = 0,
+				a = this.getValues(),
+				len = a.length;
+
+			for (var i = 0; i < len; i++) {
+
+				for (var j = 0; j < n; j++) {
+
+					if (j === 0) {
+
+						values.push(1);
+
+					} else if (j === 1) {
+
+						values.push(a[i]);
+
+					} else {
+
+						values.push(OP.product(a[i], values[k-1]));
+
+					}
+
+					k++;
+
+				}
+
+			}
+
+			return new MAT(len, n, values);
+
+		},
+
+		/*
+		 * zero
+		 * @return {object} a matrix filled with zeros 
+		 */
+		zero : function() {
+
+			var values = [];
+
+			for (var i = 0, len = this.cols*this.rows; i < len; i++) {
+
+				values.push(0);
+
+			}
+
+			return new MAT(this.rows, this.cols, values);
+
+		},
 	}
-	
-	return new MAT(this.rows, this.cols, values);
-	
-}
+
+	return construct;
+
+})();
