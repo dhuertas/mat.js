@@ -151,8 +151,23 @@ var MAT = (function() {
 
 	};
 
-	var MAXROUNDS 	= 1000,
-		ERROR 		= 0.000001;
+	var ATTRIBUTES = ['rows', 'columns', 'values', 'error', 'maxrounds', 'overwrite'],
+		DEFAULTS = {maxrounds : 1000, error : 0.000001, overwrite : false};
+	
+	/*
+	 * helper functions 
+	 */
+	function inArray(needle, haystack) {
+
+		for (var i = 0; i < haystack.length; i++) {
+
+			if (needle == haystack[i]) return i;
+
+		}
+
+		return false;
+
+	}
 
 	/*
 	 * MAT object constructor
@@ -162,11 +177,33 @@ var MAT = (function() {
 	 */
 	function construct(r, c, v) {
 
-		this.rows = r;
+		if (arguments[0] instanceof Object) {
 
-		this.cols = c;
+			for (var elem in arguments[0]) {
 
-		this.values = v;
+				if (inArray(elem, ATTRIBUTES)) {
+
+					this[elem] = arguments[0][elem];
+
+				}
+
+			}
+
+		} else {
+
+			this.rows = r;
+
+			this.columns = c;
+
+			this.values = v;
+
+			for (var elem in DEFAULTS) {
+
+				this[elem] = DEFAULTS[elem];
+
+			}
+
+		}
 
 	}
 
@@ -191,7 +228,7 @@ var MAT = (function() {
 
 				this.setColumns(a[0].length);
 
-				this.values = Array(this.rows*this.cols);
+				this.values = Array(this.rows*this.columns);
 
 				for (var i = 0; i < this.rows; i++) {
 
@@ -246,11 +283,11 @@ var MAT = (function() {
 
 			var res = [];
 
-			if (this.cols > j && j >= 0) {
+			if (this.columns > j && j >= 0) {
 
 				for (var i = 0; i < this.rows; i++) {
 
-					res.push(this.values[this.cols*i+j]);
+					res.push(this.values[this.columns*i+j]);
 
 				}
 
@@ -274,7 +311,7 @@ var MAT = (function() {
 		 */
 		getColumns : function() {
 
-			return this.cols;
+			return this.columns;
 
 		},
 
@@ -299,15 +336,15 @@ var MAT = (function() {
 
 			if (this.rows > i && i >= 0) {
 
-				for (var j = 0; j < this.cols; j++) {
+				for (var j = 0; j < this.columns; j++) {
 
-					res.push(this.values[this.cols*i+j]);
+					res.push(this.values[this.columns*i+j]);
 
 				}
 
 			} else {
 
-				for (var j = 0; j < this.cols; j++) {
+				for (var j = 0; j < this.columns; j++) {
 
 					res.push(0);
 
@@ -315,7 +352,7 @@ var MAT = (function() {
 
 			}
 
-			return (new MAT(1, this.cols, res));
+			return (new MAT(1, this.columns, res));
 
 		},
 
@@ -335,7 +372,7 @@ var MAT = (function() {
 		 */
 		getShape : function() {
 
-			return [this.rows, this.cols];
+			return [this.rows, this.columns];
 
 		},
 
@@ -347,7 +384,7 @@ var MAT = (function() {
 		 */
 		getValue : function(i, j) {
 
-			return this.values[i*this.cols + j];
+			return this.values[i*this.columns + j];
 
 		},
 
@@ -381,7 +418,7 @@ var MAT = (function() {
 		 */
 		setColumns : function(a) {
 
-			this.cols = a;
+			this.columns = a;
 
 			return this;
 
@@ -396,7 +433,7 @@ var MAT = (function() {
 		 */
 		setValue : function(a, b, c) {
 
-			this.values[a*this.cols + b] = c;
+			this.values[a*this.columns + b] = c;
 
 			return this;
 
@@ -408,17 +445,7 @@ var MAT = (function() {
 		 */
 		isSquare : function() {
 
-			return (this.cols === this.rows);
-
-		},
-
-		/*
-		 * isVector
-		 * @return {boolean}
-		 */
-		isVector : function() {
-
-			return ((this.cols === 1 && this.rows > 1) || (this.cols > 1 && this.rows === 1));
+			return (this.columns === this.rows);
 
 		},
 
@@ -428,7 +455,7 @@ var MAT = (function() {
 		 */
 		isColumnVector : function() {
 
-			return (this.cols === 1 && this.rows > 1);
+			return (this.columns === 1 && this.rows > 1);
 
 		},
 
@@ -438,7 +465,17 @@ var MAT = (function() {
 		 */
 		isRowVector : function() {
 	
-			return (this.cols > 1 && this.rows === 1);
+			return (this.columns > 1 && this.rows === 1);
+
+		},
+
+		/*
+		 * isVector
+		 * @return {boolean}
+		 */
+		isVector : function() {
+
+			return (this.isColumnVector() || this.isRowVector());
 
 		},
 
@@ -449,7 +486,7 @@ var MAT = (function() {
 		 */
 		isSameSize : function(a) {
 
-			return (a.getColumns() === this.cols && a.getRows() === this.rows);
+			return (a.getColumns() === this.columns && a.getRows() === this.rows);
 
 		},
 
@@ -460,15 +497,31 @@ var MAT = (function() {
 		 */
 		add : function(a) {
 
-			var values = [];
-
 			if (this.isSameSize(a)) {
 
-				for (var i = 0; i < this.rows; i++) {
+				if (this.overwrite) {
 
-					for (var j = 0; j < this.cols; j++) {
+					for (var i = 0; i < this.rows; i++) {
 
-						values.push(OP.sum(this.getValue(i, j), a.getValue(i, j)));
+						for (var j = 0; j < this.columns; j++) {
+
+							this.setValue(i, j, OP.sum(this.getValue(i, j), a.getValue(i, j)));
+
+						}
+
+					}
+
+				} else {
+
+					var values = [];
+
+					for (var i = 0; i < this.rows; i++) {
+
+						for (var j = 0; j < this.columns; j++) {
+
+							values.push(OP.sum(this.getValue(i, j), a.getValue(i, j)));
+
+						}
 
 					}
 
@@ -480,7 +533,7 @@ var MAT = (function() {
 
 			}
 
-			return new MAT(this.rows, this.cols, values);
+			return this.overwrite ? this : new MAT(this.rows, this.columns, values);
 
 		},
 
@@ -491,15 +544,32 @@ var MAT = (function() {
 		 */
 		subtract : function(a) {
 
-			var values = [];
-
 			if (this.isSameSize(a)) {
 
-				for (var i = 0; i < this.rows; i++) {
+				if (this.overwrite) {
 
-					for (var j = 0; j < this.cols; j++) {
+					for (var i = 0; i < this.rows; i++) {
 
-						values.push(OP.subtract(this.getValue(i, j), a.getValue(i, j)));
+						for (var j = 0; j < this.columns; j++) {
+
+							this.setValue(i, j, 
+								OP.subtract(this.getValue(i, j), a.getValue(i, j)));
+
+						}
+
+					}
+
+				} else {
+
+					var values = [];
+
+					for (var i = 0; i < this.rows; i++) {
+
+						for (var j = 0; j < this.columns; j++) {
+
+							values.push(OP.subtract(this.getValue(i, j), a.getValue(i, j)));
+
+						}
 
 					}
 
@@ -511,7 +581,7 @@ var MAT = (function() {
 
 			}
 
-			return new MAT(this.rows, this.cols, values);
+			return this.overwrite ? this : new MAT(this.rows, this.columns, values);
 
 		},
 
@@ -526,7 +596,7 @@ var MAT = (function() {
 				cols = a.getColumns(),
 				values = [];
 
-			if (a.getRows() === this.cols) {
+			if (a.getRows() === this.columns) {
 
 				for (var i = 0; i < this.rows; i++) {
 
@@ -534,10 +604,10 @@ var MAT = (function() {
 
 						temp = 0;
 
-						for (var k = 0; k < this.cols; k++) {
+						for (var k = 0; k < this.columns; k++) {
 
 							temp = OP.sum(temp, OP.product(
-									this.values[this.cols*i + k], 
+									this.values[this.columns*i + k], 
 									a.getValue(k, j)));
 
 						}
@@ -548,9 +618,19 @@ var MAT = (function() {
 
 				}
 
+				if (this.overwrite) {
+
+					this.splice(0, this.values.length, values);
+
+				}
+
+			} else {
+
+				throw ("product: matrix size does not match");
+
 			}
 
-			return new MAT(this.rows, a.getColumns(), values);
+			return this.overwrite ? this : new MAT(this.rows, a.getColumns(), values);
 
 		},
 
@@ -561,17 +641,30 @@ var MAT = (function() {
 		 */
 		hadamardProduct : function(a) {
 
-			var values = [],
-				rows = this.rows,
-				cols = this.cols;
-
 			if (this.isSameSize(a)) {
 
-				for (var i = 0; i < this.rows; i++) {
+				if (this.overwrite) {
 
-					for (var j = 0; j < this.cols; j++) {
+					for (var i = 0; i < this.rows; i++) {
 
-						values.push(OP.product(this.getValue(i, j), a.getValue(i, j)));
+						for (var j = 0; j < this.columns; j++) {
+
+							this.setValue(i, j, OP.product(this.getValue(i, j), a.getValue(i, j)));
+
+						}
+					}
+
+				} else {
+
+					var values = [];
+
+					for (var i = 0; i < this.rows; i++) {
+
+						for (var j = 0; j < this.columns; j++) {
+
+							values.push(OP.product(this.getValue(i, j), a.getValue(i, j)));
+
+						}
 
 					}
 
@@ -583,7 +676,7 @@ var MAT = (function() {
 
 			}
 
-			return new MAT(rows, cols, values);
+			return this.overwrite ? this : new MAT(this.rows, this.columns, values);
 
 		},
 
@@ -594,19 +687,35 @@ var MAT = (function() {
 		 */
 		scalarProduct : function(a) {
 
-			var values = [];
+			if (this.overwrite) {
 
-			for (var i = 0; i < this.rows; i++) {
+				for (var i = 0; i < this.rows; i++) {
 
-				for (var j = 0; j < this.cols; j++) {
+					for (var j = 0; j < this.columns; j++) {
 
-					values.push(OP.product(a, this.getValue(i, j)));
+						this.setValue(i, j, OP.product(this.getValue(i, j), a));
+
+					}
+
+				}
+
+			} else {
+
+				var values = [];
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0; j < this.columns; j++) {
+
+						values.push(OP.product(this.getValue(i, j), a));
+
+					}
 
 				}
 
 			}
 
-			return new MAT(this.rows, this.cols, values);
+			return this.overwrite ? this : new MAT(this.rows, this.columns, values);
 
 		},
 
@@ -618,17 +727,23 @@ var MAT = (function() {
 
 			var values = [];
 
-			for (var i = 0; i < this.cols; i++) {
+			for (var i = 0; i < this.columns; i++) {
 
 				for (var j = 0; j < this.rows; j++) {
 
-					values.push(this.values[this.cols*j + i]);
+					values.push(this.values[this.columns*j + i]);
 
 				}
 
 			}
-	
-			return new MAT(this.rows, this.cols, values);
+
+			if (this.overwrite) {
+
+				this.values.splice(0, this.values.length, values);
+
+			}
+
+			return this.overwrite ? this : new MAT(this.rows, this.columns, values);
 
 		},
 
@@ -640,17 +755,23 @@ var MAT = (function() {
 
 			var values = [];
 
-			for (var i = 0; i < this.cols; i++) {
+			for (var i = 0; i < this.columns; i++) {
 
 				for (var j = 0; j < this.rows; j++) {
 
-					values.push(OP.conjugate(this.values[this.cols*j + i]));
+					values.push(OP.conjugate(this.values[this.columns*j + i]));
 
 				}
 
 			}
 
-			return new MAT(this.cols, this.rows, values);
+			if (this.overwrite) {
+
+				this.values.splice(0, this.values.length, values);
+
+			}
+
+			return this.overwrite ? this : new MAT(this.columns, this.rows, values);
 
 		},
 
@@ -664,7 +785,7 @@ var MAT = (function() {
 
 			if (this.isSquare()) {
 
-				for (var i = 0; i < this.cols; i++) {
+				for (var i = 0; i < this.columns; i++) {
 
 					result = OP.sum(result, this.getValue(i, i));
 
@@ -693,13 +814,13 @@ var MAT = (function() {
 
 				throw ("upperTrace: matrix must be square");
 
-			} else if (a > this.cols - 1) {
+			} else if (a > this.columns - 1) {
 
 				throw ("upperTrace: diagonal out of range");
 
 			} else {
 
-				for (var i = 0; i < this.cols - a; i++) {
+				for (var i = 0; i < this.columns - a; i++) {
 
 					result = OP.sum(result, this.getValue(i, i + a));
 
@@ -724,13 +845,13 @@ var MAT = (function() {
 
 				throw ("lowerTrace: matrix must be square");
 
-			} else if (a > this.cols - 1) {
+			} else if (a > this.columns - 1) {
 
 				throw ("lowerTrace: diagonal out of range");
 
 			} else {
 
-				for (var i = 0; i < this.cols - a; i++) {
+				for (var i = 0; i < this.columns - a; i++) {
 
 					result = OP.sum(result, this.getValue(i + a, i));
 
@@ -754,7 +875,7 @@ var MAT = (function() {
 
 			for (var i = 0; i < this.rows; i++) {
 
-				for (var j = 0; j < this.cols; j++) {
+				for (var j = 0; j < this.columns; j++) {
 
 					if (i !== r && j !== c) {
 
@@ -766,7 +887,13 @@ var MAT = (function() {
 
 			}
 
-			return new MAT(this.rows-1, this.cols-1, values);
+			if (this.overwrite) {
+
+				this.values.splice(0, this.values.length, values);
+
+			}
+
+			return this.overwrite ? this : new MAT(this.rows-1, this.columns-1, values);
 
 		},
 
@@ -784,11 +911,11 @@ var MAT = (function() {
 
 				throw ("determinant: matrix must be square");
 
-			} else if (this.cols === 1) {
+			} else if (this.columns === 1) {
 
 				res = this.values[0];
 
-			} else if (this.cols === 2) {
+			} else if (this.columns === 2) {
 
 				res = OP.subtract(
 					OP.product(this.values[0], this.values[3]), 
@@ -796,7 +923,7 @@ var MAT = (function() {
 
 			} else {
 
-				for (var j = 0; j < this.cols; j++) {
+				for (var j = 0; j < this.columns; j++) {
 
 					t = OP.product((j%2 === 0 ? 1: -1), this.getValue(0, j));
 
@@ -825,7 +952,7 @@ var MAT = (function() {
 		 */
 		gaussElimination : function() {
 
-			var n = this.cols,
+			var n = this.columns,
 				l = new Array(n),
 				R = new MAT(n, n, this.getValues()),
 				v = 0;
@@ -856,7 +983,13 @@ var MAT = (function() {
 
 			}
 
-			return R;
+			if (this.overwrite) {
+
+				this.values.splice(0, this.values.length, R.getValues());
+
+			}
+
+			return this.overwrite ? this : R;
 
 		},
 
@@ -868,7 +1001,7 @@ var MAT = (function() {
 		solve : function(a) {
 
 			var m = this.rows,
-				n = this.cols,
+				n = this.columns,
 				l = new Array(n),
 				r = new Array(n),
 				R = new MAT(n, n, this.getValues());
@@ -939,7 +1072,7 @@ var MAT = (function() {
 		gramSchmidt : function() {
 
 			var m = this.rows,
-				n = this.cols,
+				n = this.columns,
 				e = [],
 				p, q = [], u, v;
 
@@ -966,7 +1099,17 @@ var MAT = (function() {
 
 			}
 
-			return (new MAT(n, m, q)).transpose();
+			if (this.overwrite) {
+
+				this.rows = n;
+
+				this.columns = m;
+
+				this.values.splice(0, this.values.length, q);
+
+			}
+
+			return (this.overwrite ? this : new MAT(n, m, q)).transpose();
 
 		},
 
@@ -1004,12 +1147,12 @@ var MAT = (function() {
 		luDecomposition : function() {
 
 			var l = [],
-				L = this.identity(this.cols), 
-				U = new MAT(this.rows, this.cols, this.getValues());
+				L = this.identity(this.columns), 
+				U = new MAT(this.rows, this.columns, this.getValues());
 
-			for (var j = 0; j < this.cols - 1; j++) {
+			for (var j = 0; j < this.columns - 1; j++) {
 
-				for (var i = j+1; i < this.cols; i++) {
+				for (var i = j+1; i < this.columns; i++) {
 
 					l[i] = OP.division(U.getValue(i, j), U.getValue(j, j));
 
@@ -1017,11 +1160,11 @@ var MAT = (function() {
 
 				}
 
-				for (i = j+1; i < this.cols; i++) {
+				for (i = j+1; i < this.columns; i++) {
 
 					U.setValue(i, j, 0);
 
-					for (var k = j+1; k < this.cols; k++) {
+					for (var k = j+1; k < this.columns; k++) {
 
 						U.setValue(i, k, OP.subtract(
 							U.getValue(i, k), 
@@ -1053,8 +1196,8 @@ var MAT = (function() {
 		 */
 		eigenValues : function() {
 
-			var tmp = new MAT(this.rows, this.cols, this.getValues()),
-				l = Math.min(this.rows, this.cols),
+			var tmp = new MAT(this.rows, this.columns, this.getValues()),
+				l = Math.min(this.rows, this.columns),
 				QR,
 				values = [];
 
@@ -1064,7 +1207,7 @@ var MAT = (function() {
 
 			} else {
 
-				for (var i = 0; i < MAXROUNDS; i++) {
+				for (var i = 0; i < this.maxrounds; i++) {
 
 					QR = tmp.qrDecomposition();
 
@@ -1074,7 +1217,7 @@ var MAT = (function() {
 					 * Stop the process when the values
 					 * below the main diagonal are sufficiently small 
 					 */
-					if (tmp.lowerTrace(1) < ERROR) {
+					if (tmp.lowerTrace(1) < this.error) {
 
 						break;			
 
@@ -1100,11 +1243,11 @@ var MAT = (function() {
 		 */
 		eigenVectors : function() {
 
-			var tmp = new MAT(this.rows, this.cols, this.getValues()),
-				l = Math.min(this.rows, this.cols),
+			var tmp = new MAT(this.rows, this.columns, this.getValues()),
+				l = Math.min(this.rows, this.columns),
 				QR;
 
-			for (var i = 0; i < MAXROUNDS; i++) {
+			for (var i = 0; i < this.maxrounds; i++) {
 
 				QR = tmp.qrDecomposition();
 
@@ -1114,7 +1257,7 @@ var MAT = (function() {
 				 * Stop the process when the values
 				 * below the main diagonal are sufficiently small 
 				 */
-				if (tmp.lowerTrace(1) < ERROR) {
+				if (tmp.lowerTrace(1) < this.error) {
 
 					break;			
 
@@ -1200,13 +1343,13 @@ var MAT = (function() {
 
 			for (var i = 0; i < this.rows; i++) {
 
-				for (var j = 0; j < this.cols; j++) {
+				for (var j = 0; j < this.columns; j++) {
 
 					tmp = 1;
 
 					for (var k = 0; k < a; k++) {
 
-						tmp = OP.product(tmp, OP.modulus(this.values[this.cols*i + j]));
+						tmp = OP.product(tmp, OP.modulus(this.values[this.columns*i + j]));
 
 					}
 
@@ -1295,9 +1438,7 @@ var MAT = (function() {
 		inverse : function() {
 
 			var values = [],
-				rows = this.rows,
-				cols = this.cols,
-				det = this.det(),
+				det = this.determinant(),
 				sign = 1;
 
 			if (det === 0) {
@@ -1310,9 +1451,9 @@ var MAT = (function() {
 
 			} else {
 
-				for (var i = 0; i < rows; i++) {
+				for (var i = 0; i < this.rows; i++) {
 
-					for (var j = 0; j < cols; j++) {
+					for (var j = 0; j < this.columns; j++) {
 
 						sign = (i+j)% 2 === 0 ? 1 : -1;
 
@@ -1325,7 +1466,13 @@ var MAT = (function() {
 
 			}
 
-			return new MAT(rows, cols, values).hermitian();
+			if (this.overwrite) {
+
+				this.values.splice(0, this.values.length, values);
+
+			}
+
+			return (this.overwrite ? this : new MAT(this.rows, this.columns, values)).hermitian();
 
 		},
 
@@ -1366,7 +1513,7 @@ var MAT = (function() {
 
 		/*
 		 * toVandermonde
-		 * @param {array} n
+		 * @param {integer} n (number of columns)
 		 * @return {object} matrix
 		 */
 		toVandermonde : function(n) {
@@ -1400,7 +1547,17 @@ var MAT = (function() {
 
 			}
 
-			return new MAT(len, n, values);
+			if (this.overwrite) {
+
+				this.rows = len;
+
+				this.columns = n;
+
+				this.values.splice(0, this.values.length, values);
+
+			}
+
+			return this.overwrite ? this : new MAT(len, n, values);
 
 		},
 
@@ -1412,13 +1569,13 @@ var MAT = (function() {
 
 			var values = [];
 
-			for (var i = 0, len = this.cols*this.rows; i < len; i++) {
+			for (var i = 0, len = this.columns*this.rows; i < len; i++) {
 
 				values.push(0);
 
 			}
 
-			return new MAT(this.rows, this.cols, values);
+			return new MAT(this.rows, this.columns, values);
 
 		},
 	}
