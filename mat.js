@@ -161,7 +161,7 @@ var MAT = (function() {
 
 		for (var i = 0; i < haystack.length; i++) {
 
-			if (needle == haystack[i]) return i;
+			if (needle == haystack[i]) return true;
 
 		}
 
@@ -177,6 +177,12 @@ var MAT = (function() {
 	 */
 	function construct(r, c, v) {
 
+		for (var elem in DEFAULTS) {
+
+			this[elem] = DEFAULTS[elem];
+
+		}
+		
 		if (arguments[0] instanceof Object) {
 
 			for (var elem in arguments[0]) {
@@ -196,12 +202,6 @@ var MAT = (function() {
 			this.columns = c;
 
 			this.values = v;
-
-			for (var elem in DEFAULTS) {
-
-				this[elem] = DEFAULTS[elem];
-
-			}
 
 		}
 
