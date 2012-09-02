@@ -897,7 +897,9 @@ var MAT = (function() {
 
 			var res = 0, 
 				t = 0, 
-				u = 0;
+				u = 0,
+				ow = this.overwrite;
+
 
 			if ( ! this.isSquare()) {
 
@@ -915,6 +917,8 @@ var MAT = (function() {
 
 			} else {
 
+				this.overwrite = false;
+
 				for (var j = 0; j < this.columns; j++) {
 
 					t = OP.product((j%2 === 0 ? 1: -1), this.getValue(0, j));
@@ -924,6 +928,8 @@ var MAT = (function() {
 					res = OP.sum(res, OP.product(t, u));
 
 				}
+
+				this.overwrite = ow;
 
 			}
 
