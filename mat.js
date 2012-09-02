@@ -891,14 +891,17 @@ var MAT = (function() {
 
 		/*
 		 * determinant
+		 * Obtains the determinant using the Laplace formula by default
+		 * @param {string} method ('lu', 'qr')
 		 * @return {float|array}
 		 */
-		determinant : function() {
+		determinant : function(method) {
 
 			var res = 0, 
 				t = 0, 
 				u = 0,
-				ow = this.overwrite;
+				ow = this.overwrite,
+				method = typeof method === "string" ? method : 'laplace';
 
 
 			if ( ! this.isSquare()) {
@@ -915,8 +918,34 @@ var MAT = (function() {
 					OP.product(this.values[0], this.values[3]), 
 					OP.product(this.values[1], this.values[2]));
 
-			} else {
+			} else if (method.toLowerCase() == 'lu') {
+				/* LU decomposition method */
+				var lu = this.luDecomposition();
 
+				res = 1;
+
+				for (var i = 0, len = lu[0].getColumns(); i < len; i++) {
+
+					t = OP.product(lu[0].getValue(i, i), lu[1].getValue(i, i));
+
+					res = OP.product(res, t);
+
+				}
+
+			} else if (method.toLowerCase() == 'qr') {
+				/* QR decomposition method */
+				var qr = this.qrDecomposition();
+
+				res = 1;
+
+				for (var i = 0, len = qr[1].getColumns(); i < len; i++) {
+
+					res = OP.product(res, qr[1].getValue(i, i));
+
+				}
+
+			} else {
+				/* Laplace's formula */
 				this.overwrite = false;
 
 				for (var j = 0; j < this.columns; j++) {
@@ -941,7 +970,7 @@ var MAT = (function() {
 		 * Alias for determinant
 		 * @return {float|array}
 		 */
-		det : function() { return this.determinant(); },
+		det : function(method) { return this.determinant(method); },
 
 		/*
 		 * gaussElimination
