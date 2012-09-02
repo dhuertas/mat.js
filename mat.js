@@ -252,15 +252,7 @@ var MAT = (function() {
 		 */
 		toArray : function () {
 
-			var res = [], n = this.values.length;
-
-			for (var i = 0; i < n; i++) {
-
-				res.push(this.values[i]);
-
-			}
-
-			return res;
+			return this.values.slice(0);
 
 		},
 
