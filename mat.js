@@ -108,8 +108,8 @@ var MAT = (function() {
 				}
 
 				return [
-					a*b[0] / ( b[0]*b[0]+b[1]*b[1] ),
-					-a*b[1] / ( b[0]*b[0]+b[1]*b[1] )];
+					 a*b[0] / ( b[0]*b[0] + b[1]*b[1] ),
+					-a*b[1] / ( b[0]*b[0] + b[1]*b[1] )];
 
 			} else {
 
@@ -141,7 +141,7 @@ var MAT = (function() {
 
 			if (a instanceof Array) {
 
-				return Math.sqrt(a[0]*a[0]+a[1]*a[1]);
+				return Math.sqrt(a[0]*a[0] + a[1]*a[1]);
 
 			}
 
@@ -981,24 +981,24 @@ var MAT = (function() {
 
 			var n = this.columns,
 				l = new Array(n),
-				R = new MAT(n, n, this.getValues()),
+				R = new MAT(this.rows, this.columns, this.getValues()),
 				v = 0;
 
 			l[0] = 1;
 
-			for (var j = 0; j < n-1; j++) {
+			for (var j = 0; j < this.columns-1; j++) {
 
-				for (var i = j+1; i < n; i++) {
+				for (var i = j+1; i < this.rows; i++) {
 
 					l[i] = OP.division(R.getValue(i, j), R.getValue(j, j));
 
 				}
 
-				for (i = j+1; i < n; i++) {
+				for (i = j+1; i < this.rows; i++) {
 
 					R.setValue(i, j, 0);
 
-					for (var k = j + 1; k < n; k++) {
+					for (var k = j + 1; k < this.columns; k++) {
 
 						v = OP.subtract(R.getValue(i, k), OP.product(l[i], R.getValue(j, k)));
 
@@ -1033,30 +1033,30 @@ var MAT = (function() {
 				r = new Array(n),
 				R = new MAT(n, n, this.getValues());
 
-			if (a.length !== this.rows || ! this.isSquare()) {
+			if (a.length !== this.rows) {
+				
+				throw ("solve: the argument length and the number of rows must match");
+					
+			} else if ( ! this.isSquare()) {
 
-				for (var i = 0; i < m; i++) {
-
-					r.push(0);
-
-				}
+				throw ("solve: matrix must be square");
 
 			} else {
 
 				/* Forward Elimination */
-				for (var j = 0; j < n-1; j++) {
+				for (var j = 0; j < this.columns-1; j++) {
 
-					for (var i = j+1; i < n; i++) {
+					for (var i = j+1; i < this.rows; i++) {
 
 						l[i] = OP.division(R.getValue(i, j), R.getValue(j, j));
 
 					}
 
-					for (i = j+1; i < n; i++) {
+					for (i = j+1; i < this.rows; i++) {
 
 						R.setValue(i, j, 0);
 
-						for (var k = j+1; k < n; k++) {
+						for (var k = j+1; k < this.columns; k++) {
 
 							R.setValue(i, k, OP.subtract(
 								R.getValue(i, k), 
