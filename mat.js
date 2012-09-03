@@ -612,7 +612,9 @@ var MAT = (function() {
 
 				if (this.overwrite) {
 
-					this.splice(0, this.values.length, values);
+					this.values.splice(0, this.values.length);
+
+					this.values.concat(values);
 
 				}
 
@@ -731,11 +733,19 @@ var MAT = (function() {
 
 			if (this.overwrite) {
 
-				this.values.splice(0, this.values.length, values);
+				var temp = this.rows;
+
+				this.rows = this.columns;
+
+				this.columns = temp;
+
+				this.values.splice(0, this.values.length);
+
+				this.values.concat(values);
 
 			}
 
-			return this.overwrite ? this : new MAT(this.rows, this.columns, values);
+			return this.overwrite ? this : new MAT(this.columns, this.rows, values);
 
 		},
 
@@ -759,7 +769,9 @@ var MAT = (function() {
 
 			if (this.overwrite) {
 
-				this.values.splice(0, this.values.length, values);
+				this.values.splice(0, this.values.length);
+
+				this.values.concat(values);
 
 			}
 
@@ -881,7 +893,9 @@ var MAT = (function() {
 
 			if (this.overwrite) {
 
-				this.values.splice(0, this.values.length, values);
+				this.values.splice(0, this.values.length);
+
+				this.values.concat(values);
 
 			}
 
@@ -1012,7 +1026,9 @@ var MAT = (function() {
 
 			if (this.overwrite) {
 
-				this.values.splice(0, this.values.length, R.getValues());
+				this.values.splice(0, this.values.length);
+
+				this.values.concat(values);
 
 			}
 
@@ -1081,7 +1097,7 @@ var MAT = (function() {
 
 					}
 
-					r[i] = this.d(r[i], R.getValue(i, i));
+					r[i] = OP.division(r[i], R.getValue(i, i));
 
 				}
 
@@ -1132,7 +1148,9 @@ var MAT = (function() {
 
 				this.columns = m;
 
-				this.values.splice(0, this.values.length, q);
+				this.values.splice(0, this.values.length);
+
+				this.values.concat(q);
 
 			}
 
@@ -1147,11 +1165,17 @@ var MAT = (function() {
 		 */
 		qrDecomposition : function() {
 
-			var Q, R;
+			var Q,
+				R,
+				ow = this.overwrite;
+
+			this.overwrite = false;
 
 			Q = this.gramSchmidt();
 
 			R = Q.transpose().product(this);
+
+			this.overwrite = ow;
 
 			return [Q, R];
 
@@ -1223,8 +1247,12 @@ var MAT = (function() {
 		 */
 		eigenValues : function() {
 
-			var tmp = new MAT(this.rows, this.columns, this.getValues()),
-				l = Math.min(this.rows, this.columns),
+			var tmp = new MAT({
+					rows: this.rows, 
+					columns: this.columns, 
+					values: this.getValues(),
+					overwrite: true
+				}),
 				QR,
 				values = [];
 
@@ -1240,11 +1268,12 @@ var MAT = (function() {
 
 					tmp = QR[1].product(QR[0]);
 
+					console.log(tmp.toString());
 					/* 
 					 * Stop the process when the values
 					 * below the main diagonal are sufficiently small 
 					 */
-					if (tmp.lowerTrace(1) < this.error) {
+					if (OP.modulus(tmp.lowerTrace(1)) < this.error) {
 
 						break;			
 
@@ -1252,7 +1281,7 @@ var MAT = (function() {
 
 				}
 
-				for (var j = 0; j < l; j++) {
+				for (var j = 0; j < this.rows; j++) {
 
 					values.push(tmp.getValue(j, j));
 
@@ -1260,7 +1289,7 @@ var MAT = (function() {
 
 			}
 
-			return new MAT(l, 1, values);
+			return i == this.maxrounds ? null : new MAT(values.length, 1, values);
 
 		},
 
@@ -1270,8 +1299,12 @@ var MAT = (function() {
 		 */
 		eigenVectors : function() {
 
-			var tmp = new MAT(this.rows, this.columns, this.getValues()),
-				l = Math.min(this.rows, this.columns),
+			var tmp = new MAT({
+					rows: this.rows, 
+					columns: this.columns, 
+					values: this.getValues(),
+					overwrite: true
+				}),
 				QR;
 
 			for (var i = 0; i < this.maxrounds; i++) {
@@ -1284,13 +1317,15 @@ var MAT = (function() {
 				 * Stop the process when the values
 				 * below the main diagonal are sufficiently small 
 				 */
-				if (tmp.lowerTrace(1) < this.error) {
+				if (OP.modulus(tmp.lowerTrace(1)) < this.error) {
 
 					break;			
 
 				}
 
 			}
+
+			QR = tmp.qrDecomposition();
 
 			return QR[0];
 
@@ -1495,7 +1530,9 @@ var MAT = (function() {
 
 			if (this.overwrite) {
 
-				this.values.splice(0, this.values.length, values);
+				this.values.splice(0, this.values.length);
+
+				this.values.concat(values);
 
 			}
 
@@ -1580,7 +1617,9 @@ var MAT = (function() {
 
 				this.columns = n;
 
-				this.values.splice(0, this.values.length, values);
+				this.values.splice(0, this.values.length);
+
+				this.values.concat(values);
 
 			}
 
