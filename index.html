@@ -138,6 +138,7 @@
 				<li><a href="#add">add</a></li>
 				<li><a href="#subtract">subtract</a></li>
 				<li><a href="#product">product</a></li>
+				<li><a href="#strassenProduct">strassenProduct</a></li>
 				<li><a href="#hadamardProduct">hadamardProduct</a></li>
 				<li><a href="#scalarProduct">scalarProduct</a></li>
 				<li><a href="#transpose">transpose</a></li>
@@ -703,8 +704,8 @@ document.write(A.toString()); // outputs "-8, -6, -4, -2, 0, 2, 4, 6, 8"</pre>
 			<div class="section" id="product">
 				<a class="top" href="#">top</a>
 				<h2>product</h2>
-				<p class="description">Performs the product of two matrices (from left to right, <strong>A</strong> x <strong>B</strong>). The number of columns of the first matrix must match the number of rows of the second one.</p>
-				<p class="description">This is the naive product algorithm. The Strassen's algorithm is in the TODO list.</p>
+				<p class="description">Performs the product of two matrices (from left to right <strong>AB</strong>). The number of columns of the first matrix must match the number of rows of the second one.</p>
+				<p class="description">This is the naive product algorithm. The <a href="#strassenProduct">strassenProduct</a> is asymptotically faster for large matrices.</p>
 				<h3>Syntax:</h3>
 				<pre>.product(matrix)</pre>
 				<h3>Arguments:</h3>
@@ -735,10 +736,38 @@ A.product(B);
 
 document.write(A.toString()); // outputs "1, 5, 4, 4, 11, 10, 7, 17, 16"</pre>
 			</div>
+			<div class="section" id="strassenProduct">
+				<a class="top" href="#">top</a>
+				<h2>strassenProduct</h2>
+				<p class="description">Performs the product of two matrices (from left to right <strong>AB</strong>) using the Strassen's algorithm. This algorithm is asymptotically faster than the naive method for large matrices.</p>
+				<h3>Syntax:</h3>
+				<pre>.strassenProduct(matrix)</pre>
+				<h3>Arguments:</h3>
+				<ol>
+					<li>(object) - A matrix object.</li>
+				</ol>
+				<h3>Returns:</h3>
+				<ul>
+					<li>(object) - A new matrix with the result.</li>
+				</ul>
+				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the ones of the first matrix, returning a reference to itself instead of a new matrix.</p>
+				<h3>Example:</h3>
+				<pre>
+var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+var B = new MAT(3, 3, [9, 8, 7, 6, 5, 4, 3, 2, 1]);
+
+var C = A.strassenProduct(B);
+
+document.write(C.toString()); // outputs "30,24,18,84,69,54,138,114,90"
+
+// [ 30,  24, 18] 
+// [ 84,  69, 54]
+// [138, 114, 90]</pre>
+			</div>
 			<div class="section" id="hadamardProduct">
 				<a class="top" href="#">top</a>
 				<h2>hadamardProduct</h2>
-				<p class="description">Performs the Hadamard product of two matrices (from left to right, A * B).</p>
+				<p class="description">Performs the Hadamard product of two matrices (from left to right <strong>AB</strong>).</p>
 				<h3>Syntax:</h3>
 				<pre>.hadamardProduct(matrix)</pre>
 				<h3>Arguments:</h3>
@@ -760,13 +789,11 @@ var C = A.hadamardProduct(B);
 // C = [4, 5, 6] o [0, 1, 0]
 //     [7, 8, 9]   [0, 1, 1]
 
-document.write(C.toString()); // outputs "1, 0, 3, 0, 5, 0, 0, 8, 9"
+document.write(C.toString()); // outputs "1,0,3,0,5,0,0,8,9"
 
-// Now with the overwrite attribute set to true
-A.overwrite = true;
-A.product(B);
-
-document.write(A.toString()); // outputs "1, 0, 3, 0, 5, 0, 0, 8, 9"</pre>
+// [1, 0, 3]
+// [0, 5, 0]
+// [0, 8, 9]</pre>
 			</div>
 			<div class="section" id="scalarProduct">
 				<a class="top" href="#">top</a>
@@ -787,7 +814,7 @@ document.write(A.toString()); // outputs "1, 0, 3, 0, 5, 0, 0, 8, 9"</pre>
 				<pre>
 var A = new MAT(2, 2, [1, 2, 3, 4]);
 
-document.write(A.scalarProduct(2).toString()); // outputs "1, 4, 6, 8"</pre>
+document.write(A.scalarProduct(2).toString()); // outputs "1,4,6,8"</pre>
 			</div>
 			<div class="section" id="transpose">
 				<a class="top" href="#">top</a>
@@ -818,7 +845,7 @@ var C = A.transpose();
 //     [3, 7,11]
 //     [4, 8,12]
 
-document.write(C.toString()); // outputs "1, 5, 9, 2, 6, 10, 3, 7, 11, 4, 8, 12"</pre>
+document.write(C.toString()); // outputs "1,5,9,2,6,10,3,7,11,4,8,12"</pre>
 			</div>
 			<div class="section" id="hermitian">
 				<a class="top" href="#">top</a>
@@ -837,7 +864,7 @@ document.write(C.toString()); // outputs "1, 5, 9, 2, 6, 10, 3, 7, 11, 4, 8, 12"
 				<pre>
 var A = new MAT(2, 2, [3, [2,3], [2,-1], 1]);
 
-document.write(A.hermitian().toString()); // outputs "3, [2,1], [2,-3], 1"</pre>
+document.write(A.hermitian().toString()); // outputs "3,[2,1],[2,-3],1"</pre>
 			</div>
 			<div class="section" id="trace">
 				<a class="top" href="#">top</a>
@@ -908,8 +935,8 @@ var A = new MAT({
 	13,14,15,16]
 });
 
-document.write(A.lowerTrace(1)); // outputs 30 (5 + 10 + 15)
-document.write(A.lowerTrace(2)); // outputs 23 (9 + 14)</pre>
+document.write(A.lowerTrace(1)); // outputs 30 (= 5 + 10 + 15)
+document.write(A.lowerTrace(2)); // outputs 23 (= 9 + 14)</pre>
 			</div>
 			<div class="section" id="minor">
 				<a class="top" href="#">top</a>
@@ -930,7 +957,7 @@ document.write(A.lowerTrace(2)); // outputs 23 (9 + 14)</pre>
 				<h3>Example:</h3>
 				<pre>
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
-document.write(A.minor(2, 2).toString()); // outputs "1, 2, 4, 5"</pre>
+document.write(A.minor(2, 2).toString()); // outputs "1,2,4,5"</pre>
 			</div>
 			<div class="section" id="determinant">
 				<a class="top" href="#">top</a>
@@ -1043,7 +1070,7 @@ var A = new MAT({
 });
 
 var result = A.solve([8, -11, -3]);
-document.write(result.toString()); // outputs "2, 3, -1"</pre>
+document.write(result.toString()); // outputs "2,3,-1"</pre>
 			</div>
 			<div class="section" id="gramSchmidt">
 				<a class="top" href="#">top</a>
