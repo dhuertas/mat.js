@@ -3,7 +3,7 @@ mat.js
 
 **Javascript Matrix Library**
 
-Yet another javascript matrix library. Here are some examples of how to use it. Enjoy!
+Yet another javascript matrix library.
 
 **Usage**
 
