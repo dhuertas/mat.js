@@ -614,7 +614,7 @@ var MAT = (function() {
 
 					this.values.splice(0, this.values.length);
 
-					this.values.concat(values);
+					this.values = this.values.concat(values);
 
 				}
 
@@ -741,7 +741,7 @@ var MAT = (function() {
 
 				this.values.splice(0, this.values.length);
 
-				this.values.concat(values);
+				this.values = this.values.concat(values);
 
 			}
 
@@ -771,7 +771,7 @@ var MAT = (function() {
 
 				this.values.splice(0, this.values.length);
 
-				this.values.concat(values);
+				this.values = this.values.concat(values);
 
 			}
 
@@ -895,7 +895,7 @@ var MAT = (function() {
 
 				this.values.splice(0, this.values.length);
 
-				this.values.concat(values);
+				this.values = this.values.concat(values);
 
 			}
 
@@ -1028,7 +1028,7 @@ var MAT = (function() {
 
 				this.values.splice(0, this.values.length);
 
-				this.values.concat(values);
+				this.values = this.values.concat(values);
 
 			}
 
@@ -1150,7 +1150,7 @@ var MAT = (function() {
 
 				this.values.splice(0, this.values.length);
 
-				this.values.concat(q);
+				this.values = this.values.concat(q);
 
 			}
 
@@ -1336,7 +1336,7 @@ var MAT = (function() {
 
 			}
 
-			return Q;
+			return i == this.maxrounds ? null : Q;
 
 		},
 
@@ -1369,45 +1369,41 @@ var MAT = (function() {
 
 		/*
 		 * diagonal
-		 * @param {integer} a size
-		 * @param {float|array} b (e.g. complex value [real,imag])
+		 * @param {array} b (e.g. complex value [real,imag])
 		 * @return {object} matrix
 		 */
-		diagonal : function(a, b) {
+		diagonal : function(a) {
 
-			var values = [],
-				res;
+			var values = [];
 
-			if (typeof a === "undefined" || a <= 0) {
+			if ( ! a instanceof Array) {
 
-				throw ("diagonal: first argument must be an integer greater than 0");
+				throw ("diagonal: argument must me an array");
 
 			} else {
 
-				for (var i = 0; i < a; i++) {
+				for (var i = 0; i < a.length; i++) {
 
-					for (var j = 0; j < a; j++) {
+					for (var j = 0; j < a.length; j++) {
 
-						values.push(i === j ? b : 0);
+						values.push(i === j ? a[i] : 0);
 
 					}
 
 				}
 
-				res = new MAT(a, a, values);
-
 			}
 
-			return res;
+			return new MAT(a.length, a.length, values);
 
 		},
 
 		/*
 		 * pNorm
-		 * @param {integer} a
+		 * @param {integer} p
 		 * @return {float}
 		 */
-		pNorm : function(a) {
+		pNorm : function(p) {
 
 			var res = 0, 
 				tmp = 1;
@@ -1418,19 +1414,13 @@ var MAT = (function() {
 
 					tmp = 1;
 
-					for (var k = 0; k < a; k++) {
-
-						tmp = OP.product(tmp, OP.modulus(this.values[this.columns*i + j]));
-
-					}
-
-					res = OP.sum(res, tmp);
-
+					res = OP.sum(res, Math.pow(
+						OP.modulus(this.values[this.columns*i + j]), p));
 				}
 
 			}
 
-			res = Math.pow(Math.E, OP.division(Math.log(res), a));
+			res = Math.pow(res, OP.division(1, p));
 
 			return res;
 
@@ -1510,7 +1500,8 @@ var MAT = (function() {
 
 			var values = [],
 				det = this.determinant(),
-				sign = 1;
+				sign = 1,
+				ow = this.overwrite;
 
 			if (det === 0) {
 
@@ -1521,6 +1512,8 @@ var MAT = (function() {
 				throw ("inverse: matrix must be square");
 
 			} else {
+			
+				this.overwrite = false;
 
 				for (var i = 0; i < this.rows; i++) {
 
@@ -1535,13 +1528,15 @@ var MAT = (function() {
 
 				}
 
+				this.overwrite = ow;
+
 			}
 
 			if (this.overwrite) {
 
 				this.values.splice(0, this.values.length);
 
-				this.values.concat(values);
+				this.values = this.values.concat(values);
 
 			}
 
@@ -1555,6 +1550,10 @@ var MAT = (function() {
 		 * @return {object} matrix
 		 */
 		pseudoInverse : function() {
+
+			var ow = this.overwrite;
+
+			this.overwrite = false;
 
 			var M = this.hermitian().product(this);
 
@@ -1579,6 +1578,8 @@ var MAT = (function() {
 				M = M.inverse().product(this.hermitian());
 
 			}
+
+			this.overwrite = ow;
 
 			return M;
 
@@ -1628,7 +1629,7 @@ var MAT = (function() {
 
 				this.values.splice(0, this.values.length);
 
-				this.values.concat(values);
+				this.values = this.values.concat(values);
 
 			}
 
@@ -1640,19 +1641,22 @@ var MAT = (function() {
 		 * zero
 		 * @return {object} a matrix filled with zeros 
 		 */
-		zero : function() {
+		zero : function(a) {
 
-			var values = [];
+			var rows = (a instanceof Array && a.length == 2) ? a[0] : this.rows,
+				columns = (a instanceof Array && a.length == 2) ? a[1] : this.columns,
+				values = [];
 
-			for (var i = 0, len = this.columns*this.rows; i < len; i++) {
+			for (var i = 0, len = columns*rows; i < len; i++) {
 
 				values.push(0);
 
 			}
 
-			return new MAT(this.rows, this.columns, values);
+			return new MAT(rows, columns, values);
 
 		},
+
 	}
 
 	return construct;
