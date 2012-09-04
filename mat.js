@@ -1268,7 +1268,6 @@ var MAT = (function() {
 
 					tmp = QR[1].product(QR[0]);
 
-					console.log(tmp.toString());
 					/* 
 					 * Stop the process when the values
 					 * below the main diagonal are sufficiently small 
@@ -1305,29 +1304,39 @@ var MAT = (function() {
 					values: this.getValues(),
 					overwrite: true
 				}),
-				QR;
+				QR = null,
+				Q = this.identity(this.rows);
 
-			for (var i = 0; i < this.maxrounds; i++) {
+			if ( ! this.isSquare()) {
 
-				QR = tmp.qrDecomposition();
+				throw ("eigenVectors: matrix must be square");
 
-				tmp = QR[1].product(QR[0]);
+			} else {
 
-				/* 
-				 * Stop the process when the values
-				 * below the main diagonal are sufficiently small 
-				 */
-				if (OP.modulus(tmp.lowerTrace(1)) < this.error) {
+				for (var i = 0; i < this.maxrounds; i++) {
 
-					break;			
+					QR = tmp.qrDecomposition();
+
+					tmp = QR[1].product(QR[0]);
+
+					/* The product of all Q contains the eigenvectors */
+					Q = QR[0].product(Q);
+
+					/* 
+					 * Stop the process when the values
+					 * below the main diagonal are sufficiently small 
+					 */
+					if (OP.modulus(tmp.lowerTrace(1)) < this.error) {
+
+						break;			
+
+					}
 
 				}
 
 			}
 
-			QR = tmp.qrDecomposition();
-
-			return QR[0];
+			return Q;
 
 		},
 
