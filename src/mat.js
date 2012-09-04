@@ -169,6 +169,82 @@ var MAT = (function() {
 
 	}
 
+	function isPowerOfTwo(a) {
+
+		return (a != 0) && ((a & (a-1)) == 0);
+
+	}
+
+	function strassen(A, B, size) {
+
+		if (size == 1) {
+
+			return A.product(B);
+
+		} else {
+
+			/* Partition A and B into equally sized block matrices */		
+			var newSize = size/2,
+				result = new MAT().zero([size, size]),
+				a11 = new MAT(newSize, newSize, new Array(newSize*newSize)),
+				a12 = new MAT(newSize, newSize, new Array(newSize*newSize)),
+				a21 = new MAT(newSize, newSize, new Array(newSize*newSize)),
+				a22 = new MAT(newSize, newSize, new Array(newSize*newSize));
+
+			var b11 = new MAT(newSize, newSize, new Array(newSize*newSize)),
+				b12 = new MAT(newSize, newSize, new Array(newSize*newSize)),
+				b21 = new MAT(newSize, newSize, new Array(newSize*newSize)),
+				b22 = new MAT(newSize, newSize, new Array(newSize*newSize));
+
+			for (var i = 0; i < newSize; i++) {
+
+				for (var j = 0; j < newSize; j++) {
+
+					a11.setValue(i, j, A.getValue(i, j));
+					a12.setValue(i, j, A.getValue(i, j + newSize));
+					a21.setValue(i, j, A.getValue(i + newSize, j));
+					a22.setValue(i, j, A.getValue(i + newSize, j + newSize));
+					b11.setValue(i, j, B.getValue(i, j));
+					b12.setValue(i, j, B.getValue(i, j + newSize));
+					b21.setValue(i, j, B.getValue(i + newSize, j));
+					b22.setValue(i, j, B.getValue(i + newSize, j + newSize));
+
+				}
+
+			}
+
+			var m1 = strassen(a11.add(a22), b11.add(b22), newSize),
+				m2 = strassen(a21.add(a22), b11, newSize),
+				m3 = strassen(a11, b12.subtract(b22), newSize),
+				m4 = strassen(a22, b21.subtract(b11), newSize),
+				m5 = strassen(a11.add(a12), b22, newSize),
+				m6 = strassen(a21.subtract(a11), b11.add(b12), newSize),
+				m7 = strassen(a12.subtract(a22), b21.add(b22), newSize);
+
+			var c11 = m1.add(m4).subtract(m5).add(m7),
+				c12 = m3.add(m5),
+				c21 = m2.add(m4),
+				c22 = m1.subtract(m2).add(m3).add(m6);
+
+			for (var i = 0; i < newSize; i++) {
+
+				for (var j = 0; j < newSize; j++) {
+
+					result.setValue(i, j, c11.getValue(i, j));
+					result.setValue(i, j + newSize, c12.getValue(i, j));
+					result.setValue(i + newSize, j, c21.getValue(i, j));
+					result.setValue(i + newSize, j + newSize, c22.getValue(i, j));
+
+				}
+
+			}
+
+			return result;
+
+		}
+
+	}
+
 	/*
 	 * MAT object constructor
 	 * @param {integer} r (rows)
@@ -612,6 +688,8 @@ var MAT = (function() {
 
 				if (this.overwrite) {
 
+					this.columns = a.getColumns();
+
 					this.values.splice(0, this.values.length);
 
 					this.values = this.values.concat(values);
@@ -625,6 +703,91 @@ var MAT = (function() {
 			}
 
 			return this.overwrite ? this : new MAT(this.rows, a.getColumns(), values);
+
+		},
+
+		/*
+		 * strassenProduct
+		 * The Strassen product algorithm
+		 */
+		strassenProduct : function(a) {
+
+			if (a.getRows() === this.columns) {
+
+				var max = Math.max(this.rows, this.columns, a.getRows(), a.getColumns()),
+					result = this.zero([this.rows, a.getColumns()]),
+					size = 1;
+
+				/* Extend the matrix with zeros until size is 2^n x 2^n */
+				if ( ! isPowerOfTwo(max)) {
+
+					while (size < max) {
+
+						size <<= 1;
+
+					}
+
+				} else {
+
+					size = max;
+
+				}
+
+				var A = this.zero([size, size]),
+					B = this.zero([size, size]),
+					tmp = this.zero([size, size]);
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0; j < this.columns; j++) {
+
+						A.setValue(i, j, this.getValue(i, j));
+
+					}
+
+				}
+
+				for (var i = 0, leni = a.getRows(); i < leni; i++) {
+
+					for (var j = 0, lenj = a.getColumns(); j < lenj; j++) {
+
+						B.setValue(i, j, a.getValue(i, j));
+
+					}
+
+				}
+
+				/* The Strassen algorithm */
+				tmp = strassen(A, B, size);
+
+				/* Get rid of the filling zeros */
+				for (var i = 0, rows = result.getRows(); i < rows; i++) {
+
+					for (var j = 0, columns = result.getColumns(); j < columns; j++) {
+
+						result.setValue(i, j, tmp.getValue(i, j));
+
+					}
+
+				}
+
+			} else {
+
+				throw ("strassen: matrix size does not match");
+
+			}
+	
+			if (this.overwrite) {
+
+				this.columns = a.getColumns();
+
+				this.values.splice(0, this.values.length);
+
+				this.values = this.values.concat(result.getValues());
+
+			}
+
+			return this.overwrite ? this : result;
 
 		},
 
