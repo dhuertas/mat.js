@@ -181,71 +181,150 @@ var MAT = (function() {
 
 	}
 
-	function strassen(A, B, size) {
+	/* Sum function for the Strassen's algorithm */
+	function _sum(a, b, r, s) {
+	
+		for (var i = 0; i < s; i++) {
+
+			for (var j = 0; j < s; j++) {
+
+				r[s*i + j] = OP.sum(a[s*i + j], b[s*i + j]);
+
+			}
+
+		}
+
+	}
+	
+	/* Subtract function for the Strassen's algorithm */
+	function _subtract(a, b, r, s) {
+
+		for (var i = 0; i < s; i++) {
+
+			for (var j = 0; j < s; j++) {
+
+				r[s*i + j] = OP.subtract(a[s*i + j], b[s*i + j]);
+
+			}
+
+		}
+
+	}
+
+	/* The Strassen's algorithm */
+	function _strassen(A, B, R, size) {
 
 		if (size == 1) {
+			
+			R[0] = OP.product(A[0], B[0]);
 
-			return A.product(B);
+			return;
+
+		} else if (size == 2) {
+
+			R[0] = OP.sum(OP.product(A[0], B[0]), OP.product(A[1], B[2]));
+			R[1] = OP.sum(OP.product(A[0], B[1]), OP.product(A[1], B[3]));
+			R[2] = OP.sum(OP.product(A[2], B[0]), OP.product(A[3], B[2]));
+			R[3] = OP.sum(OP.product(A[2], B[1]), OP.product(A[3], B[3]));
+			
+			return;
 
 		} else {
 
 			/* Partition A and B into equally sized block matrices */		
 			var newSize = size/2,
-				result = new MAT().zero([size, size]),
-				a11 = new MAT(newSize, newSize, new Array(newSize*newSize)),
-				a12 = new MAT(newSize, newSize, new Array(newSize*newSize)),
-				a21 = new MAT(newSize, newSize, new Array(newSize*newSize)),
-				a22 = new MAT(newSize, newSize, new Array(newSize*newSize));
+				newSizeSquared = newSize*newSize,
+				a11 = new Array(newSizeSquared),
+				a12 = new Array(newSizeSquared),
+				a21 = new Array(newSizeSquared),
+				a22 = new Array(newSizeSquared);
 
-			var b11 = new MAT(newSize, newSize, new Array(newSize*newSize)),
-				b12 = new MAT(newSize, newSize, new Array(newSize*newSize)),
-				b21 = new MAT(newSize, newSize, new Array(newSize*newSize)),
-				b22 = new MAT(newSize, newSize, new Array(newSize*newSize));
+			var b11 = new Array(newSizeSquared),
+				b12 = new Array(newSizeSquared),
+				b21 = new Array(newSizeSquared),
+				b22 = new Array(newSizeSquared);
 
-			for (var i = 0; i < newSize; i++) {
+			var c11 = new Array(newSizeSquared),
+				c12 = new Array(newSizeSquared),
+				c21 = new Array(newSizeSquared),
+				c22 = new Array(newSizeSquared);
 
-				for (var j = 0; j < newSize; j++) {
+			var m1 = new Array(newSizeSquared),
+				m2 = new Array(newSizeSquared),
+				m3 = new Array(newSizeSquared),
+				m4 = new Array(newSizeSquared),
+				m5 = new Array(newSizeSquared),
+				m6 = new Array(newSizeSquared),
+				m7 = new Array(newSizeSquared);
 
-					a11.setValue(i, j, A.getValue(i, j));
-					a12.setValue(i, j, A.getValue(i, j + newSize));
-					a21.setValue(i, j, A.getValue(i + newSize, j));
-					a22.setValue(i, j, A.getValue(i + newSize, j + newSize));
-					b11.setValue(i, j, B.getValue(i, j));
-					b12.setValue(i, j, B.getValue(i, j + newSize));
-					b21.setValue(i, j, B.getValue(i + newSize, j));
-					b22.setValue(i, j, B.getValue(i + newSize, j + newSize));
-
-				}
-
-			}
-
-			var m1 = strassen(a11.add(a22), b11.add(b22), newSize),
-				m2 = strassen(a21.add(a22), b11, newSize),
-				m3 = strassen(a11, b12.subtract(b22), newSize),
-				m4 = strassen(a22, b21.subtract(b11), newSize),
-				m5 = strassen(a11.add(a12), b22, newSize),
-				m6 = strassen(a21.subtract(a11), b11.add(b12), newSize),
-				m7 = strassen(a12.subtract(a22), b21.add(b22), newSize);
-
-			var c11 = m1.add(m4).subtract(m5).add(m7),
-				c12 = m3.add(m5),
-				c21 = m2.add(m4),
-				c22 = m1.subtract(m2).add(m3).add(m6);
+			var ar = new Array(newSizeSquared),
+				br = new Array(newSizeSquared);
 
 			for (var i = 0; i < newSize; i++) {
 
 				for (var j = 0; j < newSize; j++) {
 
-					result.setValue(i, j, c11.getValue(i, j));
-					result.setValue(i, j + newSize, c12.getValue(i, j));
-					result.setValue(i + newSize, j, c21.getValue(i, j));
-					result.setValue(i + newSize, j + newSize, c22.getValue(i, j));
+					a11[newSize*i + j] = A[size*i + j];
+					a12[newSize*i + j] = A[size*i + j + newSize];
+					a21[newSize*i + j] = A[size*(i + newSize) + j];
+					a22[newSize*i + j] = A[size*(i + newSize) + j + newSize];
+
+					b11[newSize*i + j] = B[size*i + j];
+					b12[newSize*i + j] = B[size*i + j + newSize];
+					b21[newSize*i + j] = B[size*(i + newSize) + j];
+					b22[newSize*i + j] = B[size*(i + newSize) + j + newSize];
 
 				}
 
 			}
 
-			return result;
+			_sum(a11, a22, ar, newSize);
+			_sum(b11, b22, br, newSize);
+			_strassen(ar, br, m1, newSize); 
+
+			_sum(a21, a22, ar, newSize);
+			_strassen(ar, b11, m2, newSize);
+
+			_subtract(b12, b22, br, newSize);
+			_strassen(a11, br, m3, newSize);
+
+			_subtract(b21, b11, br, newSize);
+			_strassen(a22, br, m4, newSize);
+
+			_sum(a11, a12, ar, newSize);
+			_strassen(ar, b22, m5, newSize);
+
+			_subtract(a21, a11, ar, newSize);
+			_sum(b11, b12, br, newSize);
+			_strassen(ar, br, m6, newSize);
+
+			_subtract(a12, a22, ar, newSize);
+			_sum(b21, b22, br, newSize);
+			_strassen(ar, br, m7, newSize);
+
+			_sum(m3, m5, c12, newSize);
+			_sum(m2, m4, c21, newSize);
+
+			_sum(m1, m4, ar, newSize);
+			_sum(ar, m7, br, newSize);
+			_subtract(br, m5, c11, newSize);
+
+			_sum(m1, m3, ar, newSize);
+			_sum(ar, m6, br, newSize);
+			_subtract(br, m2, c22, newSize);
+
+			for (var i = 0; i < newSize; i++) {
+
+				for (var j = 0; j < newSize; j++) {
+
+					R[size*i + j] = c11[newSize*i + j];
+					R[size*i + j + newSize] = c12[newSize*i + j];
+					R[size*(i + newSize) + j] = c21[newSize*i + j];
+					R[size*(i + newSize) + j + newSize] = c22[newSize*i + j];
+
+				}
+
+			}
 
 		}
 
@@ -810,7 +889,9 @@ var MAT = (function() {
 			if (a.getRows() === this.columns) {
 
 				var max = Math.max(this.rows, this.columns, a.getRows(), a.getColumns()),
-					result = this.zero([this.rows, a.getColumns()]),
+					rows = this.rows,
+					columns = a.getColumns(),
+					result = new Array(rows*columns),
 					size = 1;
 
 				/* Extend the matrix with zeros until size is 2^n x 2^n */
@@ -828,15 +909,24 @@ var MAT = (function() {
 
 				}
 
-				var A = this.zero([size, size]),
-					B = this.zero([size, size]),
-					tmp = this.zero([size, size]);
+				var sizeSquared = size*size,
+					A = new Array(sizeSquared),
+					B = new Array(sizeSquared),
+					tmp = new Array(sizeSquared);
+
+				for (var i = 0; i < sizeSquared; i++) { 
+					
+					A[i] = 0;
+					B[i] = 0;
+					tmp[i] = 0;
+
+				}
 
 				for (var i = 0; i < this.rows; i++) {
 
 					for (var j = 0; j < this.columns; j++) {
 
-						A.setValue(i, j, this.getValue(i, j));
+						A[size*i + j] = this.getValue(i, j);
 
 					}
 
@@ -844,23 +934,23 @@ var MAT = (function() {
 
 				for (var i = 0, leni = a.getRows(); i < leni; i++) {
 
-					for (var j = 0, lenj = a.getColumns(); j < lenj; j++) {
+					for (var j = 0; j < columns; j++) {
 
-						B.setValue(i, j, a.getValue(i, j));
+						B[size*i + j] = a.getValue(i, j);
 
 					}
 
 				}
 
 				/* The Strassen algorithm */
-				tmp = strassen(A, B, size);
+				_strassen(A, B, tmp, size);
 
 				/* Get rid of the filling zeros */
-				for (var i = 0, rows = result.getRows(); i < rows; i++) {
+				for (var i = 0; i < rows; i++) {
 
-					for (var j = 0, columns = result.getColumns(); j < columns; j++) {
+					for (var j = 0; j < columns; j++) {
 
-						result.setValue(i, j, tmp.getValue(i, j));
+						result[columns*i + j] = tmp[size*i + j];
 
 					}
 
@@ -878,11 +968,11 @@ var MAT = (function() {
 
 				this.values.splice(0, this.values.length);
 
-				this.values = this.values.concat(result.getValues());
+				this.values = this.values.concat(result);
 
 			}
 
-			return this.overwrite ? this : result;
+			return this.overwrite ? this : new MAT(rows, columns, result);
 
 		},
 
