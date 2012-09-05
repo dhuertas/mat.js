@@ -306,7 +306,8 @@ var A = new MAT({
 				<pre>
 var A = new MAT(2, 2, [1, 2, -1, 2]);
 
-document.getElementById("output").innerHTML += "The determinant $$" + A.toLatex('v') + "$$ equals " + A.det() + ".";
+document.getElementById("output").innerHTML += "The determinant $$" + 
+	A.toLatex('v') + "$$ equals " + A.det() + ".";
 
 // Typeset the element:
 MathJax.Hub.Queue(["Typeset",MathJax.Hub,"output"]);</pre>
