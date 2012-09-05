@@ -169,6 +169,12 @@ var MAT = (function() {
 
 	}
 
+	function isArray(a) {
+
+		return (Object.prototype.toString.call(a) === '[object Array]');
+
+	}
+	
 	function isPowerOfTwo(a) {
 
 		return (a != 0) && ((a & (a-1)) == 0);
@@ -339,6 +345,93 @@ var MAT = (function() {
 		toString : function() {
 
 			return this.values.toString();
+
+		},
+
+		/*
+		 * toLatex
+		 * @param {string} closure (e.g. 'p','b','B','v','V')
+		 * @return {string}
+		 */
+		toLatex : function(closure) {
+
+			var values 			= [],
+				beginClosure	= "",
+				endClosure		= "",
+				result 			= "";
+			
+			switch (closure) {
+				
+				case 'b':
+
+					beginClosure = "\\begin{bmatrix} ";
+					endClosure = "\\end{bmatrix}";
+					break;
+
+				case 'B':
+
+					beginClosure = "\\begin{Bmatrix} ";
+					endClosure = "\\end{Bmatrix}";
+					break;
+
+				case 'v':
+
+					beginClosure = "\\begin{vmatrix} ";
+					endClosure = "\\end{vmatrix}";
+					break;
+
+				case 'V':
+
+					beginClosure = "\\begin{Vmatrix} ";
+					endClosure = "\\end{Vmatrix}";
+					break;
+
+				case 'p':
+				default:
+
+					beginClosure += "\\begin{pmatrix} ";
+					endClosure = "\\end{pmatrix}";
+					break;
+
+			}
+
+			// First we must find any complex values and convert them to strings
+			for (var i = 0, len = this.rows*this.columns; i< len; i++) {
+			
+				if (isArray(this.values[i])) {
+					
+					values.push(
+						String(this.values[i][0])+" "+
+						(this.values[i][1] >= 0 ? "+" : "")+
+						String(this.values[i][1])+"i");
+				
+				} else {
+				
+					values.push(String(this.values[i]));
+
+				}
+
+			}
+
+			result += beginClosure;
+
+			for (var i = 0; i < this.rows; i++) {
+
+				for (var j = 0; j < this.columns; j++) {
+
+					result = result.concat(values[this.columns*i + j]);
+
+					result += (j < this.columns - 1) ? " & " : " ";
+
+				}
+
+				result += (i < this.rows - 1) ? "\\\\ " : " ";
+
+			}
+
+			result += endClosure;
+
+			return result;
 
 		},
 
@@ -709,6 +802,8 @@ var MAT = (function() {
 		/*
 		 * strassenProduct
 		 * The Strassen product algorithm
+		 * @param {object} matrix
+		 * @return {object} matrix (X*A)
 		 */
 		strassenProduct : function(a) {
 
