@@ -395,7 +395,7 @@ var MAT = (function() {
 
 			}
 
-			// First we must find any complex values and convert them to strings
+			// First we must find any complex values and format them properly
 			for (var i = 0, len = this.rows*this.columns; i< len; i++) {
 			
 				if (isArray(this.values[i])) {
