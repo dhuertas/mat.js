@@ -211,7 +211,11 @@ var MAT = (function() {
 
 	}
 
-	/* The Strassen's algorithm */
+	/* 
+	 * The Strassen's algorithm 
+	 * This code is based on the one found in the wikipedia article:
+	 * http://en.wikipedia.org/wiki/Strassen_algorithm
+	 */
 	function _strassen(A, B, R, size) {
 
 		if (size == 1) {
