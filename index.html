@@ -4,6 +4,18 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>mat.js</title>
+	<!-- Syntax highlighter CDN -->
+	<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+
+	<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+	<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+	<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>	
+	
+	<!-- MathJax CDN -->
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+	<!-- The mat.js source code -->
 	<script type="text/javascript" src="src/mat.js"></script>
 </head>
 
@@ -53,23 +65,8 @@
 		border-left: 1px solid #ccc;
 	}
 
-	pre {
-		width: 680px;
-		border: 1px solid #ccc;
-		border-radius: 3px;
-		background: #fff;
-		padding: 10px;
-	}
-
-	code {
-		border: 1px solid #ccc;
-		border-radius: 3px;
-		padding-left: 4px;
-		padding-right: 4px;
-	
-		display: inline-block;
-		line-height: 18px;
-		background: #fff;
+	p {
+		line-height: 16px;
 	}
 
 	a {
@@ -215,13 +212,13 @@
 				<h2>error</h2>
 				<p class="description">(float) - Sets the error resolution for the iterative algorithms (e.g. <a href="#eigenValues">eigenValues</a>, <a href="#eigenVectors">eigenVectors</a>).</p>
 				<h3>Default:</h3>
-				<pre>0.000001</pre>
+				<pre class="brush: js">0.000001</pre>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [1, 2, 3, 4]);
 A.error = 0.000001;</pre>
 				<span>or</span>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 2,
 	columns: 2, 
@@ -233,13 +230,13 @@ var A = new MAT({
 				<h2>maxrounds</h2>
 				<p class="description">(integer) - Sets the number of maximum rounds for the iterative algorithms (e.g. <a href="#eigenValues">eigenValues</a>, <a href="#eigenVectors">eigenVectors</a>).</p>
 				<h3>Default:</h3>
-				<pre>1000</pre>
+				<pre class="brush: js">1000</pre>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [1, 2, 3, 4]);
 A.maxrounds = 1000;</pre>
-			<span>or</span>
-			<pre>
+				<span>or</span>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 2,
 	columns: 2,
@@ -251,13 +248,13 @@ var A = new MAT({
 				<h2>overwrite</h2>
 				<p class="description">When set to <code>true</code> the result values will be stored in the same matrix instance, overwriting the previous ones (not to be confused with in-place algorithms). The aim is to reduce the amount of memory and time used to perform iterative operations.</p>
 				<h3>Default:</h3>
-				<pre>false</pre>
+				<pre class="brush: js">false</pre>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2,2,[1, 2, 3, 4]);
 A.overwrite = true;</pre>
 				<span>or</span>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 2,
 	columns: 2,
@@ -269,7 +266,7 @@ var A = new MAT({
 				<h2>fromArray</h2>
 				<p class="description">Creates a new matrix using array notation.</p>
 				<h3>Syntax:</h3>
-				<pre>.fromArray(array);</pre>
+				<pre class="brush: js">.fromArray(array);</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(array) - A 2D array containing the matrix values.</li>
@@ -280,7 +277,7 @@ var A = new MAT({
 				</ul>
 				<h3>Example:</h3>
 				<p>This example creates a 2x3 matrix object:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	maxrounds: 1000,
 	overwrite: true
@@ -294,7 +291,7 @@ var A = new MAT({
 				<h2>toArray</h2>
 				<p class="description">Returns an array containing all the matrix values, ordered from left to right and from top to bottom.</p>
 				<h3>Syntax:</h3>
-				<pre>.toArray()</pre>
+				<pre class="brush: js">.toArray()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>	
 				<h3>Returns:</h3>
@@ -302,14 +299,14 @@ var A = new MAT({
 					<li>(array) - A copy of the array containing the matrix values.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>var values = A.toArray();</pre>
+				<pre class="brush: js">var values = A.toArray();</pre>
 			</div>
 			<div class="section" id="toString">
 				<a class="top" href="#">top</a>
 				<h2>toString</h2>
 				<p class="description">Returns a string containing all the matrix values, using the toString method of the javascript <code>Array</code> object.</p>
 				<h3>Syntax:</h3>
-				<pre>.toString()</pre>
+				<pre class="brush: js">.toString()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -317,14 +314,14 @@ var A = new MAT({
 					<li>(string) - The toString method applied to the matrix array.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>document.write(A.toString());</pre>
+				<pre class="brush: js">document.write(A.toString());</pre>
 			</div>
 			<div class="section" id="toLatex">
 				<a class="top" href="#">top</a>
 				<h2>toLatex</h2>
 				<p class="description">Returns the matrix converted into a LaTeX formatted string.</p>
 				<h3>Syntax:</h3>
-				<pre>.toLatex([closure])</pre>
+				<pre class="brush: js">.toLatex([closure])</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(string) - The closure format. Options are: b, B, v, V, p ([ ], { }, | |, || ||, ( ) respectively). Default closure is p ( ).</li>
@@ -335,7 +332,7 @@ var A = new MAT({
 				</ul>
 				<h3>Example:</h3>
 				<p>The following example uses the MathJax library, which enables the browser to format text using LaTeX:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [1, 2, -1, 2]);
 
 document.getElementById("output").innerHTML += "The determinant $$" + 
@@ -343,13 +340,23 @@ document.getElementById("output").innerHTML += "The determinant $$" +
 
 // Typeset the element:
 MathJax.Hub.Queue(["Typeset",MathJax.Hub,"output"]);</pre>
+				<p>If mathjax loeaded correctly from the CDN, should look something like this:</p>
+				<div id="toLatexExample"></div>
+				<script type="text/javascript">
+					var A = new MAT(2, 2, [1, 2, -1, 2]);
+
+					document.getElementById("toLatexExample").innerHTML += "The determinant $$" + 
+						A.toLatex('v') + "$$ equals " + A.det() + ".";
+					
+					MathJax.Hub.Queue(["Typeset",MathJax.Hub,"toLatexExample"]);
+				</script>
 			</div>
 			<div class="section" id="getColumn">
 				<a class="top" href="#">top</a>
 				<h2>getColumn</h2>
 				<p class="description">Returns a column (or column vector) from the matrix.</p>
 				<h3>Syntax:</h3>
-				<pre>.getColumn(column);</pre>
+				<pre class="brush: js">.getColumn(column);</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The column position (starting from <code>0</code>, to <code>columns-1</code>).</li>
@@ -360,7 +367,7 @@ MathJax.Hub.Queue(["Typeset",MathJax.Hub,"output"]);</pre>
 				</ul>
 				<h3>Example:</h3>
 				<p>The following example will print the column vector <code>[0, 0, 1]</code>:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT().fromArray([
 	[1, 0, 0],
 	[0, 1, 0],
@@ -374,7 +381,7 @@ document.write(column.toString());</pre>
 				<h2>getColumns</h2>
 				<p class="description">Returns the number of columns.</p>
 				<h3>Syntax:</h3>
-				<pre>.getColumns()</pre>
+				<pre class="brush: js">.getColumns()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -382,7 +389,7 @@ document.write(column.toString());</pre>
 					<li>(integer) - The number of columns.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT().fromArray([
 	[1, 0, 0],
 	[0, 1, 0],
@@ -396,7 +403,7 @@ document.write(A.getColumns());</pre>
 				<h2>getLength</h2>
 				<p class="description">Returns the number of elements (or length) of the matrix array.</p>
 				<h3>Syntax:</h3>
-				<pre>.getLength()</pre>
+				<pre class="brush: js">.getLength()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -404,7 +411,7 @@ document.write(A.getColumns());</pre>
 					<li>(integer) - The number of elements of the matrix array.</li>
 				</ul>
 				<h3>Example:</h3>	
-				<pre>
+				<pre class="brush: js">
 var A = new MAT().fromArray([
 	[1, 0, 0],
 	[0, 1, 0],
@@ -418,7 +425,7 @@ document.write(A.getLength());</pre>
 				<h2>getRow</h2>
 				<p class="description">Returns a row (row vector) from the matrix.</p>
 				<h3>Syntax:</h3>
-				<pre>.getRow(row)</pre>
+				<pre class="brush: js">.getRow(row)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The row position (starting from <code>0</code>, to <code>rows-1</code>).</li>
@@ -429,7 +436,7 @@ document.write(A.getLength());</pre>
 				</ul>
 				<h3>Example:</h3>
 				<p>The following example will print the row vector <code>[0, 1, 0]</code>.</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT().fromArray([
 	[1, 0, 0],
 	[0, 1, 0],
@@ -443,7 +450,7 @@ document.write(row.toString());</pre>
 				<h2>getRows</h2>
 				<p class="description">Returns the number of rows.</p>
 				<h3>Syntax:</h3>
-				<pre>.getRows()</pre>
+				<pre class="brush: js">.getRows()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -451,7 +458,7 @@ document.write(row.toString());</pre>
 					<li>(integer) - The number of rows.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT().fromArray([
 	[1, 0, 0],
 	[0, 1, 0],
@@ -465,7 +472,7 @@ document.write(A.getRows());</pre>
 				<h2>getShape</h2>
 				<p class="description">Returns the shape (or the dimensions) of the matrix.</p>
 				<h3>Syntax:</h3>
-				<pre>.getShape()</pre>
+				<pre class="brush: js">.getShape()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -474,7 +481,7 @@ document.write(A.getRows());</pre>
 				</ul>
 				<h3>Example:</h3>
 				<p>For a 3x4 matrix the following code will print the array <code>[3, 4]</code>:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 4, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);				
 document.write(A.getShape());</pre>
 			</div>
@@ -483,7 +490,7 @@ document.write(A.getShape());</pre>
 				<h2>getValue</h2>
 				<p class="description">Returns the value at the specified <code>row</code> and <code>column</code> values.</p>
 				<h3>Syntax:</h3>
-				<pre>.getValue(row, column)</pre>
+				<pre class="brush: js">.getValue(row, column)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The row position (from <code>0</code> to <code>rows-1</code>).</li>
@@ -494,7 +501,7 @@ document.write(A.getShape());</pre>
 					<li>(float|array) - The value at the specified position (complex numbers are treated as duplex of the form <code>[real,imag]</code>).</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 4, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 document.write(A.getValue(2, 3));</pre>
 				<p>The previous code will print the number <code>12</code>.</p>
@@ -504,7 +511,7 @@ document.write(A.getValue(2, 3));</pre>
 				<h2>getValues</h2>
 				<p class="description">Returns a copy of the matrix values, ordered from left to right and from top to bottom. This is the same as the <code>toString</code> method.</p>
 				<h3>Syntax:</h3>
-				<pre>.getValues()</pre>
+				<pre class="brush: js">.getValues()</pre>
 				<h3>Arguments:</h3>
 				<p>None</p>
 				<h3>Returns:</h3>
@@ -512,7 +519,7 @@ document.write(A.getValue(2, 3));</pre>
 					<li>(array) - A copy of the array containing the matrix values.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 document.write(A.getValues());</pre>
 				<p>The previous code will print the array <code>[1, 2, 3, 4, 5, 6, 7, 8, 9]</code>.</p>
@@ -522,7 +529,7 @@ document.write(A.getValues());</pre>
 				<h2>setRows</h2>
 				<p class="description">Sets the number of rows of the matrix. This method should be used in conjuction with the <a href="#setColumns">setColumns</a> method in order to avoid undesired behaviours.</p>
 				<h3>Syntax:</h3>
-				<pre>.setRows(rows)</pre>
+				<pre class="brush: js">.setRows(rows)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The number of rows.</li>
@@ -533,7 +540,7 @@ document.write(A.getValues());</pre>
 				</ul>
 				<h3>Example:</h3>
 				<p>Let's say we want to transform a 3x2 matrix to a 1x6 matrix (or row vector):</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 2, [1, 2, 3, 4, 5, 6]);
 // do some stuff here
 A.setRows(1).setColumns(6);
@@ -545,7 +552,7 @@ document.write(A.getShape());</pre>
 				<h2>setColumns</h2>
 				<p class="description">Sets the number of columns of the matrix. This method should be used in conjuction with the <a href="#setRows">setRows</a> method in order to avoid undesired behaviours.</p>
 				<h3>Syntax:</h3>
-				<pre>.setColumns(columns)</pre>
+				<pre class="brush: js">.setColumns(columns)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The number of columns.</li>
@@ -556,7 +563,7 @@ document.write(A.getShape());</pre>
 				</ul>
 				<h3>Example:</h3>
 				<p>Let's say we want to transform a 3x2 matrix to a 6x1 matrix (or column vector):</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 2,[1, 2, 3, 4, 5, 6]);
 // do some stuff here
 A.setColumns(1).setRows(6);
@@ -568,7 +575,7 @@ document.write(A.getShape());</pre>
 				<h2>setValue</h2>
 				<p class="description">Sets the value at the specified position of the matrix.</p>
 				<h3>Syntax:</h3>
-				<pre>.setValue(row, column, value)</pre>
+				<pre class="brush: js">.setValue(row, column, value)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The row position (from <code>0</code> to <code>rows-1</code>).</li>
@@ -581,14 +588,14 @@ document.write(A.getShape());</pre>
 				</ul>
 				<h3>Example:</h3>
 				<p>The following example sets the center value of a 3x3 matrix to 0.</p>
-				<pre>matrix.setValue(1, 1, 0).</pre>
+				<pre class="brush: js">matrix.setValue(1, 1, 0).</pre>
 			</div>
 			<div class="section" id="isSquare">
 				<a class="top" href="#">top</a>
 				<h2>isSquare</h2>
 				<p class="description">Tells whether the matrix is a square matrix or not.</p>
 				<h3>Syntax:</h3>
-				<pre>.isSquare()</pre>
+				<pre class="brush: js">.isSquare()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -596,7 +603,7 @@ document.write(A.getShape());</pre>
 					<li>(boolean) - <code>true</code> if the matrix is square, <code>false</code> otherwise.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 if (matrix.isSquare()) {
 	// execute this code when the matrix is square
 } else {
@@ -608,7 +615,7 @@ if (matrix.isSquare()) {
 				<h2>isColumnVector</h2>
 				<p class="description">Tells whether the matrix is a column vector or not.</p>
 				<h3>Syntax:</h3>
-				<pre>.isColumnVector()</pre>
+				<pre class="brush: js">.isColumnVector()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -616,7 +623,7 @@ if (matrix.isSquare()) {
 					<li>(boolean) - <code>true</code> when the matrix is a column vector, <code>false</code> otherwise.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 if (matrix.isColumnVector()) {
 	// matrix is a column vector
 } else {
@@ -628,7 +635,7 @@ if (matrix.isColumnVector()) {
 				<h2>isRowVector</h2>
 				<p class="description">Tells whether the matrix is a row vector or not.</p>
 				<h3>Syntax:</h3>
-				<pre>.isRowVector()</pre>
+				<pre class="brush: js">.isRowVector()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -636,7 +643,7 @@ if (matrix.isColumnVector()) {
 					<li>(boolean) - <code>true</code> when the matrix is a row vector, <code>false</code> otherwise.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 if (matrix.isColumnVector()) {
 	// matrix is a row vector
 } else {
@@ -648,7 +655,7 @@ if (matrix.isColumnVector()) {
 				<h2>isVector</h2>
 				<p class="description">Tells whether the matrix is a vector (1 row or 1 column) or not.</p>
 				<h3>Syntax:</h3>
-				<pre>.isVector()</pre>
+				<pre class="brush: js">.isVector()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -656,7 +663,7 @@ if (matrix.isColumnVector()) {
 					<li>(boolean) - <code>true</code> when the matrix is a vector, <code>false</code> otherwise.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 if (matrix.isVector()) {
 	// the matrix is a vector
 } else {
@@ -668,7 +675,7 @@ if (matrix.isVector()) {
 				<h2>isSameSize</h2>
 				<p class="description">Compares the shape of the matrix against the one in the argument.</p>
 				<h3>Syntax:</h3>
-				<pre>.isSameSize(matrix)</pre>
+				<pre class="brush: js">.isSameSize(matrix)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(object) - Another matrix</li>
@@ -679,7 +686,7 @@ if (matrix.isVector()) {
 				</ul>
 				<h3>Example:</h3>
 				<p>The following example compares two matrices that have the same number of rows and columns and outputs the string <i>same size</i>:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 var B = new MAT(3, 3, [9, 8, 7, 6, 5, 4, 3, 2, 1]);
 
@@ -694,7 +701,7 @@ if (A.isSameSize(B)) {
 				<h2>add</h2>
 				<p class="description">Performs the addition of two matrices (<strong>A</strong> + <strong>B</strong>).</p>
 				<h3>Syntax:</h3>
-				<pre>.add(matrix)</pre>
+				<pre class="brush: js">.add(matrix)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(object) - A matrix object.</li>
@@ -705,7 +712,7 @@ if (A.isSameSize(B)) {
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the ones of the first matrix, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 var B = new MAT(3, 3, [9, 8, 7, 6, 5, 4, 3, 2, 1]);
 
@@ -729,7 +736,7 @@ document.write(A.toString()); // outputs "10, 10, 10, 10, 10, 10, 10, 10, 10"</p
 				<h2>subtract</h2>
 				<p class="description">Performs the subtraction of two matrices from left to right (<strong>A</strong> - <strong>B</strong>).</p>
 				<h3>Syntax:</h3>
-				<pre>.subtract(matrix)</pre>
+				<pre class="brush: js">.subtract(matrix)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(object) - A matrix object.</li>
@@ -740,7 +747,7 @@ document.write(A.toString()); // outputs "10, 10, 10, 10, 10, 10, 10, 10, 10"</p
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the ones of the first matrix, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 var B = new MAT(3, 3, [9, 8, 7, 6, 5, 4, 3, 2, 1]);
 
@@ -765,7 +772,7 @@ document.write(A.toString()); // outputs "-8, -6, -4, -2, 0, 2, 4, 6, 8"</pre>
 				<p class="description">Performs the product of two matrices (from left to right <strong>AB</strong>). The number of columns of the first matrix must match the number of rows of the second one.</p>
 				<p class="description">This is the naive product algorithm. The <a href="#strassenProduct">strassenProduct</a> is asymptotically faster for large matrices.</p>
 				<h3>Syntax:</h3>
-				<pre>.product(matrix)</pre>
+				<pre class="brush: js">.product(matrix)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(object) - A matrix object.</li>
@@ -776,7 +783,7 @@ document.write(A.toString()); // outputs "-8, -6, -4, -2, 0, 2, 4, 6, 8"</pre>
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the ones of the first matrix, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 var B = new MAT(3, 3, [1, 0, 1, 0, 1, 0, 0, 1, 1]);
 
@@ -799,7 +806,7 @@ document.write(A.toString()); // outputs "1, 5, 4, 4, 11, 10, 7, 17, 16"</pre>
 				<h2>strassenProduct</h2>
 				<p class="description">Performs the product of two matrices (from left to right <strong>AB</strong>) using the Strassen's algorithm. This algorithm is asymptotically faster than the naive method for large matrices.</p>
 				<h3>Syntax:</h3>
-				<pre>.strassenProduct(matrix)</pre>
+				<pre class="brush: js">.strassenProduct(matrix)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(object) - A matrix object.</li>
@@ -810,7 +817,7 @@ document.write(A.toString()); // outputs "1, 5, 4, 4, 11, 10, 7, 17, 16"</pre>
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the ones of the first matrix, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 var B = new MAT(3, 3, [9, 8, 7, 6, 5, 4, 3, 2, 1]);
 
@@ -885,7 +892,7 @@ document.write(C.toString()); // outputs "30,24,18,84,69,54,138,114,90"
 				<h2>hadamardProduct</h2>
 				<p class="description">Performs the Hadamard product of two matrices (from left to right <strong>AB</strong>).</p>
 				<h3>Syntax:</h3>
-				<pre>.hadamardProduct(matrix)</pre>
+				<pre class="brush: js">.hadamardProduct(matrix)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(object) - A matrix object.</li>
@@ -895,7 +902,7 @@ document.write(C.toString()); // outputs "30,24,18,84,69,54,138,114,90"
 					<li>(object) - A new matrix with the result.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 var B = new MAT(3, 3, [1, 0, 1, 0, 1, 0, 0, 1, 1]);
 
@@ -916,7 +923,7 @@ document.write(C.toString()); // outputs "1,0,3,0,5,0,0,8,9"
 				<h2>scalarProduct</h2>
 				<p class="description">Performs the scalar product between the matrix and a scalar.</p>
 				<h3>Syntax:</h3>
-				<pre>.scalarProduct(value)</pre>
+				<pre class="brush: js">.scalarProduct(value)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(float|array) - A scalar value.</li>
@@ -927,7 +934,7 @@ document.write(C.toString()); // outputs "1,0,3,0,5,0,0,8,9"
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the ones of the first matrix, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [1, 2, 3, 4]);
 
 document.write(A.scalarProduct(2).toString()); // outputs "1,4,6,8"</pre>
@@ -937,7 +944,7 @@ document.write(A.scalarProduct(2).toString()); // outputs "1,4,6,8"</pre>
 				<h2>transpose</h2>
 				<p class="description">Returns the transpose matrix.</p>
 				<h3>Syntax:</h3>
-				<pre>.transpose()</pre>
+				<pre class="brush: js">.transpose()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -946,7 +953,7 @@ document.write(A.scalarProduct(2).toString()); // outputs "1,4,6,8"</pre>
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the previous ones, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 4, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
 
@@ -968,7 +975,7 @@ document.write(C.toString()); // outputs "1,5,9,2,6,10,3,7,11,4,8,12"</pre>
 				<h2>hermitian</h2>
 				<p class="description">Returns the hermitian matrix (conjugate transpose).</p>
 				<h3>Syntax:</h3>
-				<pre>.hermitian()</pre>
+				<pre class="brush: js">.hermitian()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -977,7 +984,7 @@ document.write(C.toString()); // outputs "1,5,9,2,6,10,3,7,11,4,8,12"</pre>
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the previous ones, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [3, [2,3], [2,-1], 1]);
 
 document.write(A.hermitian().toString()); // outputs "3,[2,1],[2,-3],1"</pre>
@@ -987,7 +994,7 @@ document.write(A.hermitian().toString()); // outputs "3,[2,1],[2,-3],1"</pre>
 				<h2>trace</h2>
 				<p class="description">Returns the trace of the matrix. That is, the sum of all the elements in the main diagonal.</p>
 				<h3>Syntax:</h3>
-				<pre>.trace()</pre>
+				<pre class="brush: js">.trace()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -995,7 +1002,7 @@ document.write(A.hermitian().toString()); // outputs "3,[2,1],[2,-3],1"</pre>
 					<li>(float|array) - The trace of the matrix.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [3, [2,3], [2,-1], 1]);
 document.write(A.trace());</pre>
 				<p>The previous code will print 4.</p>
@@ -1005,7 +1012,7 @@ document.write(A.trace());</pre>
 				<h2>upperTrace</h2>
 				<p class="description">Returns the trace of the matrix upper diagonals.</p>
 				<h3>Syntax:</h3>
-				<pre>.upperTrace(diagonal)</pre>
+				<pre class="brush: js">.upperTrace(diagonal)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The position of the upper diagonal (starting from <code>0</code> for the main diagonal to <code>columns-1</code>).</li>
@@ -1015,7 +1022,7 @@ document.write(A.trace());</pre>
 					<li>(float|array) - The trace of the upper diagonal.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(4, 4, [
 	 1, 2, 3, 4, 
 	 5, 6, 7, 8, 
@@ -1030,7 +1037,7 @@ document.write(A.upperTrace(2)); // outputs 11 (3 + 8)</pre>
 				<h2>lowerTrace</h2>
 				<p class="description">Returns the trace of the matrix lower diagonals.</p>
 				<h3>Syntax:</h3>
-				<pre>.lowerTrace(diagonal)</pre>
+				<pre class="brush: js">.lowerTrace(diagonal)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The position of the lower diagonal (starting from <code>0</code> for the main diagonal to <code>rows-1</code>).</li>
@@ -1040,7 +1047,7 @@ document.write(A.upperTrace(2)); // outputs 11 (3 + 8)</pre>
 					<li>(float|array) - The trace of the lower diagonal.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 4,
 	columns: 4,
@@ -1059,7 +1066,7 @@ document.write(A.lowerTrace(2)); // outputs 23 (= 9 + 14)</pre>
 				<h2>minor</h2>
 				<p class="description">Returns a smaller matrix obtained by removing the row and the column at a specified position.</p>
 				<h3>Syntax:</h3>
-				<pre>.minor(row, column)</pre>
+				<pre class="brush: js">.minor(row, column)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The row to remove from the matrix.</li>
@@ -1071,7 +1078,7 @@ document.write(A.lowerTrace(2)); // outputs 23 (= 9 + 14)</pre>
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the previous ones, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 document.write(A.minor(2, 2).toString()); // outputs "1,2,4,5"</pre>
 			</div>
@@ -1081,7 +1088,7 @@ document.write(A.minor(2, 2).toString()); // outputs "1,2,4,5"</pre>
 				<p class="description">Returns the determinant of the matrix.</p>
 				<p class="description">The algorithm uses the Laplace's formula by default, which is useful for small matrices. In order to speed things up, the user is able to select one of the following decomposition methods: lu, qr.</p>
 				<h3>Syntax:</h3>
-				<pre>.determinant([method])</pre>
+				<pre class="brush: js">.determinant([method])</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(string) - Optional, the method to be used (default is laplace. Options are: lu, qr).</li>
@@ -1093,14 +1100,14 @@ document.write(A.minor(2, 2).toString()); // outputs "1,2,4,5"</pre>
 				<p class="notify"><strong>Note:</strong> when using the QR decomposition method, the result is the absolute value of the matrix determinant.</p>
 				<h3>Example:</h3>
 				<p>Following the example extracted from the <a href="http://en.wikipedia.org/wiki/Determinant" title="Determinant" target="_blank">wikipedia article</a>:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [-2, 2, 3, -1, 1, 3, 2, 0, -1]);
 document.write(A.determinant()); // outputs 6
 document.write(A.determinant('lu')); // throws "division by 0"
 document.write(A.determinant('qr')); // outputs 5.999999999999997</pre>
 				<p>Note that the previous matrix cannot be LU decomposed. LUP decomposition (LU with partial or full Pivoting), which overcomes this limitation, is not implemented yet.</p>
 				<p>This other example, extracted from another <a href="http://en.wikipedia.org/wiki/QR_decomposition" title="QR decomposition" target="_blank">wikipedia article</a>, demonstrates the diferent values returned when using each method:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [12, -51, 4, 6, 167, -68, -4, 24, -41]);
 document.write(A.determinant()); // outputs -85750 
 document.write(A.determinant('lu')); // outputs -85749.99999999999
@@ -1111,7 +1118,7 @@ document.write(A.determinant('qr')); // outputs 85750.00000000009</pre>
 				<h2>det</h2>
 				<p class="description">This is an alias for the <a href="#determinant">determinant</a> method.</p>
 				<h3>Syntax:</h3>
-				<pre>.det([method])</pre>
+				<pre class="brush: js">.det([method])</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(string) - Optional, the method to be used (default is laplace. Options are: lu, qr).</li>
@@ -1128,7 +1135,7 @@ document.write(A.determinant('qr')); // outputs 85750.00000000009</pre>
 				<h2>gaussElimination</h2>
 				<p class="description">Performs the Gaussian elimination algorithm. This is the method teached at school to solve systems of linear equations.</p>
 				<h3>Syntax:</h3>
-				<pre>.gaussElimination()</pre>
+				<pre class="brush: js">.gaussElimination()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1138,7 +1145,7 @@ document.write(A.determinant('qr')); // outputs 85750.00000000009</pre>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the previous ones, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
 				<p>The following example is extracted from the <a href="http://en.wikipedia.org/wiki/Gaussian_elimination" title="Gaussian elimination" target="_blank">wikipedia article</a>:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [2, 1, -1, -3, -1, 2, -2, 1, 2]);
 
 //     [ 2,  1, -1]
@@ -1168,7 +1175,7 @@ document.write(Extended.gaussElimination().toString()); // outputs "2,1,-1,8,0,0
 				<h2>solve</h2>
 				<p class="description">Performs the Gauss elimination method and then solves the system of linear equations using backward substitution.</p>
 				<h3>Syntax:</h3>
-				<pre>.solve(array)</pre>
+				<pre class="brush: js">.solve(array)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(array) - An array with the constant terms.</li>
@@ -1178,7 +1185,7 @@ document.write(Extended.gaussElimination().toString()); // outputs "2,1,-1,8,0,0
 					<li>(object) - A column vector with the result values.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 3,
 	columns: 3,
@@ -1193,7 +1200,7 @@ document.write(result.toString()); // outputs "2,3,-1"</pre>
 				<h2>gramSchmidt</h2>
 				<p class="description">Performs the Gram-Schmidt process (orthonormalize a set of vectors).</p>
 				<h3>Syntax:</h3>
-				<pre>.gramSchmidt()</pre>
+				<pre class="brush: js">.gramSchmidt()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1202,7 +1209,7 @@ document.write(result.toString()); // outputs "2,3,-1"</pre>
 				</ul>
 				<p class="notify"><strong>Note:</strong> when the <code>overwrite</code> attribute is set to <code>true</code> the result values will overwrite the previous ones, returning a reference to itself instead of a new matrix.</p>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 3,
 	columns: 3,
@@ -1233,7 +1240,7 @@ result.getColumn(1).transpose().product(result.getColumn(2)); // outputs "-7.494
 				<h2>qrDecomposition</h2>
 				<p class="description">Performs the QR decomposition, that is, obtains an orthogonal matrix Q and an upper triangular matrix R (<strong>A</strong> = <strong>QR</strong>).</p>
 				<h3>Syntax:</h3>
-				<pre>.qrDecomposition()</pre>
+				<pre class="brush: js">.qrDecomposition()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1241,7 +1248,7 @@ result.getColumn(1).transpose().product(result.getColumn(2)); // outputs "-7.494
 					<li>(array) - A duplex containing both Q and R matrices. Q matrix is at position 0, R matrix is at position 1.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 3,
 	columns: 3,
@@ -1267,7 +1274,7 @@ document.write(QR[1].toString());
 				<h2>qr</h2>
 				<p class="description">This is an alias for the <a href="#qrDecomposition">qrDecomposition</a> method.</p>
 				<h3>Syntax:</h3>
-				<pre>.qr()</pre>
+				<pre class="brush: js">.qr()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1282,7 +1289,7 @@ document.write(QR[1].toString());
 				<h2>luDecomposition</h2>
 				<p class="description">Performs the LU decomposition, that is, obtains a lower triangular matrix L and an upper triangular matrix U (<strong>A</strong> = <strong>LU</strong>)</p>
 				<h3>Syntax:</h3>
-				<pre>.luDecomposition()</pre>
+				<pre class="brush: js">.luDecomposition()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1290,7 +1297,7 @@ document.write(QR[1].toString());
 					<li>(array) - A duplex containing both LU matrices. L matrix is at position 0, U matrix is at position 1.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT({
 	rows: 3,
 	columns: 3,
@@ -1319,7 +1326,7 @@ document.write(LU[0].product(LU[1]).toString()); // outputs "2,1,-1,-3,-1,2,-2,1
 				<h2>lu</h2>
 				<p class="description">This is an alias for the <a href="#luDecomposition">luDecomposition</a> method.</p>
 				<h3>Syntax:</h3>
-				<pre>.lu()</pre>
+				<pre class="brush: js">.lu()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1334,7 +1341,7 @@ document.write(LU[0].product(LU[1]).toString()); // outputs "2,1,-1,-3,-1,2,-2,1
 				<h2>eigenValues</h2>
 				<p class="description">Obtains the eigenvalues of a square matrix using the QR algorithm. This method uses the attributes <code>maxrounds</code> and <code>error</code> to make sure the algorithm finishes in case the process does not converge.</p>
 				<h3>Syntax:</h3>
-				<pre>.eigenValues()</pre>
+				<pre class="brush: js">.eigenValues()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1342,7 +1349,7 @@ document.write(LU[0].product(LU[1]).toString()); // outputs "2,1,-1,-3,-1,2,-2,1
 					<li>(object) - On convergence returns a column vector containing the eigenvalues. It returns <code>null</code> otherwise.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [2, -4, -1, -1]);
 var eigenvalues = A.eigenValues();
 
@@ -1355,7 +1362,7 @@ document.write(eigenvalues.toString()); // outputs "2.9999995960226222,-1.999999
 				<p class="description">Obtains the eigenvectors of a square matrix using the QR algorithm. This method uses the attributes <code>maxrounds</code> and <code>error</code> to make sure the algorithm finishes in case the process does not converge.</p>
 				<p class="notify"><strong>Note:</strong> this method is not fully tested yet! Use at your own risk ;)</p>
 				<h3>Syntax:</h3>
-				<pre>.eigenVectors()</pre>
+				<pre class="brush: js">.eigenVectors()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1363,7 +1370,7 @@ document.write(eigenvalues.toString()); // outputs "2.9999995960226222,-1.999999
 					<li>(object) - On convergence returns a matrix containing the eigenvectors (column vectors). It returns <code>null</code> otherwise.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [2, -4, -1, -1]);
 var eigenvectors = A.eigenVectors();
 
@@ -1377,7 +1384,7 @@ document.write(eigenvectors.toString());
 				<h2>identity</h2>
 				<p class="description">Returns the identity matrix <code>I</code>, a square matrix with ones in the main diagonal and zeros elsewhere.</p>
 				<h3>Syntax:</h3>
-				<pre>.identity(integer)</pre>
+				<pre class="brush: js">.identity(integer)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The size of the matrix.</li>
@@ -1387,7 +1394,7 @@ document.write(eigenvectors.toString());
 					<li>(object) - A new identity matrix.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [2, -4, -1, -1]);
 var I = new MAT().identity(2);
 
@@ -1398,7 +1405,7 @@ document.write(A.product(I).toString()); // outputs "2,-4,-1,-1"</pre>
 				<h2>diagonal</h2>
 				<p class="description">Returns a squared, diagonal matrix with different values in the main diagonal and zeros elsewhere.</p>
 				<h3>Syntax:</h3>
-				<pre>.diagonal(array)</pre>
+				<pre class="brush: js">.diagonal(array)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(array) - An array containing the values for the main diagonal.</li>
@@ -1408,7 +1415,7 @@ document.write(A.product(I).toString()); // outputs "2,-4,-1,-1"</pre>
 					<li>(object) - A squared, diagonal matrix.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var D = new MAT().diagonal([1,2,3,4]);
 document.write(D.toString());
 
@@ -1422,7 +1429,7 @@ document.write(D.toString());
 				<h2>pNorm</h2>
 				<p class="description">Returns the p-norm over the set of values of the matrix. To obtain the p-norm of a column vector from a matrix the <a href="#getColumn">getColumn</a> method should precede, or <a href="#getRow">getRow</a> for a row vector.</p>
 				<h3>Syntax:</h3>
-				<pre>.pNorm(float)</pre>
+				<pre class="brush: js">.pNorm(float)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(float) - The value for p.</li>
@@ -1432,12 +1439,12 @@ document.write(D.toString());
 					<li>(float) - The p-norm.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var v = new MAT(3, 1, [1, 1, 1]);
 document.write(v.pNorm(2)); // outputs "1.7320508075688772"
 document.write(v.pNorm(1)); // outputs "3"</pre>
 				<p>Note that for <code>p=1</code> we get the Taxicab norm (or Manhattan norm) and for <code>p=2</code> we get the Euclidean norm.</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(2, 2, [2, 1, 1, 2]);
 document.write(A.getColumn(0).pNorm(2)); // outputs 2.23606797749979</pre>
 			</div>
@@ -1447,7 +1454,7 @@ document.write(A.getColumn(0).pNorm(2)); // outputs 2.23606797749979</pre>
 				<p class="description">Returns the Euclidean norm over the set of values of the matrix. To obtain the Euclidean norm of a column vector from a matrix the <a href="#getColumn">getColumn</a> method should precede, or <a href="#getRow">getRow</a> method for a row vector.</p>
 				<p class="description">Note that this is the same as using the <a href="pNorm">pNorm</a> with 2 as argument.</p>
 				<h3>Syntax:</h3>
-				<pre>.norm()</pre>
+				<pre class="brush: js">.norm()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1455,7 +1462,7 @@ document.write(A.getColumn(0).pNorm(2)); // outputs 2.23606797749979</pre>
 					<li>(float) - The Euclidean norm.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var v = new MAT(3, 1, [1, 1, 1]);
 document.write(v.norm()); // outputs "1.7320508075688772"
 
@@ -1467,7 +1474,7 @@ document.write(A.getColumn(0).norm()); // outputs 2.23606797749979</pre>
 				<h2>toToeplitz</h2>
 				<p class="description">Turns a column or row vector to a Toeplitz matrix (each descending diagonal from left to right is constant).</p>
 				<h3>Syntax:</h3>
-				<pre>.toToeplitz(integer)</pre>
+				<pre class="brush: js">.toToeplitz(integer)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The number of columns.</li>
@@ -1477,7 +1484,7 @@ document.write(A.getColumn(0).norm()); // outputs 2.23606797749979</pre>
 					<li>(object) - A Toeplitz matrix.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 1, [1, 2, 3]);
 document.write(A.toToeplitz(5).toString());
 
@@ -1501,7 +1508,7 @@ document.write(A.toToeplitz(2).toString());
 				<h2>inverse</h2>
 				<p class="description">Returns the inverse matrix of a non-singular matrix. The process uses the Cramer's rule, which is useful to find the inverse of small matrices. For larger matrices the use of this method is not recommended.</p>
 				<h3>Syntax:</h3>
-				<pre>.inverse()</pre>
+				<pre class="brush: js">.inverse()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1509,7 +1516,7 @@ document.write(A.toToeplitz(2).toString());
 					<li>(object) - The inverse matrix.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [2, -1, 0, -1, 2, -1, 0, -1, 2]);
 var Ai = A.inverse();
 
@@ -1530,7 +1537,7 @@ document.write(Ai.product(A).toString());
 				<h2>pseudoInverse</h2>
 				<p class="description">Returns the Moore-Penrose pseudoinverse (generalized inverse matrix).</p>
 				<h3>Syntax:</h3>
-				<pre>.pseudoInverse()</pre>
+				<pre class="brush: js">.pseudoInverse()</pre>
 				<h3>Arguments:</h3>
 				<p>None.</p>
 				<h3>Returns:</h3>
@@ -1538,7 +1545,7 @@ document.write(Ai.product(A).toString());
 					<li>(object) - The pseudoinverse matrix.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 3, [2, -1, 0, -1, 2, -1, 0, -1, 2]);
 var Api = A.pseudoInverse();
 
@@ -1548,7 +1555,7 @@ document.write(Api.toString());
 // [ 0.5,   1,  0.5]
 // [0.25, 0.5, 0.75]</pre>
 				<p>In the previous example we can see that the pseudoinverse produces the same inverse matrix. This other example shows how to get the pseudoinverse of a n<i>x</i>m matrix:</p>
-				<pre>
+				<pre class="brush: js">
 var A = new MAT(3, 2, [1, 2, 3, -1, -2, 1]);
 var Api = A.pseudoInverse();
 
@@ -1568,7 +1575,7 @@ document.write(Api.product(A).toString());
 				<h2>toVandermonde</h2>
 				<p class="description">Produces a Vandermonde matrix from a given set of values.</p>
 				<h3>Syntax:</h3>
-				<pre>.toVandermonde(integer)</pre>
+				<pre class="brush: js">.toVandermonde(integer)</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(integer) - The number of columns.</li>
@@ -1578,7 +1585,7 @@ document.write(Api.product(A).toString());
 					<li>(object) - A Vandermonde matrix.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var V = new MAT({values: [1,2,3,4,5,6], overwrite: true}).toVandermonde(5);
 document.write(V.toString());
 
@@ -1594,7 +1601,7 @@ document.write(V.toString());
 				<h2>zero</h2>
 				<p class="description">Returns a matrix filled with zeros.</p>
 				<h3>Syntax:</h3>
-				<pre>.zero([array])</pre>
+				<pre class="brush: js">.zero([array])</pre>
 				<h3>Arguments:</h3>
 				<ol>
 					<li>(array) - Optional. The shape of the zero matrix.</li>
@@ -1604,7 +1611,7 @@ document.write(V.toString());
 					<li>(object) - A new matrix filled with zeros.</li>
 				</ul>
 				<h3>Example:</h3>
-				<pre>
+				<pre class="brush: js">
 var Z = new MAT().zero([3, 4]);
 document.write(Z.toString());
 
@@ -1614,5 +1621,8 @@ document.write(Z.toString());
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+    	SyntaxHighlighter.all()
+	</script>
 </body>
 </html>
