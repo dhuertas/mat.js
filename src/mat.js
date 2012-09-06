@@ -169,6 +169,167 @@ var MAT = (function() {
 
 	}
 
+	function isArray(a) {
+
+		return (Object.prototype.toString.call(a) === '[object Array]');
+
+	}
+	
+	function isPowerOfTwo(a) {
+
+		return (a != 0) && ((a & (a-1)) == 0);
+
+	}
+
+	/* Sum function for the Strassen's algorithm */
+	function _sum(a, b, r, s) {
+	
+		for (var i = 0; i < s; i++) {
+
+			for (var j = 0; j < s; j++) {
+
+				r[s*i + j] = OP.sum(a[s*i + j], b[s*i + j]);
+
+			}
+
+		}
+
+	}
+	
+	/* Subtract function for the Strassen's algorithm */
+	function _subtract(a, b, r, s) {
+
+		for (var i = 0; i < s; i++) {
+
+			for (var j = 0; j < s; j++) {
+
+				r[s*i + j] = OP.subtract(a[s*i + j], b[s*i + j]);
+
+			}
+
+		}
+
+	}
+
+	/* The Strassen's algorithm */
+	function _strassen(A, B, R, size) {
+
+		if (size == 1) {
+			
+			R[0] = OP.product(A[0], B[0]);
+
+			return;
+
+		} else if (size == 2) {
+
+			R[0] = OP.sum(OP.product(A[0], B[0]), OP.product(A[1], B[2]));
+			R[1] = OP.sum(OP.product(A[0], B[1]), OP.product(A[1], B[3]));
+			R[2] = OP.sum(OP.product(A[2], B[0]), OP.product(A[3], B[2]));
+			R[3] = OP.sum(OP.product(A[2], B[1]), OP.product(A[3], B[3]));
+			
+			return;
+
+		} else {
+
+			/* Partition A and B into equally sized block matrices */		
+			var newSize = size/2,
+				newSizeSquared = newSize*newSize,
+				a11 = new Array(newSizeSquared),
+				a12 = new Array(newSizeSquared),
+				a21 = new Array(newSizeSquared),
+				a22 = new Array(newSizeSquared);
+
+			var b11 = new Array(newSizeSquared),
+				b12 = new Array(newSizeSquared),
+				b21 = new Array(newSizeSquared),
+				b22 = new Array(newSizeSquared);
+
+			var c11 = new Array(newSizeSquared),
+				c12 = new Array(newSizeSquared),
+				c21 = new Array(newSizeSquared),
+				c22 = new Array(newSizeSquared);
+
+			var m1 = new Array(newSizeSquared),
+				m2 = new Array(newSizeSquared),
+				m3 = new Array(newSizeSquared),
+				m4 = new Array(newSizeSquared),
+				m5 = new Array(newSizeSquared),
+				m6 = new Array(newSizeSquared),
+				m7 = new Array(newSizeSquared);
+
+			var ar = new Array(newSizeSquared),
+				br = new Array(newSizeSquared);
+
+			for (var i = 0; i < newSize; i++) {
+
+				for (var j = 0; j < newSize; j++) {
+
+					a11[newSize*i + j] = A[size*i + j];
+					a12[newSize*i + j] = A[size*i + j + newSize];
+					a21[newSize*i + j] = A[size*(i + newSize) + j];
+					a22[newSize*i + j] = A[size*(i + newSize) + j + newSize];
+
+					b11[newSize*i + j] = B[size*i + j];
+					b12[newSize*i + j] = B[size*i + j + newSize];
+					b21[newSize*i + j] = B[size*(i + newSize) + j];
+					b22[newSize*i + j] = B[size*(i + newSize) + j + newSize];
+
+				}
+
+			}
+
+			_sum(a11, a22, ar, newSize);
+			_sum(b11, b22, br, newSize);
+			_strassen(ar, br, m1, newSize); 
+
+			_sum(a21, a22, ar, newSize);
+			_strassen(ar, b11, m2, newSize);
+
+			_subtract(b12, b22, br, newSize);
+			_strassen(a11, br, m3, newSize);
+
+			_subtract(b21, b11, br, newSize);
+			_strassen(a22, br, m4, newSize);
+
+			_sum(a11, a12, ar, newSize);
+			_strassen(ar, b22, m5, newSize);
+
+			_subtract(a21, a11, ar, newSize);
+			_sum(b11, b12, br, newSize);
+			_strassen(ar, br, m6, newSize);
+
+			_subtract(a12, a22, ar, newSize);
+			_sum(b21, b22, br, newSize);
+			_strassen(ar, br, m7, newSize);
+
+			_sum(m3, m5, c12, newSize);
+			_sum(m2, m4, c21, newSize);
+
+			_sum(m1, m4, ar, newSize);
+			_sum(ar, m7, br, newSize);
+			_subtract(br, m5, c11, newSize);
+
+			_sum(m1, m3, ar, newSize);
+			_sum(ar, m6, br, newSize);
+			_subtract(br, m2, c22, newSize);
+
+			for (var i = 0; i < newSize; i++) {
+
+				for (var j = 0; j < newSize; j++) {
+
+					R[size*i + j] = c11[newSize*i + j];
+					R[size*i + j + newSize] = c12[newSize*i + j];
+					R[size*(i + newSize) + j] = c21[newSize*i + j];
+					R[size*(i + newSize) + j + newSize] = c22[newSize*i + j];
+
+				}
+
+			}
+
+		}
+
+	}
+
 	/*
 	 * MAT object constructor
 	 * @param {integer} r (rows)
@@ -263,6 +424,93 @@ var MAT = (function() {
 		toString : function() {
 
 			return this.values.toString();
+
+		},
+
+		/*
+		 * toLatex
+		 * @param {string} closure (e.g. 'p','b','B','v','V')
+		 * @return {string}
+		 */
+		toLatex : function(closure) {
+
+			var values 			= [],
+				beginClosure	= "",
+				endClosure		= "",
+				result 			= "";
+			
+			switch (closure) {
+				
+				case 'b':
+
+					beginClosure = "\\begin{bmatrix} ";
+					endClosure = "\\end{bmatrix}";
+					break;
+
+				case 'B':
+
+					beginClosure = "\\begin{Bmatrix} ";
+					endClosure = "\\end{Bmatrix}";
+					break;
+
+				case 'v':
+
+					beginClosure = "\\begin{vmatrix} ";
+					endClosure = "\\end{vmatrix}";
+					break;
+
+				case 'V':
+
+					beginClosure = "\\begin{Vmatrix} ";
+					endClosure = "\\end{Vmatrix}";
+					break;
+
+				case 'p':
+				default:
+
+					beginClosure += "\\begin{pmatrix} ";
+					endClosure = "\\end{pmatrix}";
+					break;
+
+			}
+
+			// First we must find any complex values and format them properly
+			for (var i = 0, len = this.rows*this.columns; i< len; i++) {
+			
+				if (isArray(this.values[i])) {
+					
+					values.push(
+						String(this.values[i][0])+" "+
+						(this.values[i][1] >= 0 ? "+" : "")+
+						String(this.values[i][1])+"i");
+				
+				} else {
+				
+					values.push(String(this.values[i]));
+
+				}
+
+			}
+
+			result += beginClosure;
+
+			for (var i = 0; i < this.rows; i++) {
+
+				for (var j = 0; j < this.columns; j++) {
+
+					result = result.concat(values[this.columns*i + j]);
+
+					result += (j < this.columns - 1) ? " & " : " ";
+
+				}
+
+				result += (i < this.rows - 1) ? "\\\\ " : " ";
+
+			}
+
+			result += endClosure;
+
+			return result;
 
 		},
 
@@ -612,6 +860,8 @@ var MAT = (function() {
 
 				if (this.overwrite) {
 
+					this.columns = a.getColumns();
+
 					this.values.splice(0, this.values.length);
 
 					this.values = this.values.concat(values);
@@ -625,6 +875,104 @@ var MAT = (function() {
 			}
 
 			return this.overwrite ? this : new MAT(this.rows, a.getColumns(), values);
+
+		},
+
+		/*
+		 * strassenProduct
+		 * The Strassen product algorithm
+		 * @param {object} matrix
+		 * @return {object} matrix (X*A)
+		 */
+		strassenProduct : function(a) {
+
+			if (a.getRows() === this.columns) {
+
+				var max = Math.max(this.rows, this.columns, a.getRows(), a.getColumns()),
+					rows = this.rows,
+					columns = a.getColumns(),
+					result = new Array(rows*columns),
+					size = 1;
+
+				/* Extend the matrix with zeros until size is 2^n x 2^n */
+				if ( ! isPowerOfTwo(max)) {
+
+					while (size < max) {
+
+						size <<= 1;
+
+					}
+
+				} else {
+
+					size = max;
+
+				}
+
+				var sizeSquared = size*size,
+					A = new Array(sizeSquared),
+					B = new Array(sizeSquared),
+					tmp = new Array(sizeSquared);
+
+				for (var i = 0; i < sizeSquared; i++) { 
+					
+					A[i] = 0;
+					B[i] = 0;
+					tmp[i] = 0;
+
+				}
+
+				for (var i = 0; i < this.rows; i++) {
+
+					for (var j = 0; j < this.columns; j++) {
+
+						A[size*i + j] = this.getValue(i, j);
+
+					}
+
+				}
+
+				for (var i = 0, leni = a.getRows(); i < leni; i++) {
+
+					for (var j = 0; j < columns; j++) {
+
+						B[size*i + j] = a.getValue(i, j);
+
+					}
+
+				}
+
+				/* The Strassen algorithm */
+				_strassen(A, B, tmp, size);
+
+				/* Get rid of the filling zeros */
+				for (var i = 0; i < rows; i++) {
+
+					for (var j = 0; j < columns; j++) {
+
+						result[columns*i + j] = tmp[size*i + j];
+
+					}
+
+				}
+
+			} else {
+
+				throw ("strassen: matrix size does not match");
+
+			}
+	
+			if (this.overwrite) {
+
+				this.columns = a.getColumns();
+
+				this.values.splice(0, this.values.length);
+
+				this.values = this.values.concat(result);
+
+			}
+
+			return this.overwrite ? this : new MAT(rows, columns, result);
 
 		},
 
