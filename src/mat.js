@@ -147,6 +147,18 @@ var MAT = (function() {
 
 			return Math.abs(a);
 
+		},
+
+		dup : function(a) {
+
+			if (a instanceof Array) {
+
+				return a.slice(0);
+
+			}
+
+			return a;
+
 		}
 
 	};
@@ -525,27 +537,32 @@ var MAT = (function() {
 		 */
 		getColumn : function(j) {
 
-			var res = [];
+			var values = [];
 
 			if (this.columns > j && j >= 0) {
 
 				for (var i = 0; i < this.rows; i++) {
 
-					res.push(this.values[this.columns*i+j]);
+					res.push(OP.dup(this.values[this.columns*i+j]));
 
 				}
 
 			} else {
 
-				for (var i = 0; i < this.rows; i++) {
-
-					res.push(0);
-
-				}
+				throw ("getColumn: index out of range");
 
 			}
 
-			return (new MAT(this.rows, 1, res));
+			return new MAT(this.rows, 1, values);
+
+		},
+
+		/*
+		 * Alias for getColumn
+		 */
+		column : function(j) {
+
+			return this.getColumn(j);
 
 		},
 
@@ -576,27 +593,34 @@ var MAT = (function() {
 		 */
 		getRow : function(i) {
 
-			var res = [];
+			var start = this.columns*i,
+				end = this.columns*(i + 1),
+				values = [];
 
-			if (this.rows > i && i >= 0) {
+			if (i < this.rows && i >= 0) {
 
 				for (var j = 0; j < this.columns; j++) {
 
-					res.push(this.values[this.columns*i+j]);
+					values.push(OP.dup(this.values[this.columns*i + j]));
 
 				}
 
 			} else {
 
-				for (var j = 0; j < this.columns; j++) {
-
-					res.push(0);
-
-				}
+				throw ("getRow: index out of range");
 
 			}
 
-			return (new MAT(1, this.columns, res));
+			return new MAT(1, this.columns, values);
+
+		},
+
+		/*
+		 * Alias for getRow
+		 */
+		row : function(i) {
+
+			return this.getRow(i);
 
 		},
 
@@ -634,7 +658,7 @@ var MAT = (function() {
 
 		/*
 		 * getValues
-		 * @return {array} (a copy of|the matrix values)
+		 * @return {array} (a copy of the matrix values)
 		 */
 		getValues : function() {
 
@@ -1077,7 +1101,7 @@ var MAT = (function() {
 
 				for (var j = 0; j < this.rows; j++) {
 
-					values.push(this.values[this.columns*j + i]);
+					values.push(OP.dup(this.values[this.columns*j + i]));
 
 				}
 
@@ -1235,7 +1259,7 @@ var MAT = (function() {
 
 					if (i !== r && j !== c) {
 
-						values.push(this.getValue(i, j));
+						values.push(OP.dup(this.values[this.columns*i + j]));
 
 					}
 
@@ -1713,6 +1737,10 @@ var MAT = (function() {
 
 				}
 
+			} else {
+
+				throw ("indentity: invalid argument");
+
 			}
 
 			return new MAT(a, a, values);
@@ -1721,7 +1749,7 @@ var MAT = (function() {
 
 		/*
 		 * diagonal
-		 * @param {array} b (e.g. complex value [real,imag])
+		 * @param {array} a
 		 * @return {object} matrix
 		 */
 		diagonal : function(a) {
@@ -1807,24 +1835,24 @@ var MAT = (function() {
 
 			}
 
-			l = m+a-1;
+			l = m + a - 1;
 
-			/* column vector */
 			for (var i = 0; i < l; i++) {
 
 				if (i < m) {
 
 					if (this.isColumnVector()) {
 
-						/* column vector */
 						row.unshift(OP.conjugate(this.values[i]));
 
 					} else if (this.isRowVector()) {
 
-					row.unshift(this.values[i]);
+						row.unshift(OP.dup(this.values[i]));
 
 					} else {
-						/* do some stuff here */
+
+						throw ("toToeplitz: matrix must be a row or column vector");
+
 					}
 
 				} else {
@@ -1959,7 +1987,7 @@ var MAT = (function() {
 
 					} else if (j === 1) {
 
-						values.push(a[i]);
+						values.push(OP.dup(a[i]));
 
 					} else {
 
