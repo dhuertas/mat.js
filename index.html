@@ -1073,7 +1073,7 @@ document.write(C.toString()); // outputs "30,24,18,84,69,54,138,114,90"
 			<div class="section" id="hadamardProduct">
 				<a class="top" href="#">top</a>
 				<h2>hadamardProduct</h2>
-				<p class="description">Performs the Hadamard product of two matrices (from left to right <strong>AB</strong>).</p>
+				<p class="description">Performs the <a href="http://en.wikipedia.org/wiki/Hadamard_product_(matrices)" target="_blank">Hadamard product</a> of two matrices (from left to right <strong>AB</strong>).</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.hadamardProduct(matrix)</pre>
 				<h3>Arguments:</h3>
@@ -1125,7 +1125,7 @@ document.write(A.scalarProduct(2).toString()); // outputs "1,4,6,8"</pre>
 			<div class="section" id="transpose">
 				<a class="top" href="#">top</a>
 				<h2>transpose</h2>
-				<p class="description">Returns the transpose matrix.</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Transpose" target="_blank" title="Transpose matrix">transpose</a> matrix.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.transpose()</pre>
 				<h3>Arguments:</h3>
@@ -1156,7 +1156,7 @@ document.write(C.toString()); // outputs "1,5,9,2,6,10,3,7,11,4,8,12"</pre>
 			<div class="section" id="hermitian">
 				<a class="top" href="#">top</a>
 				<h2>hermitian</h2>
-				<p class="description">Returns the hermitian matrix (conjugate transpose).</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Hermitian_matrix" target="_blank" title="Hermitian matrix">hermitian</a> matrix (conjugate transpose).</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.hermitian()</pre>
 				<h3>Arguments:</h3>
@@ -1175,7 +1175,7 @@ document.write(A.hermitian().toString()); // outputs "3,[2,1],[2,-3],1"</pre>
 			<div class="section" id="trace">
 				<a class="top" href="#">top</a>
 				<h2>trace</h2>
-				<p class="description">Returns the trace of the matrix. That is, the sum of all the elements in the main diagonal.</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Trace_(linear_algebra)" target="_blank" title="Trace (linear algebra)">trace</a> of the matrix. That is, the sum of all the elements in the main diagonal.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.trace()</pre>
 				<h3>Arguments:</h3>
@@ -1268,7 +1268,7 @@ document.write(A.minor(2, 2).toString()); // outputs "1,2,4,5"</pre>
 			<div class="section" id="determinant">
 				<a class="top" href="#">top</a>
 				<h2>determinant</h2>
-				<p class="description">Returns the determinant of the matrix.</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Determinant" target="_blank" title="Determinant">determinant</a> of the matrix.</p>
 				<p class="description">The algorithm uses the Laplace's formula by default, which is useful for small matrices. In order to speed things up, the user is able to select one of the following decomposition methods: lu, qr.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.determinant([method])</pre>
@@ -1316,7 +1316,7 @@ document.write(A.determinant('qr')); // outputs 85750.00000000009</pre>
 			<div class="section" id="gaussElimination">
 				<a class="top" href="#">top</a>
 				<h2>gaussElimination</h2>
-				<p class="description">Performs the Gaussian elimination algorithm. This is the method teached at school to solve systems of linear equations.</p>
+				<p class="description">Performs the <a href="http://en.wikipedia.org/wiki/Gaussian_elimination" target="_blank" title="Gaussian elimination">Gaussian elimination</a> algorithm. This is the method teached at school to solve systems of linear equations.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.gaussElimination()</pre>
 				<h3>Arguments:</h3>
@@ -1381,7 +1381,7 @@ document.write(result.toString()); // outputs "2,3,-1"</pre>
 			<div class="section" id="gramSchmidt">
 				<a class="top" href="#">top</a>
 				<h2>gramSchmidt</h2>
-				<p class="description">Performs the Gram-Schmidt process (orthonormalize a set of vectors).</p>
+				<p class="description">Performs the <a href="http://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process" target="_blank" title="Gram-Schmidt process">Gram-Schmidt process</a> (orthonormalize a set of vectors).</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.gramSchmidt()</pre>
 				<h3>Arguments:</h3>
@@ -1421,7 +1421,7 @@ result.getColumn(1).transpose().product(result.getColumn(2)); // outputs "-7.494
 			<div class="section" id="qrDecomposition">
 				<a class="top" href="#">top</a>
 				<h2>qrDecomposition</h2>
-				<p class="description">Performs the QR decomposition, that is, obtains an orthogonal matrix Q and an upper triangular matrix R (<strong>A</strong> = <strong>QR</strong>).</p>
+				<p class="description">Performs the <a href="http://en.wikipedia.org/wiki/QR_decomposition" target="_blank" title="QR decomposition">QR decomposition</a>, that is, obtains an orthogonal matrix Q and an upper triangular matrix R (<strong>A</strong> = <strong>QR</strong>).</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.qrDecomposition()</pre>
 				<h3>Arguments:</h3>
@@ -1470,7 +1470,7 @@ document.write(QR[1].toString());
 			<div class="section" id="luDecomposition">
 				<a class="top" href="#">top</a>
 				<h2>luDecomposition</h2>
-				<p class="description">Performs the LU decomposition, that is, obtains a lower triangular matrix L and an upper triangular matrix U (<strong>A</strong> = <strong>LU</strong>)</p>
+				<p class="description">Performs the <a href="" target="http://en.wikipedia.org/wiki/LU_decomposition" title="LU decomposition">LU decomposition</a>, that is, obtains a lower triangular matrix L and an upper triangular matrix U (<strong>A</strong> = <strong>LU</strong>)</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.luDecomposition()</pre>
 				<h3>Arguments:</h3>
@@ -1522,7 +1522,7 @@ document.write(LU[0].product(LU[1]).toString()); // outputs "2,1,-1,-3,-1,2,-2,1
 			<div class="section" id="eigenValues">
 				<a class="top" href="#">top</a>
 				<h2>eigenValues</h2>
-				<p class="description">Obtains the eigenvalues of a square matrix using the QR algorithm. This method uses the attributes <code>maxrounds</code> and <code>error</code> to make sure the algorithm finishes in case the process does not converge.</p>
+				<p class="description">Obtains the <a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors" target="_blank" title="Eigenvalues and eigenvectors">eigenvalues</a> of a square matrix using the QR algorithm. This method uses the attributes <code>maxrounds</code> and <code>error</code> to make sure the algorithm finishes in case the process does not converge.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.eigenValues()</pre>
 				<h3>Arguments:</h3>
@@ -1542,7 +1542,7 @@ document.write(eigenvalues.toString()); // outputs "2.9999995960226222,-1.999999
 			<div class="section" id="eigenVectors">
 				<a class="top" href="#">top</a>
 				<h2>eigenVectors</h2>
-				<p class="description">Obtains the eigenvectors of a square matrix using the QR algorithm. This method uses the attributes <code>maxrounds</code> and <code>error</code> to make sure the algorithm finishes in case the process does not converge.</p>
+				<p class="description">Obtains the <a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors" target="_blank" title="Eigenvalues and eigenvectors">eigenvectors</a> of a square matrix using the QR algorithm. This method uses the attributes <code>maxrounds</code> and <code>error</code> to make sure the algorithm finishes in case the process does not converge.</p>
 				<p class="notify"><strong>Note:</strong> this method is not fully tested yet! Use at your own risk ;)</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.eigenVectors()</pre>
@@ -1610,7 +1610,7 @@ document.write(D.toString());
 			<div class="section" id="pNorm">
 				<a class="top" href="#">top</a>
 				<h2>pNorm</h2>
-				<p class="description">Returns the p-norm over the set of values of the matrix. To obtain the p-norm of a column vector from a matrix the <a href="#getColumn">getColumn</a> method should precede, or <a href="#getRow">getRow</a> for a row vector.</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm" target="_blank" title="p-norm">p-norm</a> over the set of values of the matrix. To obtain the p-norm of a column vector from a matrix the <a href="#getColumn">getColumn</a> method should precede, or <a href="#getRow">getRow</a> for a row vector.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.pNorm(float)</pre>
 				<h3>Arguments:</h3>
@@ -1634,7 +1634,7 @@ document.write(A.getColumn(0).pNorm(2)); // outputs 2.23606797749979</pre>
 			<div class="section" id="norm">
 				<a class="top" href="#">top</a>
 				<h2>norm</h2>
-				<p class="description">Returns the Euclidean norm over the set of values of the matrix. To obtain the Euclidean norm of a column vector from a matrix the <a href="#getColumn">getColumn</a> method should precede, or <a href="#getRow">getRow</a> method for a row vector.</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm" target="_blank" title="Euclidean norm">Euclidean norm</a> over the set of values of the matrix. To obtain the Euclidean norm of a column vector from a matrix the <a href="#getColumn">getColumn</a> method should precede, or <a href="#getRow">getRow</a> method for a row vector.</p>
 				<p class="description">Note that this is the same as using the <a href="pNorm">pNorm</a> with 2 as argument.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.norm()</pre>
@@ -1655,7 +1655,7 @@ document.write(A.getColumn(0).norm()); // outputs 2.23606797749979</pre>
 			<div class="section" id="toToeplitz">
 				<a class="top" href="#">top</a>
 				<h2>toToeplitz</h2>
-				<p class="description">Turns a column or row vector to a Toeplitz matrix (each descending diagonal from left to right is constant).</p>
+				<p class="description">Turns a column or row vector to a <a href="http://en.wikipedia.org/wiki/Toeplitz_matrix" target="_blank" title="Toeplitz matriz">Toeplitz matrix</a> (each descending diagonal from left to right is constant).</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.toToeplitz(integer)</pre>
 				<h3>Arguments:</h3>
@@ -1689,7 +1689,7 @@ document.write(A.toToeplitz(2).toString());
 			<div class="section" id="inverse">
 				<a class="top" href="#">top</a>
 				<h2>inverse</h2>
-				<p class="description">Returns the inverse matrix of a non-singular matrix. The process uses the Cramer's rule, which is useful to find the inverse of small matrices. For larger matrices the use of this method is not recommended.</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Invertible_matrix" target="_blank" title="Invertible matrix">inverse matrix</a> of a non-singular matrix. The process uses the Cramer's rule, which is useful to find the inverse of small matrices. For larger matrices the use of this method is not recommended.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.inverse()</pre>
 				<h3>Arguments:</h3>
@@ -1718,7 +1718,7 @@ document.write(Ai.product(A).toString());
 			<div class="section" id="pseudoInverse">
 				<a class="top" href="#">top</a>
 				<h2>pseudoInverse</h2>
-				<p class="description">Returns the Moore-Penrose pseudoinverse (generalized inverse matrix).</p>
+				<p class="description">Returns the <a href="http://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_pseudoinverse" target="_blank" title="Moore-Penrose pseudoinverse">Moore-Penrose pseudoinverse</a> (generalized inverse matrix).</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.pseudoInverse()</pre>
 				<h3>Arguments:</h3>
@@ -1756,7 +1756,7 @@ document.write(Api.product(A).toString());
 			<div class="section" id="toVandermonde">
 				<a class="top" href="#">top</a>
 				<h2>toVandermonde</h2>
-				<p class="description">Produces a Vandermonde matrix from a given set of values.</p>
+				<p class="description">Produces a <a href="http://en.wikipedia.org/wiki/Vandermonde_matrix" target="_blank" title="Vandermonde matrix">Vandermonde matrix</a> from a given set of values.</p>
 				<h3>Syntax:</h3>
 				<pre class="brush: js">.toVandermonde(integer)</pre>
 				<h3>Arguments:</h3>
