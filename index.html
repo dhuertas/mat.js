@@ -36,9 +36,9 @@
 	table {
 		margin: 0; 
 		padding: 0;
-		width: 300px;
 		border: 1px solid #ccc;
 		border-radius: 3px;
+		font-size: 11px;
 	}
 
 	table thead tr th {
@@ -61,12 +61,19 @@
 		text-align: left;
 	}
 
-	table tbody tr td:last-child {
-		border-left: 1px solid #ccc;
+	table tbody tr td:last-child {}
+
+	table tbody tr td.border-right {
+		border-right: 1px solid #ccc;
 	}
 
 	p {
 		line-height: 16px;
+	}
+
+	p.table-note {
+		font-size: 10px;
+		font-style: italic;
 	}
 
 	a {
@@ -204,7 +211,7 @@
 				<h2>Introduction</h2>
 				<p>This library is not intended to be taken seriously, as it is made just for fun and learning purposes. One may find it useful but any use in production environments, research studies, etc. is discouraged.</p>
 				<p>This javascript matrix library comes from the need to perform various numeric matrix operations during the course of some assignments at college. The lack of one of those fancy graphic calculators, my reluctance in spending money buying one and the growing interest in javascript took me to start writing most of the code found here. After six months or so I have managed to put this sort of library and learned some more linear algebra and algorithms during the process.</p>
-				<p>In case you find this useful, or end up ignoring my first advice and use it somewhere, I will be delighted to know it so feel free to mail me at the email address found in the source code. Moreover, if you happen to find any mistakes (I am pretty sure there are a ton of them) in the source code or in this document, you can issue them at its github repository at <a href="https://github.com/dhuertas/mat.js" target="_blank">https://github.com/dhuertas/mat.js</a>.</p>
+				<p>In case you find this useful, or end up ignoring my first advice and use it somewhere, I will be delighted to know it so feel free to mail me at the email address found in the source code. Moreover, if you happen to find any mistakes (I am pretty sure there are a ton of them) either in the source code or in this document, you can issue them at its github repository at <a href="https://github.com/dhuertas/mat.js" target="_blank">https://github.com/dhuertas/mat.js</a>.</p>
 				<p>Happy coding!</p>
 			</div>
 			<div class="section" id="error">
@@ -828,64 +835,144 @@ document.write(C.toString()); // outputs "30,24,18,84,69,54,138,114,90"
 // [ 30,  24, 18] 
 // [ 84,  69, 54]
 // [138, 114, 90]</pre>
-				<p>The next table shows some average running times for different matrix sizes:</p>
+				<p>The following table shows the average running times for different web browsers. The matrices are filled with pseudorandom numbers generated with the Math.random() method and the algorithm is executed four times with different values each time. The same matrix values are used to compute both products (Naive and Strassen) for each size.</p>
 				<table cellpadding="0" cellspacing="0">
 					<thead>
 						<tr>
-							<th>Size</th>
+							<th>Size</td>
+							<th colspan="2">Chrome (21.0.1180.89)</th>
+							<th colspan="2">Firefox (15.0.1)</th>
+							<th colspan="2">Opera (12.02 1578)</th>
+							<th colspan="2">Safari (6.0 7536.25)</th>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
+							<th>Naive</th>
+							<th>Strassen</th>
+							<th>Naive</th>
+							<th>Strassen</th>
+							<th>Naive</th>
+							<th>Strassen</th>
 							<th>Naive</th>
 							<th>Strassen</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
+							<td>2x2</td>
+							<td>0</td>
+							<td class="border-right">0</td>
+							<td>0.25</td>
+							<td class="border-right">0.5</td>
+							<td>0.25</td>
+							<td class="border-right">0</td>
+							<td>0.25</td>
+							<td>0.25</td>
+						</tr>
+						<tr>
 							<td>4x4</td>
-							<td>- ms</td>
-							<td>1 ms</td>
+							<td>0.25</td>
+							<td class="border-right">0.25</td>
+							<td>0.25</td>
+							<td class="border-right">1</td>
+							<td>0.25</td>
+							<td class="border-right">1</td>
+							<td>0.25</td>
+							<td>1</td>
 						</tr>
 						<tr>
 							<td>8x8</td>
-							<td>- ms</td>
-							<td>1 ms</td>
+							<td>0.5</td>
+							<td class="border-right">2.25</td>
+							<td>0.25</td>
+							<td class="border-right">1.25</td>
+							<td>0.25</td>
+							<td class="border-right">0</td>
+							<td>2.25</td>
+							<td>3</td>
 						</tr>
 						<tr>
 							<td>16x16</td>
-							<td>2 ms</td>
-							<td>9.5 ms</td>
+							<td>1.25</td>
+							<td class="border-right">2.75</td>
+							<td>2</td>
+							<td class="border-right">3.25</td>
+							<td>1</td>
+							<td class="border-right">1</td>
+							<td>13</td>
+							<td>18.25</td>
 						</tr>
 						<tr>
 							<td>32x32</td>
-							<td>9.5 ms</td>
-							<td>14.5 ms</td>
+							<td>9.5</td>
+							<td class="border-right">14.25</td>
+							<td>14.5</td>
+							<td class="border-right">22.5</td>
+							<td>4</td>
+							<td class="border-right">7</td>
+							<td>92.75</td>
+							<td>124.25</td>
 						</tr>
 						<tr>
 							<td>64x64</td>
-							<td>75 ms</td>
-							<td>93.5 ms</td>
+							<td>74.75</td>
+							<td class="border-right">96.75</td>
+							<td>117.25</td>
+							<td class="border-right">173</td>
+							<td>31.25</td>
+							<td class="border-right">67.5</td>
+							<td>712.75</td>
+							<td>887.25</td>
 						</tr>
 						<tr>
 							<td>128x128</td>
-							<td>587 ms</td>
-							<td>661 ms</td>
+							<td>627.25</td>
+							<td class="border-right">671.75</td>
+							<td>927</td>
+							<td class="border-right">1262.25</td>
+							<td>262.75</td>
+							<td class="border-right">376</td>
+							<td>5728</td>
+							<td>6342</td>
 						</tr>
 						<tr>
 							<td>256x256</td>
-							<td>4835.5 ms</td>
-							<td>4670 ms</td>
+							<td>5064.25</td>
+							<td class="border-right">4747.75</td>
+							<td>8324</td>
+							<td class="border-right">9863.5</td>
+							<td>2114.75</td>
+							<td class="border-right">2374.75</td>
+							<td>50612</td>
+							<td>47419</td>
 						</tr>
 						<tr>
 							<td>512x512</td>
-							<td>39319 ms</td>
-							<td>34827.5 ms</td>
+							<td>42948.25</td>
+							<td class="border-right">35358.75</td>
+							<td>67173.5</td>
+							<td class="border-right">63215.75</td>
+							<td>16633.5</td>
+							<td class="border-right">16158.75</td>
+							<td>1195579.75</td>
+							<td>381124.25</td>
 						</tr>
 						<tr>
 							<td>1024x1024</td>
-							<td>426434.5 ms</td>
-							<td>243014 ms</td>
+							<td>440221.75</td>
+							<td class="border-right">245467.25</td>
+							<td>579869.75</td>
+							<td class="border-right">454006.25</td>
+							<td>235058.75</td>
+							<td class="border-right">114664.75</td>
+							<td>-</td>
+							<td>-</td>
 						</tr>
 					</tbody>
 				</table>
-				<p>It seems that at a size between 128 and 256 Strassen's algorithm starts to perform better than the naive algorithm, although the memory required for the Strassen's algorithm should be taken into account.</p>
+				<p class="table-note">Times are in milliseconds (ms). Specs: Intel Core 2 Duo @ 2.53 GHz, 4GB 1067 MHz DDR3. Mac OS X 10.7.4. All the browsers are the 64 bit version.</p>
+				<p>Holy Spaghetti Monster! Opera is two times faster than Chome! For Google Chrome seems that at a size between 128 and 256 Strassen's algorithm starts to perform better than the Naive algorithm, while for the other browsers Strassen's algorithm starts much later, at a size between 256 and 512. And Safari... well, looks like it doesn't know what this is all about.</p>
+				<p>Nevertheless this numbers shouldn't be taken into account, since as I said before, this is just for fun.</p>
 			</div>
 			<div class="section" id="hadamardProduct">
 				<a class="top" href="#">top</a>
