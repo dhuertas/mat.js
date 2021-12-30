@@ -17,4 +17,4 @@ Then you are ready to go.
 
 **Documentation**
 
-You can find the documentation and examples [here](http://dhuertas.github.com/mat.js/). Happy coding!
+You can find the documentation and examples here: [http://dhuertas.github.io/mat.js](http://dhuertas.github.io/mat.js/). Happy coding!
